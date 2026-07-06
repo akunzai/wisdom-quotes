@@ -142,7 +142,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
     return (
       <div className="focus-overlay">
         <p className="empty-state">{m.focus.notFound}</p>
-        <a className="btn-secondary" href={baseUrl}>
+        <a className="btn-secondary" href={baseUrl} data-astro-reload>
           {m.focus.backHome}
         </a>
       </div>
@@ -160,6 +160,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
         <a
           className="icon-btn focus-close"
           href={baseUrl}
+          data-astro-reload
           style={{ position: 'absolute', top: '1.25rem', right: '1.25rem' }}
         >
           ✕

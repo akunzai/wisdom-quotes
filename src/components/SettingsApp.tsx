@@ -4,18 +4,11 @@ import { ThemeSwitch } from '@/components/ThemeToggle';
 import { FOCUS_AUTO_INTERVAL_VALUES, focusIntervalLabel } from '@/i18n/index';
 import { useI18n } from '@/i18n/useI18n';
 import {
-  downloadJson,
-  exportQuotes,
-  importDemoQuotes,
-  importQuotesFromJson,
-} from '@/lib/import-export';
-import {
   getFocusAutoIntervalMinutes,
   getPetsEnabled,
   setFocusAutoIntervalMinutes,
   setPetsEnabled,
 } from '@/lib/prefs';
-import { clearAllQuotes } from '@/lib/storage/quotes';
 import { getStoredTheme } from '@/lib/theme';
 
 export function SettingsApp() {
@@ -32,6 +25,7 @@ export function SettingsApp() {
   }, []);
 
   async function handleExport() {
+    const { exportQuotes, downloadJson } = await import('@/lib/import-export');
     const data = await exportQuotes();
     downloadJson(data, `wisdom-quotes-${new Date().toISOString().slice(0, 10)}.json`);
     setMessage(m.settings.exported);
@@ -39,6 +33,7 @@ export function SettingsApp() {
 
   async function handleImport(file: File) {
     try {
+      const { importQuotesFromJson } = await import('@/lib/import-export');
       const text = await file.text();
       const raw = JSON.parse(text) as unknown;
       const result = await importQuotesFromJson(raw);
@@ -50,6 +45,7 @@ export function SettingsApp() {
 
   async function handleImportDemo() {
     try {
+      const { importDemoQuotes } = await import('@/lib/import-export');
       const result = await importDemoQuotes();
       setMessage(t(m.settings.demoDone, { imported: result.imported, updated: result.updated }));
     } catch {
@@ -61,6 +57,7 @@ export function SettingsApp() {
     if (!window.confirm(m.settings.clearConfirm)) {
       return;
     }
+    const { clearAllQuotes } = await import('@/lib/storage/quotes');
     const removed = await clearAllQuotes();
     setMessage(
       removed > 0

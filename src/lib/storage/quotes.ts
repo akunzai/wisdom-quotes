@@ -90,21 +90,23 @@ export async function listQuotesByAuthor(author: string): Promise<Quote[]> {
 export async function listAuthors(
   locale = 'zh-Hant',
 ): Promise<{ name: string; count: number; preview: string }[]> {
-  const all = await listQuotes();
-  const map = new Map<string, Quote[]>();
+  const map = new Map<string, { count: number; preview: string }>();
 
-  for (const quote of all) {
+  await db.quotes.orderBy('updatedAt').reverse().each((quote) => {
     const name = quote.author || UNKNOWN_AUTHOR;
-    const list = map.get(name) ?? [];
-    list.push(quote);
-    map.set(name, list);
-  }
+    const existing = map.get(name);
+    if (!existing) {
+      map.set(name, { count: 1, preview: quote.text });
+      return;
+    }
+    existing.count += 1;
+  });
 
   return [...map.entries()]
-    .map(([name, quotes]) => ({
+    .map(([name, info]) => ({
       name,
-      count: quotes.length,
-      preview: quotes[0]?.text ?? '',
+      count: info.count,
+      preview: info.preview,
     }))
     .sort((a, b) => a.name.localeCompare(b.name, locale));
 }

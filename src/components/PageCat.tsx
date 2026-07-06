@@ -7,7 +7,44 @@ function pickLine(lines: string[]) {
 }
 
 function baselineY() {
+  if (typeof window === 'undefined') return 0;
   return window.innerHeight - (window.innerWidth <= 720 ? 56 : 72) - 20;
+}
+
+type PetState = {
+  x: number;
+  y: number;
+  dir: number;
+  state: 'walk' | 'idle' | 'goto' | 'read';
+  stateUntil: number;
+  targetX: number;
+  targetY: number;
+  walkTicks: number;
+};
+
+function initialPetState(): PetState {
+  if (typeof window === 'undefined') {
+    return {
+      x: 0,
+      y: 0,
+      dir: 1,
+      state: 'walk',
+      stateUntil: 0,
+      targetX: 0,
+      targetY: 0,
+      walkTicks: 0,
+    };
+  }
+  return {
+    x: window.innerWidth * 0.42,
+    y: baselineY(),
+    dir: 1,
+    state: 'walk',
+    stateUntil: 0,
+    targetX: 0,
+    targetY: 0,
+    walkTicks: 0,
+  };
 }
 
 function rectsIntersect(a: DOMRect, b: DOMRect): boolean {
@@ -19,16 +56,7 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
   const [enabled, setEnabled] = useState(false);
   const petRef = useRef<HTMLDivElement>(null);
   const bubbleRef = useRef<HTMLDivElement>(null);
-  const stateRef = useRef({
-    x: window.innerWidth * 0.42,
-    y: baselineY(),
-    dir: 1,
-    state: 'walk' as 'walk' | 'idle' | 'goto' | 'read',
-    stateUntil: 0,
-    targetX: 0,
-    targetY: 0,
-    walkTicks: 0,
-  });
+  const stateRef = useRef(initialPetState());
 
   useEffect(() => {
     setEnabled(getPetsEnabled());
