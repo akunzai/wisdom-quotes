@@ -26,7 +26,18 @@ run_code_file() {
   local src="$1" tmp
   tmp=$(mktemp)
   sed "s|__SMOKE_BASE__|${BASE}|g; s|__SMOKE_TAG__|${SMOKE_TAG}|g" "$src" > "$tmp"
-  playwright-cli run-code --filename="$tmp" 2>&1 | awk '/^### Result$/{getline; print; exit}'
+  playwright-cli run-code --filename="$tmp" 2>&1 | python3 -c '
+import json, re, sys
+text = sys.stdin.read()
+match = re.search(r"### Result\s*\n(.+)", text)
+if not match:
+    sys.exit(1)
+raw = match.group(1).strip()
+data = json.loads(raw)
+if isinstance(data, str):
+    data = json.loads(data)
+print(json.dumps(data))
+'
   rm -f "$tmp"
 }
 
