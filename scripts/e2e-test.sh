@@ -6,25 +6,34 @@ BASE="${E2E_BASE_URL:-http://localhost:4322/wisdom-quotes/}"
 PASS=0
 FAIL=0
 RESULTS=()
+E2E_TAG="E2E_$(date +%s)"
+IMPORT_TEXT="E2E_IMPORT_${E2E_TAG}"
+IMPORT_ID=$(python3 -c 'import uuid; print(uuid.uuid4())')
 
 pass() { PASS=$((PASS + 1)); RESULTS+=("✓ $1"); }
 fail() { FAIL=$((FAIL + 1)); RESULTS+=("✗ $1 — $2"); }
 
 run_code_file() {
-  local src="$1" tmp
+  local src="$1" tmp raw
   tmp=$(mktemp)
-  sed "s|__E2E_BASE__|${BASE}|g" "$src" > "$tmp"
-  playwright-cli run-code --filename="$tmp" 2>&1 | python3 -c '
+  sed "s|__E2E_BASE__|${BASE}|g; s|__E2E_TAG__|${E2E_TAG}|g; s|__E2E_IMPORT_FILE__|${IMPORT_FILE}|g; s|__E2E_IMPORT_TEXT__|${IMPORT_TEXT}|g" "$src" > "$tmp"
+  raw=$(playwright-cli run-code --filename="$tmp" 2>&1) || true
+  printf '%s' "$raw" | python3 -c '
 import json, re, sys
 text = sys.stdin.read()
 match = re.search(r"### Result\s*\n(.+)", text)
-if not match:
-    sys.exit(1)
-raw = match.group(1).strip()
-data = json.loads(raw)
-if isinstance(data, str):
-    data = json.loads(data)
-print(json.dumps(data))
+if match:
+    raw = match.group(1).strip()
+    data = json.loads(raw)
+    if isinstance(data, str):
+        data = json.loads(data)
+    print(json.dumps(data))
+    sys.exit(0)
+err = re.search(r"### Error\s*\n(.+?)(?:\n###|\Z)", text, re.S)
+if err:
+    print(json.dumps({"ok": False, "error": err.group(1).strip()}))
+    sys.exit(0)
+print(json.dumps({"ok": False, "error": "run-code produced no result"}))
 '
   rm -f "$tmp"
 }
@@ -49,6 +58,32 @@ for key in sys.argv[1:]:
 ' "$@"
 }
 
+IMPORT_FILE=$(mktemp /tmp/wq-e2e-import-XXXXXX.json)
+python3 -c "
+import json, sys
+from datetime import datetime, timezone
+
+def iso_z():
+    return datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+
+stamp = iso_z()
+payload = {
+    'version': '1.0',
+    'exportedAt': stamp,
+    'quotes': [{
+        'id': sys.argv[1],
+        'text': sys.argv[2],
+        'author': 'E2E作者',
+        'createdAt': stamp,
+        'updatedAt': stamp,
+        'visibility': 'private',
+    }],
+}
+with open(sys.argv[3], 'w', encoding='utf-8') as f:
+    json.dump(payload, f, ensure_ascii=False, indent=2)
+" "$IMPORT_ID" "$IMPORT_TEXT" "$IMPORT_FILE"
+trap 'rm -f "$IMPORT_FILE"' EXIT
+
 echo "=== Wisdom Quotes E2E Test ==="
 echo "Base URL: $BASE"
 echo ""
@@ -57,6 +92,15 @@ if [[ "${BROWSER_ALREADY_OPEN:-}" != "1" ]]; then
   playwright-cli close >/dev/null 2>&1 || true
   playwright-cli open "$BASE" >/dev/null 2>&1
   sleep 1
+fi
+# Focused regression tests (client router, import flow, nav state)
+import_demo_result=$(run_code_file scripts/e2e-import-demo.mjs)
+import_demo_ok=$(printf '%s' "$import_demo_result" | parse_json_result ok 2>/dev/null | tr '[:upper:]' '[:lower:]')
+
+if [[ "$import_demo_ok" == "true" ]]; then
+  pass "Import demo quotes via client-side settings nav"
+else
+  fail "Import demo quotes via client-side settings nav" "$(printf '%s' "$import_demo_result" | python3 -c 'import json,sys; print(json.dumps(json.load(sys.stdin), ensure_ascii=False))' 2>/dev/null || echo "$import_demo_result")"
 fi
 
 client_nav_result=$(run_code_file scripts/e2e-client-navigation.mjs)
@@ -84,7 +128,6 @@ else
   fail "Nav tab active state after client-side clicks" "$(printf '%s' "$nav_result" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(json.dumps(d.get("steps", d), ensure_ascii=False))' 2>/dev/null || echo "$nav_result")"
 fi
 
-# Title checks from nav flow
 title_authors=$(printf '%s' "$nav_result" | python3 -c '
 import json, sys
 data = json.load(sys.stdin)
@@ -113,6 +156,39 @@ else
   fail "Settings page title after tab click" "got '$title_settings'"
 fi
 
+# Full user-operation coverage
+start_secs=$SECONDS
+operations_result=$(run_code_file scripts/e2e-operations.mjs)
+operations_error=$(printf '%s' "$operations_result" | parse_json_result error 2>/dev/null || true)
+if [[ -n "$operations_error" ]]; then
+  fail "E2E operations flow" "$operations_error"
+elif [[ -z "$operations_result" ]]; then
+  fail "E2E operations flow" "empty result"
+else
+  while IFS=$'\t' read -r status name detail; do
+    if [[ "$status" == "PASS" ]]; then
+      pass "$name"
+    else
+      fail "$name" "${detail:-failed}"
+    fi
+  done < <(printf '%s' "$operations_result" | python3 -c '
+import json, sys
+data = json.load(sys.stdin)
+for c in data.get("checks", []):
+    name = c.get("name", "?")
+    if c.get("ok"):
+        print(f"PASS\t{name}")
+    else:
+        detail = c.get("detail", "")
+        print(f"FAIL\t{name}\t{detail}")
+')
+  operations_ok=$(printf '%s' "$operations_result" | parse_json_result ok 2>/dev/null | tr '[:upper:]' '[:lower:]')
+  if [[ "$operations_ok" != "true" ]]; then
+    fail "E2E operations aggregate" "one or more checks failed"
+  fi
+fi
+operations_elapsed=$((SECONDS - start_secs))
+
 if [[ "${BROWSER_ALREADY_OPEN:-}" != "1" ]]; then
   playwright-cli close >/dev/null 2>&1
 fi
@@ -120,6 +196,7 @@ fi
 echo ""
 for r in "${RESULTS[@]}"; do echo "$r"; done
 echo ""
+echo "Operations elapsed: ${operations_elapsed}s"
 echo "Passed: $PASS / $((PASS + FAIL))"
 if (( FAIL > 0 )); then echo "Failed: $FAIL"; exit 1; fi
 echo "All E2E tests passed ✓"

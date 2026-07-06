@@ -1,5 +1,5 @@
 const BASE = '/wisdom-quotes/';
-const CACHE = 'wisdom-quotes-v3';
+const CACHE = 'wisdom-quotes-v4';
 const PRECACHE = [
   BASE,
   `${BASE}index.html`,
@@ -11,6 +11,7 @@ const PRECACHE = [
   `${BASE}focus/index.html`,
   `${BASE}favicon.svg`,
   `${BASE}manifest.webmanifest`,
+  `${BASE}demo-quotes.json`,
 ];
 
 self.addEventListener('install', (event) => {

@@ -107,6 +107,7 @@ export const zhHant: Messages = {
     importFailed: '匯入失敗，請確認檔案格式',
     demoDone: '範例語錄：新增 {imported} 則、更新 {updated} 則',
     demoFailed: '無法載入範例語錄',
+    demoAlreadyLoaded: '範例語錄已在收藏中，無需重複匯入',
     clearConfirm: '確定要刪除所有本地名言？此動作無法復原，建議先匯出備份。',
     cleared: '已清空 {count} 則名言',
     nothingToClear: '目前沒有名言可清空',

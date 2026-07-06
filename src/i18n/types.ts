@@ -104,6 +104,7 @@ export interface Messages {
     importFailed: string;
     demoDone: string;
     demoFailed: string;
+    demoAlreadyLoaded: string;
     clearConfirm: string;
     cleared: string;
     nothingToClear: string;

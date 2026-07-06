@@ -87,7 +87,7 @@ const fontUrls = {
     {!hideCat && <PageCat client:idle transition:persist="page-cat" />}
     <div class="app">
       <SiteHeader activePage={pageKey} />
-      <div transition:animate="fade">
+      <div transition:animate="none">
         <slot />
       </div>
     </div>
