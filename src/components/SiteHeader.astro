@@ -78,6 +78,11 @@ const links: { id: PageId; href: string; labelKey: 'quotes' | 'authors' | 'setti
     }
   }
 
+  function applyStoredTheme() {
+    const stored = localStorage.getItem('wq-theme');
+    document.documentElement.dataset.theme = stored === 'dark' ? 'dark' : 'light';
+  }
+
   function updateThemeIcon() {
     const theme = document.documentElement.dataset.theme;
     const btn = document.getElementById('theme-toggle');
@@ -123,6 +128,7 @@ const links: { id: PageId; href: string; labelKey: 'quotes' | 'authors' | 'setti
   document.addEventListener('astro:after-swap', () => {
     const stored = localStorage.getItem('wq-locale');
     const loc = stored === 'en' || stored === 'ja' ? stored : 'zh-Hant';
+    applyStoredTheme();
     applyNavLocale(loc);
     updateThemeIcon();
     updateActiveNav();
