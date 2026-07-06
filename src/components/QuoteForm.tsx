@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type SubmitEvent } from 'react';
 import type { Quote, QuoteInput } from '@/types/quote';
 
 interface QuoteFormProps {
@@ -36,7 +36,7 @@ export function QuoteForm({ open, initial, onClose, onSave, onDelete }: QuoteFor
     }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!text.trim()) return;
     setSaving(true);
