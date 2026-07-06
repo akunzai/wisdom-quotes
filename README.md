@@ -1,19 +1,19 @@
-# 智慧語錄 (Wisdom Quotes)
+# Wisdom Quotes (智慧語錄)
 
-個人名言收藏與管理，靜態部署至 GitHub Pages。介面為繁體中文，支援明暗主題。
+A personal quote collection app with a Traditional Chinese UI, light/dark themes, and browser-local storage.
 
-**[設計 mockup →](./mockup/index.html)** · **[Roadmap →](https://github.com/akunzai/wisdom-quotes/issues/1)**
+## Features
 
-## 功能
+- Create, edit, delete, and search quotes
+- Browse by author and focus mode for single-quote reading
+- Light/dark theme and JSON import/export
+- Optional wandering page cat companion
 
-- 名言新增、編輯、刪除與全文搜尋
-- 依作者瀏覽、專注模式
-- 明暗主題、JSON 匯入／匯出
-- 可選的頁面小貓夥伴
+## Prerequisites
 
-## 本機開發
+- [mise](https://mise.jdx.dev/) — installs Node LTS and [aube](https://aube.jdx.dev/) per `mise.toml`
 
-需要 [mise](https://mise.jdx.dev/)（會依 `mise.toml` 安裝 Node LTS 與 aube）。
+## Getting Started
 
 ```bash
 git clone https://github.com/akunzai/wisdom-quotes.git
@@ -22,25 +22,19 @@ aube install
 aubr dev
 ```
 
-開啟 <http://localhost:4321/wisdom-quotes/>。
+Open [http://localhost:4321/wisdom-quotes/](http://localhost:4321/wisdom-quotes/).
 
-```bash
-aubr build    # 輸出至 dist/
-aubr preview  # 預覽 production build
-```
+## Scripts
 
-僅預覽 mockup：
+| Command | Description |
+|---------|-------------|
+| `aubr dev` | Start the development server |
+| `aubr build` | Type-check and build to `dist/` |
+| `aubr preview` | Preview the production build |
+| `aubr typecheck` | Run Astro/TypeScript checks |
+| `aubr lint` | Lint the codebase |
+| `aubr format` | Format with Prettier |
 
-```bash
-npx serve mockup
-```
+## Contributing
 
-## 部署
-
-推送到 `main` 後，GitHub Actions 會 build 並部署至：
-
-<https://akunzai.github.io/wisdom-quotes/>
-
-## License
-
-MIT
+Issues and pull requests are welcome. Please open an issue before large changes.
