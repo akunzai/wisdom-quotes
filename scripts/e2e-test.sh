@@ -156,6 +156,36 @@ else
   fail "Settings page title after tab click" "got '$title_settings'"
 fi
 
+theme_result=$(run_code_file scripts/e2e-theme-persist.mjs)
+theme_error=$(printf '%s' "$theme_result" | parse_json_result error 2>/dev/null || true)
+if [[ -n "$theme_error" ]]; then
+  fail "E2E theme persist flow" "$theme_error"
+elif [[ -z "$theme_result" ]]; then
+  fail "E2E theme persist flow" "empty result"
+else
+  while IFS=$'\t' read -r status name detail; do
+    if [[ "$status" == "PASS" ]]; then
+      pass "$name"
+    else
+      fail "$name" "${detail:-failed}"
+    fi
+  done < <(printf '%s' "$theme_result" | python3 -c '
+import json, sys
+data = json.load(sys.stdin)
+for c in data.get("checks", []):
+    name = c.get("name", "?")
+    if c.get("ok"):
+        print(f"PASS\t{name}")
+    else:
+        detail = c.get("detail", "")
+        print(f"FAIL\t{name}\t{detail}")
+')
+  theme_ok=$(printf '%s' "$theme_result" | parse_json_result ok 2>/dev/null | tr '[:upper:]' '[:lower:]')
+  if [[ "$theme_ok" != "true" ]]; then
+    fail "E2E theme persist aggregate" "one or more checks failed"
+  fi
+fi
+
 # Full user-operation coverage
 start_secs=$SECONDS
 operations_result=$(run_code_file scripts/e2e-operations.mjs)

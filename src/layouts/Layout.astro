@@ -84,8 +84,13 @@ const fontUrls = {
     <ClientRouter />
     <script is:inline define:vars={{ titleBoot, pageKey, fontUrls }}>
       (function () {
-        const storedTheme = localStorage.getItem('wq-theme');
-        document.documentElement.dataset.theme = storedTheme === 'dark' ? 'dark' : 'light';
+        function applyStoredTheme() {
+          const storedTheme = localStorage.getItem('wq-theme');
+          document.documentElement.dataset.theme = storedTheme === 'dark' ? 'dark' : 'light';
+        }
+
+        applyStoredTheme();
+        document.addEventListener('astro:after-swap', applyStoredTheme);
 
         const storedLocale = localStorage.getItem('wq-locale');
         const locale = storedLocale === 'en' || storedLocale === 'ja' ? storedLocale : 'zh-Hant';
