@@ -1,12 +1,12 @@
 {
-  "name": "Wisdom Quotes — 智慧語錄",
+  "name": "Wisdom Quotes",
   "short_name": "Wisdom Quotes",
   "description": "Personal quote collection with focus mode and local storage",
   "start_url": "/wisdom-quotes/",
   "scope": "/wisdom-quotes/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "lang": "zh-Hant",
+  "lang": "en",
   "background_color": "#f3ede4",
   "theme_color": "#8b6914",
   "icons": [

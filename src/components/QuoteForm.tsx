@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type SubmitEvent } from 'react';
+import { useI18n } from '@/i18n/useI18n';
 import type { Quote, QuoteInput } from '@/types/quote';
 
 interface QuoteFormProps {
@@ -20,6 +21,7 @@ export function QuoteForm({
   onSave,
   onDelete,
 }: QuoteFormProps) {
+  const { messages: m } = useI18n();
   const [text, setText] = useState('');
   const [author, setAuthor] = useState('');
   const [sourceUrl, setSourceUrl] = useState('');
@@ -44,7 +46,7 @@ export function QuoteForm({
 
   async function handleDelete() {
     if (!initial || !onDelete) return;
-    if (!confirm('確定要刪除這則名言？此操作無法復原。')) return;
+    if (!confirm(m.form.confirmDelete)) return;
     setSaving(true);
     try {
       await onDelete(initial.id);
@@ -74,26 +76,26 @@ export function QuoteForm({
   }
 
   return (
-    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="名言表單">
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label={m.form.dialogLabel}>
       <form className="modal-card" onSubmit={handleSubmit}>
-        <h2 className="modal-title">{initial ? '編輯名言' : '新增名言'}</h2>
+        <h2 className="modal-title">{initial ? m.form.editTitle : m.form.addTitle}</h2>
         <label className="field">
-          <span>名言內容 *</span>
+          <span>{m.form.text}</span>
           <textarea
             required
             rows={4}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="輸入名言…"
+            placeholder={m.form.textPlaceholder}
           />
         </label>
         <label className="field">
-          <span>作者</span>
+          <span>{m.form.author}</span>
           <input
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
             list={authorOptions.length > 0 ? AUTHOR_LIST_ID : undefined}
-            placeholder="選填或選擇既有作者"
+            placeholder={m.form.authorPlaceholder}
             autoComplete="off"
           />
           {authorOptions.length > 0 && (
@@ -104,7 +106,7 @@ export function QuoteForm({
             </datalist>
           )}
           {authorMatches.length > 0 && (
-            <div className="author-suggestions" role="listbox" aria-label="既有作者">
+            <div className="author-suggestions" role="listbox" aria-label={m.form.existingAuthors}>
               {authorMatches.map((name) => (
                 <button
                   key={name}
@@ -120,7 +122,7 @@ export function QuoteForm({
           )}
         </label>
         <label className="field">
-          <span>原文連結</span>
+          <span>{m.form.sourceUrl}</span>
           <input
             type="url"
             value={sourceUrl}
@@ -136,14 +138,14 @@ export function QuoteForm({
               disabled={saving}
               onClick={() => void handleDelete()}
             >
-              刪除
+              {m.form.delete}
             </button>
           )}
           <button type="button" className="btn-secondary" onClick={onClose}>
-            取消
+            {m.form.cancel}
           </button>
           <button type="submit" className="btn-primary" disabled={saving}>
-            {saving ? '儲存中…' : '儲存'}
+            {saving ? m.form.saving : m.form.save}
           </button>
         </div>
       </form>

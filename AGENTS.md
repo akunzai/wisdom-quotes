@@ -1,8 +1,8 @@
-# 智慧語錄 (Wisdom Quotes) — Developer Guidelines
+# Wisdom Quotes — Developer Guidelines
 
 ## Project Overview
 
-**智慧語錄** is a personal quote management site, **static-first** and deployable to **GitHub Pages**. The UI is primarily **Traditional Chinese (zh-TW)** with Light / Dark theme support. MVP focuses on personal collection and management; the architecture reserves room for future **public quotes** and **Like** features (Cloudflare D1).
+**Wisdom Quotes** is a personal quote management site, **static-first** and deployable to **GitHub Pages**. The UI supports **zh-Hant** (default), **en**, and **ja** via `src/i18n/` catalogs and a Settings locale switcher (`wq-locale` in localStorage). Light / Dark theme support. MVP focuses on personal collection and management; the architecture reserves room for future **public quotes** and **Like** features (Cloudflare D1).
 
 **Planning & requirements** are tracked in [GitHub Issues](https://github.com/akunzai/wisdom-quotes/issues). Start with the [roadmap epic (#1)](https://github.com/akunzai/wisdom-quotes/issues/1).
 
@@ -38,6 +38,7 @@ aubr format
 │   │   ├── import-export/  # JSON import/export
 │   │   ├── drive/      # Google Drive sync (Phase 2)
 │   │   └── api/        # Cloudflare Workers API client (Phase 3)
+│   ├── i18n/           # Locale catalogs (zh-Hant, en, ja) and useI18n hook
 │   ├── styles/         # Global styles, theme tokens, animations
 │   └── types/          # Quote, Author type definitions
 ├── public/             # Static assets
@@ -84,9 +85,10 @@ interface QuoteCollection {
 
 ## UI Language Convention
 
-- **Display name**: 智慧語錄
-- **User-facing copy**: Traditional Chinese (zh-TW)
+- **Display name**: locale-specific via `app.name` — 智慧語錄 (zh-Hant), Wisdom Quotes (en), 名言コレクション (ja)
+- **User-facing copy**: zh-Hant (default), en, or ja — via `useI18n()` / `src/i18n/`; quote body text is not translated
 - **Code, identifiers, comments, and docs**: English
+- **README**: `README.md` (English); localized variants `README.zh-Hant.md`, `README.ja.md`
 
 ## Code Style & Conventions
 

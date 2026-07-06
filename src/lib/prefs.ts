@@ -1,6 +1,20 @@
+import { DEFAULT_LOCALE, isLocale, type Locale } from '@/i18n/index';
+
 const PETS_KEY = 'wq-pets';
+const LOCALE_KEY = 'wq-locale';
 const FOCUS_AUTO_INTERVAL_KEY = 'wq-focus-auto-minutes';
 const DEFAULT_FOCUS_AUTO_INTERVAL_MINUTES = 5;
+
+export function getLocale(): Locale {
+  if (typeof window === 'undefined') return DEFAULT_LOCALE;
+  const stored = localStorage.getItem(LOCALE_KEY);
+  return isLocale(stored) ? stored : DEFAULT_LOCALE;
+}
+
+export function setLocale(locale: Locale): void {
+  localStorage.setItem(LOCALE_KEY, locale);
+  window.dispatchEvent(new CustomEvent('wq-prefs-change', { detail: { key: LOCALE_KEY } }));
+}
 
 export function getPetsEnabled(): boolean {
   if (typeof window === 'undefined') return true;
@@ -30,13 +44,3 @@ export function setFocusAutoIntervalMinutes(minutes: number): void {
   );
 }
 
-export const FOCUS_AUTO_INTERVAL_OPTIONS = [
-  { value: 0, label: '關閉' },
-  { value: 1, label: '1 分鐘' },
-  { value: 2, label: '2 分鐘' },
-  { value: 3, label: '3 分鐘' },
-  { value: 5, label: '5 分鐘' },
-  { value: 10, label: '10 分鐘' },
-  { value: 15, label: '15 分鐘' },
-  { value: 30, label: '30 分鐘' },
-] as const;

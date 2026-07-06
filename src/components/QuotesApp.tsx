@@ -2,9 +2,15 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useMemo, useState } from 'react';
 import { QuoteCard } from '@/components/QuoteCard';
 import { QuoteForm } from '@/components/QuoteForm';
-import { db } from '@/lib/storage/db';
+import { useI18n } from '@/i18n/useI18n';
 import { pickDailyItem } from '@/lib/daily-quote';
+import { db } from '@/lib/storage/db';
 import { createQuote, deleteQuote, updateQuote } from '@/lib/storage/quotes';
+import {
+  displayAuthorName,
+  isUnknownAuthor,
+  UNKNOWN_AUTHOR,
+} from '@/lib/unknown-author';
 import type { Quote, QuoteInput } from '@/types/quote';
 
 interface QuotesAppProps {
@@ -13,6 +19,7 @@ interface QuotesAppProps {
 }
 
 export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
+  const { locale, messages: m, t } = useI18n();
   const [query, setQuery] = useState('');
   const [sidebarAuthor, setSidebarAuthor] = useState<string>('all');
   const [formOpen, setFormOpen] = useState(false);
@@ -29,14 +36,14 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
   const authors = useMemo(() => {
     const map = new Map<string, number>();
     for (const quote of quotes ?? []) {
-      const name = quote.author || '未知';
+      const name = quote.author || UNKNOWN_AUTHOR;
       map.set(name, (map.get(name) ?? 0) + 1);
     }
-    return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0], 'zh-Hant'));
-  }, [quotes]);
+    return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0], locale));
+  }, [quotes, locale]);
 
   const authorOptions = useMemo(
-    () => authors.map(([name]) => name).filter((name) => name !== '未知'),
+    () => authors.map(([name]) => name).filter((name) => !isUnknownAuthor(name)),
     [authors],
   );
 
@@ -52,7 +59,7 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
     return quotes.filter((quote) => {
       const matchAuthor =
         !author ||
-        (author === '未知' ? !quote.author : quote.author === author);
+        (isUnknownAuthor(author) ? !quote.author : quote.author === author);
       const matchSearch =
         !q ||
         quote.text.toLowerCase().includes(q) ||
@@ -73,14 +80,18 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
     await deleteQuote(id);
   }
 
+  const activeAuthorLabel = activeAuthor
+    ? displayAuthorName(activeAuthor, m.unknown)
+    : undefined;
+
   return (
     <>
       {hero && !authorFilter && (
         <section className="hero">
-          <p className="hero-eyebrow">每日一思</p>
+          <p className="hero-eyebrow">{m.hero.eyebrow}</p>
           <blockquote className="hero-quote">{hero.text}</blockquote>
           <p className="hero-author">
-            — <em>{hero.author || '未知'}</em>
+            — <em>{displayAuthorName(hero.author || UNKNOWN_AUTHOR, m.unknown)}</em>
           </p>
         </section>
       )}
@@ -94,21 +105,21 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
           <input
             className="search-input"
             type="search"
-            placeholder="搜尋名言或作者…"
+            placeholder={m.search.placeholder}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            aria-label="搜尋名言"
+            aria-label={m.search.label}
           />
         </div>
         <button type="button" className="btn-primary" onClick={() => { setEditing(undefined); setFormOpen(true); }}>
-          新增名言
+          {m.quotes.add}
         </button>
       </div>
 
       <div className="main-layout">
         {!authorFilter && (
           <aside className="sidebar">
-            <p className="sidebar-label">依作者瀏覽</p>
+            <p className="sidebar-label">{m.sidebar.browseByAuthor}</p>
             <ul className="author-list">
               <li>
                 <a
@@ -116,7 +127,7 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
                   href="#"
                   onClick={(e) => { e.preventDefault(); setSidebarAuthor('all'); }}
                 >
-                  <span>全部</span>
+                  <span>{m.sidebar.all}</span>
                   <span>{quotes?.length ?? 0}</span>
                 </a>
               </li>
@@ -126,7 +137,7 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
                     className={`author-item ${sidebarAuthor === name ? 'active' : ''}`}
                     href={`${baseUrl}?author=${encodeURIComponent(name)}`}
                   >
-                    <span>{name}</span>
+                    <span>{displayAuthorName(name, m.unknown)}</span>
                     <span>{count}</span>
                   </a>
                 </li>
@@ -138,16 +149,16 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
         <section>
           <div className="quotes-header">
             <h2 className="quotes-title">
-              {activeAuthor ? `${activeAuthor} 的名言` : '我的名言'}
+              {activeAuthorLabel
+                ? t(m.quotes.byAuthor, { author: activeAuthorLabel })
+                : m.quotes.my}
             </h2>
-            <span className="quotes-count">{filtered.length} 則</span>
+            <span className="quotes-count">{t(m.quotes.count, { count: filtered.length })}</span>
           </div>
 
           {filtered.length === 0 ? (
             <p className="empty-state">
-              {quotes?.length === 0
-                ? '尚無名言，可至設定匯入範例語錄或新增名言'
-                : '尚無符合條件的名言'}
+              {quotes?.length === 0 ? m.quotes.empty : m.quotes.emptyFiltered}
             </p>
           ) : (
             <div className="quote-grid">
