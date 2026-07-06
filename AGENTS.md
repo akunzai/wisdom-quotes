@@ -8,27 +8,22 @@
 
 ## Quick Commands
 
-> Update these once the project scaffold is in place.
-
 ```bash
 # Development
-npm run dev
+aubr dev          # or: npm run dev
 
 # Build (outputs to dist/ for GitHub Pages)
-npm run build
+aubr build
 
 # Preview production build
-npm run preview
+aubr preview
 
 # Type checking
-npm run typecheck
-
-# Tests
-npm run test
+aubr typecheck
 
 # Lint / Format
-npm run lint
-npm run format
+aubr lint
+aubr format
 
 # Preview design mockup (no build required)
 npx serve mockup

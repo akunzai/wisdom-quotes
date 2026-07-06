@@ -1,0 +1,39 @@
+---
+import { ThemeToggle } from '@/components/ThemeToggle';
+
+const { pathname } = Astro.url;
+const base = import.meta.env.BASE_URL;
+
+const links = [
+  { href: `${base}`, label: '名言', match: (p: string) => p === base || p === `${base}index.html` },
+  { href: `${base}authors/`, label: '作者', match: (p: string) => p.includes('/authors') },
+  { href: `${base}settings/`, label: '設定', match: (p: string) => p.includes('/settings') },
+];
+---
+
+<header class="site-header">
+  <a class="logo" href={base}>
+    <div class="logo-mark">錄</div>
+    <div>
+      <span class="logo-text">智慧語錄</span>
+      <span class="logo-sub">WISDOM QUOTES</span>
+    </div>
+  </a>
+
+  <nav class="site-nav" aria-label="主要導覽">
+    {
+      links.map((link) => (
+        <a
+          class:list={['nav-link', { active: link.match(pathname) }]}
+          href={link.href}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+
+  <div class="header-actions">
+    <ThemeToggle client:load />
+  </div>
+</header>

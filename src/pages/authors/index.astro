@@ -1,0 +1,10 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { AuthorsApp } from '@/components/AuthorsApp';
+
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<Layout title="智慧語錄 — 作者">
+  <AuthorsApp client:load baseUrl={baseUrl} />
+</Layout>

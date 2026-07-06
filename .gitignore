@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+.astro/
+
+# misc
+dark-disk/
+.DS_Store
+*.log
+.env
+.env.*
+
+# editor
+.vscode/*
+!.vscode/extensions.json
