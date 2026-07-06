@@ -1,19 +1,19 @@
 import { z } from 'zod';
 
 export const quoteSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   text: z.string().min(1),
   author: z.string().optional(),
   sourceUrl: z.string().optional(),
   tags: z.array(z.string()).optional(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
   visibility: z.enum(['private', 'public']).default('private'),
 });
 
 export const quoteCollectionSchema = z.object({
   version: z.string(),
-  exportedAt: z.string().datetime(),
+  exportedAt: z.iso.datetime(),
   quotes: z.array(quoteSchema),
 });
 
