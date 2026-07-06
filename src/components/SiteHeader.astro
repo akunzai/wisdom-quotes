@@ -1,13 +1,14 @@
 ---
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { baseUrl, withBase } from '@/lib/base-url';
 
 const { pathname } = Astro.url;
-const base = import.meta.env.BASE_URL;
+const base = baseUrl();
 
 const links = [
-  { href: `${base}`, label: '名言', match: (p: string) => p === base || p === `${base}index.html` },
-  { href: `${base}authors/`, label: '作者', match: (p: string) => p.includes('/authors') },
-  { href: `${base}settings/`, label: '設定', match: (p: string) => p.includes('/settings') },
+  { href: base, label: '名言', match: (p: string) => p === base || p === `${base}index.html` },
+  { href: withBase('authors/'), label: '作者', match: (p: string) => p.includes('/authors') },
+  { href: withBase('settings/'), label: '設定', match: (p: string) => p.includes('/settings') },
 ];
 ---
 

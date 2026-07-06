@@ -1,10 +1,9 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { FocusApp } from '@/components/FocusApp';
-
-const baseUrl = import.meta.env.BASE_URL;
+import { baseUrl } from '@/lib/base-url';
 ---
 
 <Layout title="智慧語錄 — 專注模式" hideCat>
-  <FocusApp client:only="react" baseUrl={baseUrl} />
+  <FocusApp client:only="react" baseUrl={baseUrl()} />
 </Layout>

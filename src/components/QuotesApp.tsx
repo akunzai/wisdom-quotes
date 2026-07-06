@@ -5,6 +5,7 @@ import { QuoteForm } from '@/components/QuoteForm';
 import { db } from '@/lib/storage/db';
 import {
   createQuote,
+  deleteQuote,
   seedDemoQuotesIfEmpty,
   updateQuote,
 } from '@/lib/storage/quotes';
@@ -64,6 +65,10 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
       return;
     }
     await createQuote(input);
+  }
+
+  async function handleDelete(id: string) {
+    await deleteQuote(id);
   }
 
   return (
@@ -158,6 +163,7 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
         initial={editing}
         onClose={() => { setFormOpen(false); setEditing(undefined); }}
         onSave={handleSave}
+        onDelete={editing ? handleDelete : undefined}
       />
     </>
   );

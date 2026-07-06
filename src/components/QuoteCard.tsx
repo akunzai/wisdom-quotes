@@ -13,7 +13,7 @@ export function QuoteCard({ quote, baseUrl, onEdit }: QuoteCardProps) {
       <div className="quote-meta">
         <span className="quote-author">{quote.author || '未知'}</span>
         <div className="quote-actions">
-          <a className="quote-action-btn" href={`${baseUrl}focus/?id=${quote.id}`}>
+          <a className="quote-action-btn" href={`${baseUrl}focus/?id=${encodeURIComponent(quote.id)}`}>
             專注
           </a>
           <button

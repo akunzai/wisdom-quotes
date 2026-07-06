@@ -6,9 +6,10 @@ interface QuoteFormProps {
   initial?: Quote;
   onClose: () => void;
   onSave: (input: QuoteInput, id?: string) => Promise<void>;
+  onDelete?: (id: string) => Promise<void>;
 }
 
-export function QuoteForm({ open, initial, onClose, onSave }: QuoteFormProps) {
+export function QuoteForm({ open, initial, onClose, onSave, onDelete }: QuoteFormProps) {
   const [text, setText] = useState('');
   const [author, setAuthor] = useState('');
   const [sourceUrl, setSourceUrl] = useState('');
@@ -22,6 +23,18 @@ export function QuoteForm({ open, initial, onClose, onSave }: QuoteFormProps) {
   }, [open, initial]);
 
   if (!open) return null;
+
+  async function handleDelete() {
+    if (!initial || !onDelete) return;
+    if (!confirm('確定要刪除這則名言？此操作無法復原。')) return;
+    setSaving(true);
+    try {
+      await onDelete(initial.id);
+      onClose();
+    } finally {
+      setSaving(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -74,6 +87,16 @@ export function QuoteForm({ open, initial, onClose, onSave }: QuoteFormProps) {
           />
         </label>
         <div className="modal-actions">
+          {initial && onDelete && (
+            <button
+              type="button"
+              className="btn-danger"
+              disabled={saving}
+              onClick={() => void handleDelete()}
+            >
+              刪除
+            </button>
+          )}
           <button type="button" className="btn-secondary" onClick={onClose}>
             取消
           </button>

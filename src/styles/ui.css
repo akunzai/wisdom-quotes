@@ -212,6 +212,30 @@
   color: var(--accent);
 }
 
+.btn-danger {
+  font-size: 0.85rem;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: 0.6rem;
+  background: transparent;
+  color: #c44;
+  cursor: pointer;
+  margin-right: auto;
+}
+
+.btn-danger:hover {
+  background: rgba(204, 68, 68, 0.08);
+  border-color: rgba(204, 68, 68, 0.35);
+}
+
+:root[data-theme='dark'] .btn-danger {
+  color: #f77;
+}
+
+:root[data-theme='dark'] .btn-danger:hover {
+  background: rgba(255, 119, 119, 0.1);
+}
+
 .main-layout {
   display: grid;
   grid-template-columns: 200px 1fr;
