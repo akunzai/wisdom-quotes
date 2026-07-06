@@ -1,5 +1,5 @@
 const BASE = '/wisdom-quotes/';
-const CACHE = 'wisdom-quotes-v2';
+const CACHE = 'wisdom-quotes-v3';
 const PRECACHE = [
   BASE,
   `${BASE}index.html`,
@@ -34,6 +34,27 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
   if (!url.pathname.startsWith(BASE)) return;
+
+  const isDocument =
+    event.request.mode === 'navigate' ||
+    event.request.destination === 'document' ||
+    (event.request.headers.get('accept') || '').includes('text/html');
+
+  if (isDocument) {
+    // Network-first for full navigations; ClientRouter fetches still benefit from cache below.
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok && response.type !== 'opaque') {
+            const copy = response.clone();
+            caches.open(CACHE).then((cache) => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request)),
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cached) => {

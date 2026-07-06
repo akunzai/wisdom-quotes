@@ -53,9 +53,27 @@ echo "=== Wisdom Quotes E2E Test ==="
 echo "Base URL: $BASE"
 echo ""
 
-playwright-cli close >/dev/null 2>&1 || true
-playwright-cli open "$BASE" >/dev/null 2>&1
-sleep 2
+if [[ "${BROWSER_ALREADY_OPEN:-}" != "1" ]]; then
+  playwright-cli close >/dev/null 2>&1 || true
+  playwright-cli open "$BASE" >/dev/null 2>&1
+  sleep 1
+fi
+
+client_nav_result=$(run_code_file scripts/e2e-client-navigation.mjs)
+client_nav_ok=$(printf '%s' "$client_nav_result" | parse_json_result ok 2>/dev/null | tr '[:upper:]' '[:lower:]')
+
+if [[ "$client_nav_ok" == "true" ]]; then
+  pass "Client-side navigation (no full page reload)"
+else
+  fail "Client-side navigation (no full page reload)" "$(printf '%s' "$client_nav_result" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(json.dumps(d.get("checks", d), ensure_ascii=False))' 2>/dev/null || echo "$client_nav_result")"
+fi
+
+header_persist=$(printf '%s' "$client_nav_result" | parse_json_result checks.headerPersisted 2>/dev/null | tr '[:upper:]' '[:lower:]')
+if [[ "$header_persist" == "true" ]]; then
+  pass "Persisted header survives tab clicks"
+else
+  fail "Persisted header survives tab clicks" "$(printf '%s' "$client_nav_result" | parse_json_result checks 2>/dev/null || true)"
+fi
 
 nav_result=$(run_code_file scripts/e2e-nav-tabs.mjs)
 nav_ok=$(printf '%s' "$nav_result" | parse_json_result ok 2>/dev/null | tr '[:upper:]' '[:lower:]')
@@ -95,7 +113,9 @@ else
   fail "Settings page title after tab click" "got '$title_settings'"
 fi
 
-playwright-cli close >/dev/null 2>&1
+if [[ "${BROWSER_ALREADY_OPEN:-}" != "1" ]]; then
+  playwright-cli close >/dev/null 2>&1
+fi
 
 echo ""
 for r in "${RESULTS[@]}"; do echo "$r"; done

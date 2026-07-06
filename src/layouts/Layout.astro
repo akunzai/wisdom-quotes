@@ -68,9 +68,18 @@ const fontUrls = {
     </script>
     <script is:inline define:vars={{ swUrl: withBase('sw.js'), swScope: withBase() }}>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register(swUrl, { scope: swScope }).catch(() => {});
-        });
+        const isLocal =
+          location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        if (isLocal) {
+          // SW cache-first breaks ClientRouter during local dev; clear any stale registration.
+          navigator.serviceWorker.getRegistrations().then((regs) => {
+            for (const reg of regs) reg.unregister();
+          });
+        } else {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register(swUrl, { scope: swScope }).catch(() => {});
+          });
+        }
       }
     </script>
   </head>
