@@ -17,3 +17,27 @@ jobs:
       - uses: jdx/mise-action@v4
       - run: aube ci
       - run: aubr build
+
+  smoke:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v4
+      - run: aube ci
+      - run: aubr build
+      - run: npm install -g @playwright/cli@latest
+      - name: Start preview server
+        run: |
+          aubr preview --port 4322 --host 127.0.0.1 &
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:4322/wisdom-quotes/ >/dev/null; then
+              echo "Preview ready"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Preview server failed to start"
+          exit 1
+      - name: Run smoke test
+        run: SMOKE_BASE_URL=http://127.0.0.1:4322/wisdom-quotes/ ./scripts/smoke-test.sh

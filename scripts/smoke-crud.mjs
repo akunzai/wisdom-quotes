@@ -14,7 +14,8 @@ async (page) => {
   const afterAdd = await page.locator('article').count();
 
   const card = page.locator('article').filter({ hasText: tag });
-  await card.getByRole('button', { name: '編輯' }).click();
+  await card.hover();
+  await card.getByRole('button', { name: '編輯' }).click({ force: true });
   await page.waitForTimeout(500);
   const hasDelete = await page.getByRole('button', { name: '刪除' }).isVisible();
   const editedText = tag + ' 已編輯';

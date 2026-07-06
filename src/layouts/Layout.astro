@@ -18,7 +18,9 @@ const { title = '智慧語錄', hideCat = false } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="記錄與管理智慧名言的個人語錄集" />
+    <meta name="theme-color" content="#8b6914" />
     <link rel="icon" type="image/svg+xml" href={withBase('favicon.svg')} />
+    <link rel="manifest" href={withBase('manifest.webmanifest')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -32,6 +34,13 @@ const { title = '智慧語錄', hideCat = false } = Astro.props;
         const theme = stored === 'dark' ? 'dark' : 'light';
         document.documentElement.dataset.theme = theme;
       })();
+    </script>
+    <script is:inline define:vars={{ swUrl: withBase('sw.js'), swScope: withBase() }}>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register(swUrl, { scope: swScope }).catch(() => {});
+        });
+      }
     </script>
   </head>
   <body>

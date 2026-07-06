@@ -109,7 +109,10 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'ArrowLeft') {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        window.location.assign(baseUrl);
+      } else if (event.key === 'ArrowLeft') {
         event.preventDefault();
         goPrev();
       } else if (event.key === 'ArrowRight') {
@@ -119,7 +122,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
     }
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [goPrev, goNext]);
+  }, [baseUrl, goPrev, goNext]);
 
   if (!ready) {
     return (
