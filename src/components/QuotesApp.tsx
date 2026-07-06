@@ -41,11 +41,13 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
   }, [quotes]);
 
   const hero = quotes?.[0];
+  const activeAuthor =
+    authorFilter ?? (sidebarAuthor === 'all' ? undefined : sidebarAuthor);
 
   const filtered = useMemo(() => {
     if (!quotes) return [];
     const q = query.trim().toLowerCase();
-    const author = authorFilter ?? (sidebarAuthor === 'all' ? undefined : sidebarAuthor);
+    const author = activeAuthor;
 
     return quotes.filter((quote) => {
       const matchAuthor =
@@ -57,7 +59,7 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
         (quote.author?.toLowerCase().includes(q) ?? false);
       return matchAuthor && matchSearch;
     });
-  }, [quotes, query, sidebarAuthor, authorFilter]);
+  }, [quotes, query, activeAuthor]);
 
   async function handleSave(input: QuoteInput, id?: string) {
     if (id) {
@@ -136,7 +138,7 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
         <section>
           <div className="quotes-header">
             <h2 className="quotes-title">
-              {authorFilter ? `${authorFilter} 的名言` : '我的名言'}
+              {activeAuthor ? `${activeAuthor} 的名言` : '我的名言'}
             </h2>
             <span className="quotes-count">{filtered.length} 則</span>
           </div>
