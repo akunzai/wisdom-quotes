@@ -37,5 +37,5 @@ async (page) => {
     focusOk = title.includes('專注模式') && (quote || '').includes(editedText);
   }
 
-  return JSON.stringify({ before, afterAdd, hasDelete, edited, focusHref, focusOk, tag, editedText });
+  return { before, afterAdd, hasDelete, edited, focusHref, focusOk, tag, editedText };
 }
