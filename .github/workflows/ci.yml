@@ -41,3 +41,5 @@ jobs:
           exit 1
       - name: Run smoke test
         run: SMOKE_BASE_URL=http://127.0.0.1:4322/wisdom-quotes/ ./scripts/smoke-test.sh
+      - name: Run E2E tests
+        run: E2E_BASE_URL=http://127.0.0.1:4322/wisdom-quotes/ ./scripts/e2e-test.sh
