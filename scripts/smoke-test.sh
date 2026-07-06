@@ -92,19 +92,27 @@ playwright-cli close >/dev/null 2>&1 || true
 playwright-cli open "$BASE" >/dev/null 2>&1
 sleep 2
 
+# 0. Load demo quotes via settings (no auto-seed on first visit)
+playwright-cli goto "${BASE}settings/" >/dev/null 2>&1
+sleep 1.5
+eval_js '[...document.querySelectorAll("button")].find(b => b.textContent === "匯入範例")?.click()' >/dev/null
+sleep 1.5
+playwright-cli goto "$BASE" >/dev/null 2>&1
+sleep 1.5
+
 # 1. Home
 assert_eq "首頁標題" "智慧語錄 — 名言" "$(eval_js 'document.title')"
 nav=$(eval_js 'JSON.stringify([...document.querySelectorAll("nav a")].map(a => a.getAttribute("href")))')
 assert_contains "導覽：作者連結" "/wisdom-quotes/authors/" "$nav"
 assert_contains "導覽：設定連結" "/wisdom-quotes/settings/" "$nav"
 count=$(eval_js 'document.querySelectorAll("article").length')
-if [[ "$count" =~ ^[0-9]+$ && "$count" -gt 0 ]]; then pass "首頁載入名言 ($count 則)"; else fail "首頁載入名言" "got '$count'"; fi
+if [[ "$count" =~ ^[0-9]+$ && "$count" -ge 50 ]]; then pass "首頁載入名言 ($count 則)"; else fail "首頁載入名言" "expected >= 50, got '$count'"; fi
 assert_true "每日一思 hero" "$(eval_js '!!document.querySelector(".hero-quote")')"
 
 # 2. Search
-set_input 'input[type=search]' '老子' >/dev/null
+set_input 'input[type=search]' '千里之行' >/dev/null
 sleep 0.8
-assert_eq "搜尋「老子」" "1" "$(eval_js 'document.querySelectorAll("article").length')"
+assert_eq "搜尋「千里之行」" "1" "$(eval_js 'document.querySelectorAll("article").length')"
 set_input 'input[type=search]' '' >/dev/null
 sleep 0.8
 
@@ -119,8 +127,11 @@ if [[ "$authors" =~ ^[0-9]+$ && "$authors" -gt 0 ]]; then pass "作者卡片 ($a
 playwright-cli goto "${BASE}settings/" >/dev/null 2>&1
 sleep 1.5
 assert_eq "設定頁標題" "智慧語錄 — 設定" "$(eval_js 'document.title')"
+assert_true "匯入範例按鈕" "$(eval_js '[...document.querySelectorAll("button")].some(b => b.textContent === "匯入範例")')"
 assert_true "匯出按鈕" "$(eval_js '[...document.querySelectorAll("button")].some(b => b.textContent.includes("匯出"))')"
 assert_true "匯入按鈕" "$(eval_js '[...document.querySelectorAll("label")].some(l => l.textContent.includes("匯入"))')"
+assert_true "清空按鈕" "$(eval_js '[...document.querySelectorAll("button")].some(b => b.textContent === "清空")')"
+assert_eq "隱藏 Google Drive" "false" "$(eval_js 'document.body.textContent.includes("Google Drive")')"
 
 # 5. Theme toggle
 playwright-cli goto "$BASE" >/dev/null 2>&1

@@ -1,16 +1,11 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useEffect } from 'react';
-import { listAuthors, seedDemoQuotesIfEmpty } from '@/lib/storage/quotes';
+import { listAuthors } from '@/lib/storage/quotes';
 
 interface AuthorsAppProps {
   baseUrl: string;
 }
 
 export function AuthorsApp({ baseUrl }: AuthorsAppProps) {
-  useEffect(() => {
-    void seedDemoQuotesIfEmpty();
-  }, []);
-
   const authors = useLiveQuery(async () => listAuthors(), []);
 
   return (
@@ -19,6 +14,9 @@ export function AuthorsApp({ baseUrl }: AuthorsAppProps) {
         <h2 className="quotes-title">作者一覽</h2>
         <span className="quotes-count">{authors?.length ?? 0} 位作者</span>
       </div>
+      {(authors ?? []).length === 0 ? (
+        <p className="empty-state">尚無作者，可至設定匯入範例語錄</p>
+      ) : (
       <div className="authors-grid">
         {(authors ?? []).map((author) => (
           <a
@@ -32,6 +30,7 @@ export function AuthorsApp({ baseUrl }: AuthorsAppProps) {
           </a>
         ))}
       </div>
+      )}
     </>
   );
 }

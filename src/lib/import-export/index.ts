@@ -1,3 +1,4 @@
+import { withBase } from '@/lib/base-url';
 import { db } from '@/lib/storage/db';
 import { quoteCollectionSchema } from '@/lib/import-export/schema';
 import type { Quote, QuoteCollection } from '@/types/quote';
@@ -51,4 +52,13 @@ export async function importQuotesFromJson(
   });
 
   return { imported, updated };
+}
+
+export async function importDemoQuotes(): Promise<{ imported: number; updated: number }> {
+  const response = await fetch(withBase('demo-quotes.json'));
+  if (!response.ok) {
+    throw new Error('無法載入範例語錄');
+  }
+  const raw: unknown = await response.json();
+  return importQuotesFromJson(raw);
 }

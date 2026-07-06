@@ -60,6 +60,12 @@ export async function deleteQuote(id: string): Promise<void> {
   await db.quotes.delete(id);
 }
 
+export async function clearAllQuotes(): Promise<number> {
+  const count = await db.quotes.count();
+  await db.quotes.clear();
+  return count;
+}
+
 export async function searchQuotes(query: string): Promise<Quote[]> {
   const q = query.trim().toLowerCase();
   if (!q) return listQuotes();
@@ -102,20 +108,3 @@ export async function listAuthors(): Promise<
     .sort((a, b) => a.name.localeCompare(b.name, 'zh-Hant'));
 }
 
-export async function seedDemoQuotesIfEmpty(): Promise<void> {
-  const count = await db.quotes.count();
-  if (count > 0) return;
-
-  const demos: QuoteInput[] = [
-    { text: '未經審視的人生不值得過。', author: '蘇格拉底' },
-    { text: '上善若水，水善利萬物而不爭。', author: '老子' },
-    { text: '想像力比知識更重要。', author: '愛因斯坦' },
-    { text: '每個人都有陰暗面，關鍵在於你是否願意面對它。', author: '村上春樹' },
-    { text: '知之者不如好之者，好之者不如樂之者。' },
-    { text: '我思故我在。' },
-  ];
-
-  for (const demo of demos) {
-    await createQuote(demo);
-  }
-}

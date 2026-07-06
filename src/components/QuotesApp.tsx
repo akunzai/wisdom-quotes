@@ -3,12 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { QuoteCard } from '@/components/QuoteCard';
 import { QuoteForm } from '@/components/QuoteForm';
 import { db } from '@/lib/storage/db';
-import {
-  createQuote,
-  deleteQuote,
-  seedDemoQuotesIfEmpty,
-  updateQuote,
-} from '@/lib/storage/quotes';
+import { pickDailyItem } from '@/lib/daily-quote';
+import { createQuote, deleteQuote, updateQuote } from '@/lib/storage/quotes';
 import type { Quote, QuoteInput } from '@/types/quote';
 
 interface QuotesAppProps {
@@ -23,7 +19,6 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
   const [editing, setEditing] = useState<Quote | undefined>();
 
   useEffect(() => {
-    void seedDemoQuotesIfEmpty();
     const params = new URLSearchParams(window.location.search);
     const author = params.get('author');
     if (author) setSidebarAuthor(decodeURIComponent(author));
@@ -40,7 +35,12 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
     return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0], 'zh-Hant'));
   }, [quotes]);
 
-  const hero = quotes?.[0];
+  const authorOptions = useMemo(
+    () => authors.map(([name]) => name).filter((name) => name !== '未知'),
+    [authors],
+  );
+
+  const hero = useMemo(() => pickDailyItem(quotes ?? []), [quotes]);
   const activeAuthor =
     authorFilter ?? (sidebarAuthor === 'all' ? undefined : sidebarAuthor);
 
@@ -144,7 +144,11 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
           </div>
 
           {filtered.length === 0 ? (
-            <p className="empty-state">尚無符合條件的名言</p>
+            <p className="empty-state">
+              {quotes?.length === 0
+                ? '尚無名言，可至設定匯入範例語錄或新增名言'
+                : '尚無符合條件的名言'}
+            </p>
           ) : (
             <div className="quote-grid">
               {filtered.map((quote) => (
@@ -163,6 +167,7 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
       <QuoteForm
         open={formOpen}
         initial={editing}
+        authorOptions={authorOptions}
         onClose={() => { setFormOpen(false); setEditing(undefined); }}
         onSave={handleSave}
         onDelete={editing ? handleDelete : undefined}
