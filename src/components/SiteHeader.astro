@@ -36,6 +36,7 @@ const links: { id: PageId; href: string; labelKey: 'quotes' | 'authors' | 'setti
             href={link.href}
             data-astro-prefetch
             aria-current={isActive ? 'page' : undefined}
+            data-nav-id={link.id}
             data-nav-label={link.labelKey}
           >
             {navBoot['zh-Hant'].labels[link.labelKey]}
@@ -85,10 +86,29 @@ const links: { id: PageId; href: string; labelKey: 'quotes' | 'authors' | 'setti
     if (btn) btn.textContent = theme === 'dark' ? '☾' : '☀';
   }
 
+  function resolveActivePage(pathname) {
+    if (pathname.includes('/focus')) return 'focus';
+    if (pathname.includes('/authors')) return 'authors';
+    if (pathname.includes('/settings')) return 'settings';
+    return 'quotes';
+  }
+
+  function updateActiveNav() {
+    const page = resolveActivePage(window.location.pathname);
+    document.querySelectorAll('.site-nav [data-nav-id]').forEach((el) => {
+      const id = el.getAttribute('data-nav-id');
+      const isActive = id === page;
+      el.classList.toggle('active', isActive);
+      if (isActive) el.setAttribute('aria-current', 'page');
+      else el.removeAttribute('aria-current');
+    });
+  }
+
   const storedLocale = localStorage.getItem('wq-locale');
   const locale = storedLocale === 'en' || storedLocale === 'ja' ? storedLocale : 'zh-Hant';
   applyNavLocale(locale);
   updateThemeIcon();
+  updateActiveNav();
 
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
     const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -107,5 +127,6 @@ const links: { id: PageId; href: string; labelKey: 'quotes' | 'authors' | 'setti
     const loc = stored === 'en' || stored === 'ja' ? stored : 'zh-Hant';
     applyNavLocale(loc);
     updateThemeIcon();
+    updateActiveNav();
   });
 </script>
