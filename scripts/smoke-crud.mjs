@@ -24,7 +24,7 @@ async (page) => {
   const edited = (await page.locator('article').filter({ hasText: editedText }).count()) > 0;
 
   const editedCard = page.locator('article').filter({ hasText: editedText });
-  const focusHref = await editedCard.getByRole('link', { name: '專注' }).getAttribute('href');
+  const focusHref = await editedCard.locator('a.quote-card-hit').getAttribute('href');
   let focusOk = false;
   if (focusHref) {
     const origin = base.match(/^https?:\/\/[^/]+/)?.[0] || '';

@@ -24,16 +24,12 @@ aubr typecheck
 # Lint / Format
 aubr lint
 aubr format
-
-# Preview design mockup (no build required)
-npx serve mockup
 ```
 
 ## Architecture Overview
 
 ```
 /
-├── mockup/             # Interactive HTML design preview
 ├── src/
 │   ├── components/     # UI components (quote cards, search, theme toggle)
 │   ├── pages/          # Routes (home, authors, focus mode, settings)
@@ -107,7 +103,7 @@ interface QuoteCollection {
 - **Planning**: use GitHub Issues — do not add parallel planning docs in `docs/`
 - **Testing**: run `npm run typecheck` and `npm run test` before submitting
 - **Build verification**: `npm run build` must succeed and `dist/` must be deployable as-is
-- **UI changes**: verify both Light/Dark themes and mobile layouts; reference `mockup/index.html`
+- **UI changes**: verify both Light/Dark themes and mobile layouts
 - **Animation**: any new motion must degrade gracefully under `prefers-reduced-motion: reduce`
 
 ## Security & Privacy

@@ -9,5 +9,5 @@
     }
   },
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "dark-disk", "mockup"]
+  "exclude": ["dist", "dark-disk"]
 }

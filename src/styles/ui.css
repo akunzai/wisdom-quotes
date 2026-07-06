@@ -322,6 +322,20 @@
   box-shadow: var(--shadow);
   position: relative;
   transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.quote-card-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  text-decoration: none;
+}
+
+.quote-card-hit:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .quote-card::before {
@@ -348,6 +362,8 @@
   line-height: 1.75;
   margin-bottom: 0.85rem;
   padding-left: 1.5rem;
+  position: relative;
+  pointer-events: none;
 }
 
 .quote-meta {
@@ -357,6 +373,8 @@
   padding-left: 1.5rem;
   flex-wrap: wrap;
   gap: 0.5rem;
+  position: relative;
+  pointer-events: none;
 }
 
 .quote-author {
@@ -368,23 +386,47 @@
 .quote-actions {
   display: flex;
   gap: 0.35rem;
+  position: relative;
+  z-index: 2;
+  transition: opacity 0.15s ease;
 }
 
-.quote-action-btn {
-  font-size: 0.75rem;
-  padding: 0.3rem 0.65rem;
+@media (hover: hover) {
+  .quote-actions {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .quote-card:hover .quote-actions,
+  .quote-card:focus-within .quote-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.quote-icon-btn {
+  width: 2rem;
+  height: 2rem;
   border: 1px solid var(--border);
-  border-radius: 999px;
-  background: transparent;
+  border-radius: 50%;
+  background: var(--card);
   color: var(--text-muted);
   cursor: pointer;
+  display: grid;
+  place-items: center;
   text-decoration: none;
   transition: all 0.15s;
+  backdrop-filter: blur(8px);
 }
 
-.quote-action-btn:hover {
+.quote-icon-btn:hover {
   color: var(--accent);
   border-color: var(--accent);
+}
+
+.quote-icon-btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .authors-grid {
@@ -475,6 +517,23 @@
   margin-top: 0.15rem;
 }
 
+.setting-select {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  background: var(--card);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.setting-select:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 .toggle {
   width: 2.75rem;
   height: 1.5rem;
@@ -553,6 +612,34 @@
   font-family: inherit;
 }
 
+.author-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.15rem;
+}
+
+.author-chip {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.author-chip:hover {
+  border-color: var(--accent);
+  background: var(--card-hover);
+}
+
+.author-chip:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -599,9 +686,55 @@
   letter-spacing: 0.1em;
 }
 
+.focus-author-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.focus-author-link:hover {
+  text-decoration-color: var(--accent);
+}
+
+.focus-author-link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: 0.15rem;
+}
+
 .focus-source a {
   color: var(--accent);
   text-decoration: none;
+}
+
+.focus-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.focus-nav-prev {
+  left: 1.25rem;
+}
+
+.focus-nav-next {
+  right: 1.25rem;
+}
+
+.focus-position {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
 }
 
 .empty-state {
