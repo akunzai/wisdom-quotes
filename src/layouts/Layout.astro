@@ -1,9 +1,10 @@
 ---
 import '@/styles/global.css';
-import { SiteHeader } from '@/components/SiteHeader';
+import SiteHeader from '@/components/SiteHeader.astro';
 import { PageCat } from '@/components/PageCat';
-import { formatPageTitle, getTitleBootPayload } from '@/i18n/index';
+import { formatPageTitle, getTitleBootPayload, fontStylesheetUrl } from '@/i18n/index';
 import { withBase } from '@/lib/base-url';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -14,10 +15,16 @@ interface Props {
 const { pageKey = 'quotes', title, hideCat = false } = Astro.props;
 const resolvedTitle = title ?? formatPageTitle(pageKey, 'zh-Hant');
 const titleBoot = getTitleBootPayload();
+const defaultFontUrl = fontStylesheetUrl('zh-Hant');
+const fontUrls = {
+  'zh-Hant': fontStylesheetUrl('zh-Hant'),
+  en: fontStylesheetUrl('en'),
+  ja: fontStylesheetUrl('ja'),
+};
 ---
 
 <!doctype html>
-<html lang="zh-Hant" data-theme="light">
+<html lang="zh-Hant" data-theme="light" transition:animate="none">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,12 +34,10 @@ const titleBoot = getTitleBootPayload();
     <link rel="manifest" href={withBase('manifest.webmanifest')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+TC:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <link id="wq-fonts" rel="stylesheet" href={defaultFontUrl} />
     <title>{resolvedTitle}</title>
-    <script is:inline define:vars={{ titleBoot, pageKey }}>
+    <ClientRouter />
+    <script is:inline define:vars={{ titleBoot, pageKey, fontUrls }}>
       (function () {
         const storedTheme = localStorage.getItem('wq-theme');
         document.documentElement.dataset.theme = storedTheme === 'dark' ? 'dark' : 'light';
@@ -40,6 +45,9 @@ const titleBoot = getTitleBootPayload();
         const storedLocale = localStorage.getItem('wq-locale');
         const locale = storedLocale === 'en' || storedLocale === 'ja' ? storedLocale : 'zh-Hant';
         document.documentElement.lang = locale;
+
+        const fontLink = document.getElementById('wq-fonts');
+        if (fontLink && fontUrls[locale]) fontLink.href = fontUrls[locale];
 
         const m = titleBoot[locale];
         if (m?.page?.[pageKey]) {
@@ -49,6 +57,13 @@ const titleBoot = getTitleBootPayload();
           const meta = document.querySelector('meta[name="description"]');
           if (meta) meta.setAttribute('content', m.description);
         }
+
+        window.addEventListener('wq-locale-change', (event) => {
+          const loc = event.detail?.locale;
+          if (!loc || !fontUrls[loc]) return;
+          const link = document.getElementById('wq-fonts');
+          if (link) link.href = fontUrls[loc];
+        });
       })();
     </script>
     <script is:inline define:vars={{ swUrl: withBase('sw.js'), swScope: withBase() }}>
@@ -60,10 +75,12 @@ const titleBoot = getTitleBootPayload();
     </script>
   </head>
   <body>
-    {!hideCat && <PageCat client:only="react" />}
+    {!hideCat && <PageCat client:idle transition:persist="page-cat" />}
     <div class="app">
-      <SiteHeader client:load activePage={pageKey} />
-      <slot />
+      <SiteHeader activePage={pageKey} />
+      <div transition:animate="fade">
+        <slot />
+      </div>
     </div>
   </body>
 </html>

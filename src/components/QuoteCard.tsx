@@ -35,6 +35,7 @@ export function QuoteCard({ quote, baseUrl, onEdit }: QuoteCardProps) {
       <a
         className="quote-card-hit"
         href={focusHref}
+        data-astro-reload
         aria-label={t(m.card.focusRead, { text: quote.text })}
       />
       <p className="quote-text">{quote.text}</p>

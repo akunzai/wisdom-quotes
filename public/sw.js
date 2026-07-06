@@ -1,5 +1,5 @@
 const BASE = '/wisdom-quotes/';
-const CACHE = 'wisdom-quotes-v1';
+const CACHE = 'wisdom-quotes-v2';
 const PRECACHE = [
   BASE,
   `${BASE}index.html`,

@@ -1,0 +1,111 @@
+---
+import { getNavBootPayload } from '@/i18n/index';
+import type { PageId } from '@/i18n/types';
+import { baseUrl, withBase } from '@/lib/base-url';
+
+interface Props {
+  activePage: PageId;
+}
+
+const { activePage } = Astro.props;
+const base = baseUrl();
+const navBoot = getNavBootPayload();
+
+const links: { id: PageId; href: string; labelKey: 'quotes' | 'authors' | 'settings' }[] = [
+  { id: 'quotes', href: base, labelKey: 'quotes' },
+  { id: 'authors', href: withBase('authors/'), labelKey: 'authors' },
+  { id: 'settings', href: withBase('settings/'), labelKey: 'settings' },
+];
+---
+
+<header class="site-header" transition:persist="site-header">
+  <a class="logo" href={base}>
+    <div class="logo-mark" data-app-mark>{navBoot['zh-Hant'].appName.charAt(0)}</div>
+    <div>
+      <span class="logo-text" data-app-name>{navBoot['zh-Hant'].appName}</span>
+    </div>
+  </a>
+
+  <nav class="site-nav" aria-label={navBoot['zh-Hant'].main}>
+    {
+      links.map((link) => {
+        const isActive = activePage === link.id;
+        return (
+          <a
+            class:list={['nav-link', { active: isActive }]}
+            href={link.href}
+            data-astro-prefetch
+            aria-current={isActive ? 'page' : undefined}
+            data-nav-label={link.labelKey}
+          >
+            {navBoot['zh-Hant'].labels[link.labelKey]}
+          </a>
+        );
+      })
+    }
+  </nav>
+
+  <div class="header-actions">
+    <button
+      type="button"
+      class="icon-btn"
+      id="theme-toggle"
+      aria-label={navBoot['zh-Hant'].themeToggle}
+      title={navBoot['zh-Hant'].themeToggle}
+    >
+      ☀
+    </button>
+  </div>
+</header>
+
+<script is:inline define:vars={{ navBoot }}>
+  function applyNavLocale(locale) {
+    const m = navBoot[locale];
+    if (!m) return;
+    const appName = document.querySelector('[data-app-name]');
+    const appMark = document.querySelector('[data-app-mark]');
+    if (appName) appName.textContent = m.appName;
+    if (appMark) appMark.textContent = m.appName.charAt(0);
+    const nav = document.querySelector('.site-nav');
+    if (nav) nav.setAttribute('aria-label', m.main);
+    document.querySelectorAll('[data-nav-label]').forEach((el) => {
+      const key = el.getAttribute('data-nav-label');
+      if (key && m.labels[key]) el.textContent = m.labels[key];
+    });
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+      themeBtn.setAttribute('aria-label', m.themeToggle);
+      themeBtn.setAttribute('title', m.themeToggle);
+    }
+  }
+
+  function updateThemeIcon() {
+    const theme = document.documentElement.dataset.theme;
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.textContent = theme === 'dark' ? '☾' : '☀';
+  }
+
+  const storedLocale = localStorage.getItem('wq-locale');
+  const locale = storedLocale === 'en' || storedLocale === 'ja' ? storedLocale : 'zh-Hant';
+  applyNavLocale(locale);
+  updateThemeIcon();
+
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('wq-theme', next);
+    updateThemeIcon();
+  });
+
+  window.addEventListener('wq-locale-change', (event) => {
+    const detail = event.detail;
+    if (detail?.locale) applyNavLocale(detail.locale);
+  });
+
+  document.addEventListener('astro:after-swap', () => {
+    const stored = localStorage.getItem('wq-locale');
+    const loc = stored === 'en' || stored === 'ja' ? stored : 'zh-Hant';
+    applyNavLocale(loc);
+    updateThemeIcon();
+  });
+</script>

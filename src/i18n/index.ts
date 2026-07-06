@@ -66,3 +66,58 @@ export function getTitleBootPayload(): Record<
     },
   };
 }
+
+/** Serializable nav labels for static SiteHeader boot script. */
+export function getNavBootPayload(): Record<
+  Locale,
+  {
+    appName: string;
+    main: string;
+    themeToggle: string;
+    labels: Record<'quotes' | 'authors' | 'settings', string>;
+  }
+> {
+  return {
+    'zh-Hant': {
+      appName: zhHant.app.name,
+      main: zhHant.nav.main,
+      themeToggle: zhHant.theme.toggle,
+      labels: {
+        quotes: zhHant.nav.quotes,
+        authors: zhHant.nav.authors,
+        settings: zhHant.nav.settings,
+      },
+    },
+    en: {
+      appName: en.app.name,
+      main: en.nav.main,
+      themeToggle: en.theme.toggle,
+      labels: {
+        quotes: en.nav.quotes,
+        authors: en.nav.authors,
+        settings: en.nav.settings,
+      },
+    },
+    ja: {
+      appName: ja.app.name,
+      main: ja.nav.main,
+      themeToggle: ja.theme.toggle,
+      labels: {
+        quotes: ja.nav.quotes,
+        authors: ja.nav.authors,
+        settings: ja.nav.settings,
+      },
+    },
+  };
+}
+
+const FONT_BASE =
+  'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;500;600';
+const FONT_JA =
+  '&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600';
+
+/** Locale-aware Google Fonts stylesheet (TC only for zh-Hant/en; adds JP for ja). */
+export function fontStylesheetUrl(locale: Locale): string {
+  const suffix = locale === 'ja' ? FONT_JA : '';
+  return `${FONT_BASE}${suffix}&display=swap`;
+}
