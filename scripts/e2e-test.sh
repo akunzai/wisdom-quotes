@@ -53,9 +53,11 @@ echo "=== Wisdom Quotes E2E Test ==="
 echo "Base URL: $BASE"
 echo ""
 
-playwright-cli close >/dev/null 2>&1 || true
-playwright-cli open "$BASE" >/dev/null 2>&1
-sleep 2
+if [[ "${BROWSER_ALREADY_OPEN:-}" != "1" ]]; then
+  playwright-cli close >/dev/null 2>&1 || true
+  playwright-cli open "$BASE" >/dev/null 2>&1
+  sleep 1
+fi
 
 client_nav_result=$(run_code_file scripts/e2e-client-navigation.mjs)
 client_nav_ok=$(printf '%s' "$client_nav_result" | parse_json_result ok 2>/dev/null | tr '[:upper:]' '[:lower:]')
@@ -111,7 +113,9 @@ else
   fail "Settings page title after tab click" "got '$title_settings'"
 fi
 
-playwright-cli close >/dev/null 2>&1
+if [[ "${BROWSER_ALREADY_OPEN:-}" != "1" ]]; then
+  playwright-cli close >/dev/null 2>&1
+fi
 
 echo ""
 for r in "${RESULTS[@]}"; do echo "$r"; done

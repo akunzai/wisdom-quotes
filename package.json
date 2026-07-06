@@ -14,7 +14,8 @@
     "typecheck": "astro check",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test:e2e": "./scripts/e2e-test.sh"
+    "test:e2e": "./scripts/e2e-test.sh",
+    "test:browser": "./scripts/browser-tests.sh"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
