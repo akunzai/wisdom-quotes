@@ -1,7 +1,7 @@
 {
-  "name": "智慧語錄",
-  "short_name": "智慧語錄",
-  "description": "個人智慧名言收藏，支援專注閱讀與本地儲存",
+  "name": "Wisdom Quotes — 智慧語錄",
+  "short_name": "Wisdom Quotes",
+  "description": "Personal quote collection with focus mode and local storage",
   "start_url": "/wisdom-quotes/",
   "scope": "/wisdom-quotes/",
   "display": "standalone",
