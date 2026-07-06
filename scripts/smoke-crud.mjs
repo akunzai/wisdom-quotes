@@ -7,8 +7,8 @@ async (page) => {
   const before = await page.locator('article').count();
 
   await page.getByRole('button', { name: '新增名言' }).click();
-  await page.getByLabel('名言內容 *').fill(tag);
-  await page.getByLabel('作者').fill('測試作者');
+  await page.getByRole('textbox', { name: '名言內容 *' }).fill(tag);
+  await page.getByPlaceholder('選填或選擇既有作者').fill('測試作者');
   await page.getByRole('button', { name: '儲存' }).click();
   await page.waitForTimeout(1500);
   const afterAdd = await page.locator('article').count();
@@ -19,7 +19,7 @@ async (page) => {
   await page.waitForTimeout(500);
   const hasDelete = await page.getByRole('button', { name: '刪除' }).isVisible();
   const editedText = tag + ' 已編輯';
-  await page.getByLabel('名言內容 *').fill(editedText);
+  await page.getByRole('textbox', { name: '名言內容 *' }).fill(editedText);
   await page.getByRole('button', { name: '儲存' }).click();
   await page.waitForTimeout(1500);
   const edited = (await page.locator('article').filter({ hasText: editedText }).count()) > 0;
