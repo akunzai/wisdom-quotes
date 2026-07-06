@@ -29,14 +29,11 @@ run_code_file() {
   playwright-cli run-code --filename="$tmp" 2>&1 | python3 -c '
 import json, re, sys
 text = sys.stdin.read()
-match = re.search(r"### Result\s*\n(.+)", text, re.S)
+match = re.search(r"### Result\s*\n(.+)", text)
 if not match:
     sys.exit(1)
 raw = match.group(1).strip()
-try:
-    data = json.loads(raw)
-except json.JSONDecodeError:
-    data = raw
+data = json.loads(raw)
 if isinstance(data, str):
     data = json.loads(data)
 print(json.dumps(data))
