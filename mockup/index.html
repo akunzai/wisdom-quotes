@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>智慧語錄 — Design Mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root[data-theme="light"] {
+      --bg: #f3ede4;
+      --bg-elevated: #faf7f2;
+      --text: #1a1714;
+      --text-muted: #6b6358;
+      --accent: #8b6914;
+      --accent-soft: rgba(139, 105, 20, 0.12);
+      --border: rgba(26, 23, 20, 0.1);
+      --card: rgba(255, 252, 247, 0.72);
+      --card-hover: rgba(255, 252, 247, 0.92);
+      --pet-body: #c4a882;
+      --pet-mouth: #5e4a38;
+      --pet-blush: rgba(200, 120, 100, 0.35);
+      --shadow: 0 2px 24px rgba(26, 23, 20, 0.06);
+      --focus-ring: #8b6914;
+      --grain-opacity: 0.04;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0a0e14;
+      --bg-elevated: #111820;
+      --text: #e8e4dc;
+      --text-muted: #8a8478;
+      --accent: #c9a962;
+      --accent-soft: rgba(201, 169, 98, 0.14);
+      --border: rgba(232, 228, 220, 0.08);
+      --card: rgba(17, 24, 32, 0.75);
+      --card-hover: rgba(22, 30, 40, 0.9);
+      --pet-body: #9a8468;
+      --pet-mouth: #3a2e24;
+      --pet-blush: rgba(220, 160, 120, 0.25);
+      --shadow: 0 4px 32px rgba(0, 0, 0, 0.35);
+      --focus-ring: #c9a962;
+      --grain-opacity: 0.06;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans TC', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      overflow-x: hidden;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: var(--grain-opacity);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 1;
+    }
+
+    .app {
+      position: relative;
+      z-index: 2;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem 4rem;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 0;
+      gap: 1rem;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo-mark {
+      width: 2.25rem;
+      height: 2.25rem;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .logo-text {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      display: block;
+      margin-top: 0.1rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 0.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.2rem;
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-btn {
+      font-family: inherit;
+      font-size: 0.82rem;
+      padding: 0.45rem 1rem;
+      border: none;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover { color: var(--text); }
+    .nav-btn.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .icon-btn {
+      width: 2.25rem;
+      height: 2.25rem;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--card);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .icon-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .icon-btn:focus-visible {
+      outline: 2px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 2.5rem 0 2rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-quote {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 500;
+      line-height: 1.7;
+      max-width: 36rem;
+      margin: 0 auto 0.75rem;
+      color: var(--text);
+    }
+
+    .hero-author {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .hero-author em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    /* Search */
+    .search-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    .search-input-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-input-wrap svg {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      background: var(--card);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .search-input::placeholder { color: var(--text-muted); }
+
+    .btn-primary {
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: 0.75rem;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    :root[data-theme="dark"] .btn-primary { color: #0a0e14; }
+
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    /* Layout */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 2rem;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    @media (max-width: 720px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+    }
+
+    /* Sidebar */
+    .sidebar-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .author-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .author-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+    }
+
+    .author-item:hover {
+      color: var(--text);
+      background: var(--accent-soft);
+    }
+
+    .author-item.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-color: var(--border);
+      font-weight: 500;
+    }
+
+    .author-count {
+      font-size: 0.72rem;
+      opacity: 0.7;
+    }
+
+    /* Quote cards */
+    .quotes-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .quotes-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .quotes-count {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .quote-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .quote-card {
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 0.85rem;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 0.5rem;
+      left: 0.85rem;
+      font-family: 'Noto Serif TC', serif;
+      font-size: 2.5rem;
+      line-height: 1;
+      color: var(--accent);
+      opacity: 0.2;
+    }
+
+    .quote-card:hover {
+      background: var(--card-hover);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .quote-card.hidden { display: none; }
+
+    .quote-text {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 0.85rem;
+      padding-left: 1.5rem;
+    }
+
+    .quote-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .quote-author {
+      font-size: 0.82rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .quote-actions {
+      display: flex;
+      gap: 0.35rem;
+    }
+
+    .quote-action-btn {
+      font-family: inherit;
+      font-size: 0.75rem;
+      padding: 0.3rem 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .quote-action-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* Panel views */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* Authors view */
+    .authors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .author-card {
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 0.85rem;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .author-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .author-card-name {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .author-card-count {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .author-card-preview {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 0.75rem;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Settings */
+    .settings-section {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .settings-group {
+      border: 1px solid var(--border);
+      border-radius: 0.85rem;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .settings-group-title {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+    }
+
+    .setting-row:last-child { border-bottom: none; }
+
+    .setting-label {
+      font-size: 0.9rem;
+    }
+
+    .setting-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .toggle {
+      width: 2.75rem;
+      height: 1.5rem;
+      border-radius: 999px;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .toggle.on { background: var(--accent); }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 0.2rem;
+      left: 0.2rem;
+      width: 1.1rem;
+      height: 1.1rem;
+      border-radius: 50%;
+      background: #fff;
+      transition: transform 0.2s;
+    }
+
+    :root[data-theme="dark"] .toggle::after { background: #0a0e14; }
+    .toggle.on::after { transform: translateX(1.25rem); }
+
+    .btn-secondary {
+      font-family: inherit;
+      font-size: 0.85rem;
+      padding: 0.6rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 0.6rem;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Focus mode overlay */
+    .focus-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    .focus-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .focus-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+    }
+
+    .focus-content {
+      max-width: 42rem;
+      text-align: center;
+      animation: focusIn 0.7s ease both;
+    }
+
+    .focus-quote {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(1.6rem, 5vw, 2.6rem);
+      font-weight: 500;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      color: var(--text);
+    }
+
+    .focus-divider {
+      width: 3rem;
+      height: 1px;
+      background: var(--accent);
+      margin: 0 auto 1.5rem;
+      opacity: 0.6;
+    }
+
+    .focus-author {
+      font-size: 1rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    .focus-source {
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .focus-source a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .focus-source a:hover { border-bottom-color: var(--accent); }
+
+    /* Mockup badge */
+    .mockup-badge {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes focusIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Page pets */
+    #pets-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 110;
+      overflow: hidden;
+    }
+
+    #pets-layer.hidden { display: none; }
+
+    .pet {
+      position: fixed;
+      width: 4.5rem;
+      height: 4.5rem;
+      pointer-events: auto;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      will-change: left, top;
+    }
+
+    .pet.reading .pet-figure {
+      animation: readBob 1.6s ease-in-out infinite;
+    }
+
+    .pet.reading .pet-book {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .pet-figure {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .pet.facing-left .pet-figure { transform: scaleX(-1); }
+
+    .pet-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
+    }
+
+    .pet:hover .pet-figure .pet-svg { transform: scale(1.08); }
+    .pet:active .pet-figure .pet-svg { transform: scale(0.95); }
+
+    .pet.cat .pet-tail {
+      transform-origin: 20px 42px;
+      animation: tailWag 2.4s ease-in-out infinite;
+    }
+
+    .pet-book {
+      position: absolute;
+      bottom: 0.15rem;
+      right: -0.35rem;
+      font-size: 0.95rem;
+      opacity: 0;
+      transform: translateY(6px) scale(0.8);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .pet .pet-eye {
+      transform-origin: center;
+      animation: blink 4.5s infinite;
+    }
+
+    .pet.happy {
+      animation: petHop 0.45s ease;
+    }
+
+    .pet-bubble {
+      position: absolute;
+      bottom: calc(100% + 0.35rem);
+      left: 50%;
+      transform: translateX(-50%) scale(0.9);
+      opacity: 0;
+      pointer-events: none;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.72rem;
+      line-height: 1.45;
+      padding: 0.45rem 0.65rem;
+      border-radius: 0.65rem;
+      white-space: nowrap;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .pet-bubble::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--border);
+    }
+
+    .pet-bubble.show {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    .pet-heart {
+      position: absolute;
+      top: -0.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.85rem;
+      opacity: 0;
+      pointer-events: none;
+      animation: heartFloat 0.9s ease forwards;
+    }
+
+    @keyframes tailWag {
+      0%, 100% { transform: rotate(-6deg); }
+      50% { transform: rotate(10deg); }
+    }
+
+    @keyframes readBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    @keyframes blink {
+      0%, 46%, 48%, 100% { transform: scaleY(1); }
+      47% { transform: scaleY(0.1); }
+    }
+
+    @keyframes petHop {
+      0%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px) scale(1.05); }
+    }
+
+    @keyframes heartFloat {
+      0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-28px); }
+    }
+
+    @media (max-width: 720px) {
+      .pet { width: 3.5rem; height: 3.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      #pets-layer { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="pets-layer" aria-label="網頁小夥伴">
+    <div class="pet cat" id="pet-cat" title="點點我～">
+      <div class="pet-bubble" id="bubble-cat"></div>
+      <div class="pet-figure">
+        <span class="pet-book" aria-hidden="true">📖</span>
+        <svg class="pet-svg" viewBox="0 0 64 64" aria-hidden="true">
+        <ellipse class="pet-tail" cx="18" cy="44" rx="10" ry="4" fill="var(--pet-body)"/>
+        <ellipse cx="36" cy="40" rx="20" ry="16" fill="var(--pet-body)"/>
+        <polygon points="24,26 28,14 34,26" fill="var(--pet-body)"/>
+        <polygon points="38,26 44,14 48,26" fill="var(--pet-body)"/>
+        <g class="pet-eye">
+          <circle cx="30" cy="36" r="2.2" fill="var(--text)"/>
+          <circle cx="42" cy="36" r="2.2" fill="var(--text)"/>
+        </g>
+        <ellipse cx="26" cy="40" rx="3" ry="2" fill="var(--pet-blush)"/>
+        <ellipse cx="46" cy="40" rx="3" ry="2" fill="var(--pet-blush)"/>
+        <path d="M32 42 Q36 46 40 42" stroke="var(--pet-mouth)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        <line x1="32" y1="42" x2="28" y2="44" stroke="var(--pet-mouth)" stroke-width="1.1" stroke-linecap="round"/>
+        <line x1="40" y1="42" x2="44" y2="44" stroke="var(--pet-mouth)" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+    <header>
+      <a class="logo" href="#" aria-label="智慧語錄首頁">
+        <div class="logo-mark">錄</div>
+        <div>
+          <span class="logo-text">智慧語錄</span>
+          <span class="logo-sub">WISDOM QUOTES</span>
+        </div>
+      </a>
+
+      <nav role="tablist" aria-label="主要導覽">
+        <button class="nav-btn active" data-view="home" role="tab" aria-selected="true">名言</button>
+        <button class="nav-btn" data-view="authors" role="tab" aria-selected="false">作者</button>
+        <button class="nav-btn" data-view="settings" role="tab" aria-selected="false">設定</button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-toggle" aria-label="切換主題" title="切換主題">☀</button>
+      </div>
+    </header>
+
+    <!-- Home -->
+    <div class="view active" id="view-home" role="tabpanel">
+      <section class="hero">
+        <p class="hero-eyebrow">每日一思</p>
+        <blockquote class="hero-quote">未經審視的人生不值得過。</blockquote>
+        <p class="hero-author">— <em>蘇格拉底</em></p>
+      </section>
+
+      <div class="search-bar">
+        <div class="search-input-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input class="search-input" id="search" type="search" placeholder="搜尋名言或作者…" aria-label="搜尋名言" />
+        </div>
+        <button class="btn-primary" id="add-btn">新增名言</button>
+      </div>
+
+      <div class="main-layout">
+        <aside class="sidebar">
+          <p class="sidebar-label">依作者瀏覽</p>
+          <ul class="author-list" id="sidebar-authors">
+            <li class="author-item active" data-author="all">
+              <span>全部</span>
+              <span class="author-count">6</span>
+            </li>
+            <li class="author-item" data-author="蘇格拉底">
+              <span>蘇格拉底</span>
+              <span class="author-count">1</span>
+            </li>
+            <li class="author-item" data-author="老子">
+              <span>老子</span>
+              <span class="author-count">1</span>
+            </li>
+            <li class="author-item" data-author="愛因斯坦">
+              <span>愛因斯坦</span>
+              <span class="author-count">1</span>
+            </li>
+            <li class="author-item" data-author="村上春樹">
+              <span>村上春樹</span>
+              <span class="author-count">1</span>
+            </li>
+            <li class="author-item" data-author="未知">
+              <span>未知</span>
+              <span class="author-count">2</span>
+            </li>
+          </ul>
+        </aside>
+
+        <section>
+          <div class="quotes-header">
+            <h2 class="quotes-title">我的名言</h2>
+            <span class="quotes-count" id="quotes-count">6 則</span>
+          </div>
+          <div class="quote-grid" id="quote-grid"></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Authors -->
+    <div class="view" id="view-authors" role="tabpanel">
+      <div class="quotes-header" style="margin-bottom:1.5rem">
+        <h2 class="quotes-title">作者一覽</h2>
+        <span class="quotes-count">5 位作者</span>
+      </div>
+      <div class="authors-grid" id="authors-grid"></div>
+    </div>
+
+    <!-- Settings -->
+    <div class="view" id="view-settings" role="tabpanel">
+      <div class="settings-section">
+        <div class="settings-group">
+          <p class="settings-group-title">外觀</p>
+          <div class="setting-row">
+            <div>
+              <p class="setting-label">深色模式</p>
+              <p class="setting-desc">切換明暗主題</p>
+            </div>
+            <button class="toggle" id="dark-toggle" aria-label="深色模式"></button>
+          </div>
+          <div class="setting-row">
+            <div>
+              <p class="setting-label">網頁小夥伴</p>
+              <p class="setting-desc">在頁面陪伴的小貓，會偶爾停在名言旁閱讀</p>
+            </div>
+            <button class="toggle on" id="pets-toggle" aria-label="網頁小夥伴"></button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <p class="settings-group-title">資料</p>
+          <div class="setting-row">
+            <div>
+              <p class="setting-label">匯出 JSON</p>
+              <p class="setting-desc">下載所有名言為備份檔</p>
+            </div>
+            <button class="btn-secondary">匯出</button>
+          </div>
+          <div class="setting-row">
+            <div>
+              <p class="setting-label">匯入 JSON</p>
+              <p class="setting-desc">從備份檔還原名言</p>
+            </div>
+            <button class="btn-secondary">匯入</button>
+          </div>
+          <div class="setting-row">
+            <div>
+              <p class="setting-label">Google Drive 同步</p>
+              <p class="setting-desc">Phase 2 — 尚未實作</p>
+            </div>
+            <button class="btn-secondary" disabled style="opacity:0.4;cursor:not-allowed">連結</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Focus mode -->
+  <div class="focus-overlay" id="focus-overlay" role="dialog" aria-modal="true" aria-label="專注模式">
+    <button class="icon-btn focus-close" id="focus-close" aria-label="關閉專注模式">✕</button>
+    <div class="focus-content">
+      <blockquote class="focus-quote" id="focus-quote"></blockquote>
+      <div class="focus-divider"></div>
+      <p class="focus-author" id="focus-author"></p>
+      <p class="focus-source" id="focus-source"></p>
+    </div>
+  </div>
+
+  <div class="mockup-badge">DESIGN MOCKUP — 互動預覽</div>
+
+  <script>
+    const QUOTES = [
+      { id: 1, text: '未經審視的人生不值得過。', author: '蘇格拉底', source: 'https://example.com/apology' },
+      { id: 2, text: '上善若水，水善利萬物而不爭。', author: '老子', source: null },
+      { id: 3, text: '想像力比知識更重要。', author: '愛因斯坦', source: 'https://example.com/einstein' },
+      { id: 4, text: '每個人都有陰暗面，關鍵在於你是否願意面對它。', author: '村上春樹', source: null },
+      { id: 5, text: '知之者不如好之者，好之者不如樂之者。', author: '未知', source: null },
+      { id: 6, text: '我思故我在。', author: '未知', source: null },
+    ];
+
+    const grid = document.getElementById('quote-grid');
+    const authorsGrid = document.getElementById('authors-grid');
+    const searchInput = document.getElementById('search');
+    const quotesCount = document.getElementById('quotes-count');
+    let activeAuthor = 'all';
+
+    function renderQuotes() {
+      const q = searchInput.value.trim().toLowerCase();
+      grid.innerHTML = '';
+      let visible = 0;
+
+      QUOTES.forEach(quote => {
+        const matchSearch = !q || quote.text.toLowerCase().includes(q) || (quote.author || '').toLowerCase().includes(q);
+        const matchAuthor = activeAuthor === 'all' || quote.author === activeAuthor;
+        if (!matchSearch || !matchAuthor) return;
+
+        visible++;
+        const card = document.createElement('article');
+        card.className = 'quote-card';
+        card.innerHTML = `
+          <p class="quote-text">${quote.text}</p>
+          <div class="quote-meta">
+            <span class="quote-author">${quote.author || '未知'}</span>
+            <div class="quote-actions">
+              <button class="quote-action-btn focus-btn" data-id="${quote.id}">專注</button>
+              <button class="quote-action-btn">編輯</button>
+            </div>
+          </div>`;
+        grid.appendChild(card);
+      });
+
+      quotesCount.textContent = `${visible} 則`;
+    }
+
+    function renderAuthors() {
+      const map = {};
+      QUOTES.forEach(q => {
+        const a = q.author || '未知';
+        if (!map[a]) map[a] = [];
+        map[a].push(q);
+      });
+
+      authorsGrid.innerHTML = '';
+      Object.entries(map).forEach(([name, quotes]) => {
+        const card = document.createElement('div');
+        card.className = 'author-card';
+        card.innerHTML = `
+          <p class="author-card-name">${name}</p>
+          <p class="author-card-count">${quotes.length} 則名言</p>
+          <p class="author-card-preview">${quotes[0].text}</p>`;
+        card.addEventListener('click', () => {
+          activeAuthor = name;
+          document.querySelectorAll('.author-item').forEach(el => {
+            el.classList.toggle('active', el.dataset.author === name);
+          });
+          document.querySelector('[data-view="home"]').click();
+          renderQuotes();
+        });
+        authorsGrid.appendChild(card);
+      });
+    }
+
+    renderQuotes();
+    renderAuthors();
+
+    // Navigation
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-btn').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(`view-${btn.dataset.view}`).classList.add('active');
+      });
+    });
+
+    // Sidebar filter
+    document.getElementById('sidebar-authors').addEventListener('click', e => {
+      const item = e.target.closest('.author-item');
+      if (!item) return;
+      document.querySelectorAll('.author-item').forEach(el => el.classList.remove('active'));
+      item.classList.add('active');
+      activeAuthor = item.dataset.author;
+      renderQuotes();
+    });
+
+    searchInput.addEventListener('input', renderQuotes);
+
+    // Focus mode
+    const overlay = document.getElementById('focus-overlay');
+    grid.addEventListener('click', e => {
+      const btn = e.target.closest('.focus-btn');
+      if (!btn) return;
+      const quote = QUOTES.find(q => q.id === +btn.dataset.id);
+      if (!quote) return;
+      document.getElementById('focus-quote').textContent = quote.text;
+      document.getElementById('focus-author').textContent = `— ${quote.author || '未知'}`;
+      document.getElementById('focus-source').innerHTML = quote.source
+        ? `<a href="${quote.source}" target="_blank" rel="noopener">查看原文</a>`
+        : '';
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      if (window.petSystem) window.petSystem.enterFocusMode();
+    });
+
+    function closeFocus() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+      if (window.petSystem) window.petSystem.exitFocusMode();
+    }
+
+    document.getElementById('focus-close').addEventListener('click', closeFocus);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeFocus(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFocus(); });
+
+    // Theme
+    const html = document.documentElement;
+    const themeBtn = document.getElementById('theme-toggle');
+    const darkToggle = document.getElementById('dark-toggle');
+
+    function setTheme(theme) {
+      html.dataset.theme = theme;
+      themeBtn.textContent = theme === 'light' ? '☀' : '☾';
+      darkToggle.classList.toggle('on', theme === 'dark');
+      localStorage.setItem('wq-theme', theme);
+    }
+
+    setTheme(localStorage.getItem('wq-theme') || 'light');
+
+    themeBtn.addEventListener('click', () => {
+      setTheme(html.dataset.theme === 'light' ? 'dark' : 'light');
+    });
+
+    darkToggle.addEventListener('click', () => {
+      setTheme(html.dataset.theme === 'light' ? 'dark' : 'light');
+    });
+
+    // Page pets
+    const petsLayer = document.getElementById('pets-layer');
+    const petsToggle = document.getElementById('pets-toggle');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const PET_LINES = ['喵～一起讀名言嗎？', '今天也要好好思考喔', '伸個懶腰…', '這則語錄好棒！'];
+    const READ_LINES = ['認真閱讀中…', '嗯…有意思', '喵～再看一次'];
+    const FOCUS_LINES = ['靜靜品味這句話…', '嗯…', '好喜歡這則語錄'];
+
+    let petsEnabled = !reducedMotion && localStorage.getItem('wq-pets') !== 'off';
+    let focusMode = false;
+    const petControllers = [];
+
+    function updatePetsToggle() {
+      petsToggle.classList.toggle('on', petsEnabled);
+      petsLayer.classList.toggle('hidden', !petsEnabled);
+    }
+    updatePetsToggle();
+
+    petsToggle.addEventListener('click', () => {
+      petsEnabled = !petsEnabled;
+      localStorage.setItem('wq-pets', petsEnabled ? 'on' : 'off');
+      updatePetsToggle();
+      if (petsEnabled) initPets();
+    });
+
+    function getVisibleQuoteCards() {
+      return [...document.querySelectorAll('.quote-card')].filter(card => {
+        const r = card.getBoundingClientRect();
+        return r.width > 0 && r.height > 0 && r.top < window.innerHeight && r.bottom > 0;
+      });
+    }
+
+    function baselineY() {
+      return window.innerHeight - (window.innerWidth <= 720 ? 56 : 72) - 20;
+    }
+
+    function createPetController(el, bubbleEl, startXRatio) {
+      const petW = () => el.offsetWidth || 72;
+      const petH = () => el.offsetHeight || 72;
+      let x = window.innerWidth * startXRatio;
+      let y = baselineY();
+      let dir = Math.random() > 0.5 ? 1 : -1;
+      let state = 'walk';
+      let stateUntil = 0;
+      let targetX = x;
+      let targetY = y;
+      let bubbleTimer;
+      let walkTicks = 0;
+
+      function setPos(px, py) {
+        x = px;
+        y = py;
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
+      }
+
+      function clampX(px) {
+        return Math.max(8, Math.min(window.innerWidth - petW() - 8, px));
+      }
+
+      function showBubble(text) {
+        bubbleEl.textContent = text;
+        bubbleEl.classList.add('show');
+        clearTimeout(bubbleTimer);
+        bubbleTimer = setTimeout(() => bubbleEl.classList.remove('show'), 2400);
+      }
+
+      function setReading(on) {
+        el.classList.toggle('reading', on);
+      }
+
+      function hop() {
+        el.classList.remove('happy');
+        void el.offsetWidth;
+        el.classList.add('happy');
+        const heart = document.createElement('span');
+        heart.className = 'pet-heart';
+        heart.textContent = '♥';
+        el.appendChild(heart);
+        setTimeout(() => heart.remove(), 900);
+        showBubble(PET_LINES[Math.floor(Math.random() * PET_LINES.length)]);
+      }
+
+      function tryReadQuoteCard() {
+        if (focusMode) return false;
+        const homeActive = document.getElementById('view-home').classList.contains('active');
+        if (!homeActive) return false;
+        const cards = getVisibleQuoteCards();
+        if (!cards.length || Math.random() > 0.012) return false;
+
+        const card = cards[Math.floor(Math.random() * cards.length)];
+        const rect = card.getBoundingClientRect();
+        targetX = clampX(rect.left + rect.width * 0.5 - petW() * 0.5);
+        targetY = Math.max(80, rect.bottom - petH() + 4);
+        state = 'goto';
+        dir = targetX > x ? 1 : -1;
+        el.classList.toggle('facing-left', dir < 0);
+        return true;
+      }
+
+      function goToFocusSlot(slotXRatio) {
+        targetX = clampX(window.innerWidth * slotXRatio - petW() * 0.5);
+        targetY = window.innerHeight * 0.72;
+        state = 'goto';
+        dir = targetX > x ? 1 : -1;
+        el.classList.toggle('facing-left', dir < 0);
+      }
+
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        hop();
+        state = 'idle';
+        stateUntil = performance.now() + 1800;
+        setReading(false);
+      });
+
+      function tick(now) {
+        if (!petsEnabled) return;
+
+        if (state === 'walk') {
+          walkTicks++;
+          x += dir * (0.4 + Math.random() * 0.3);
+          y += (baselineY() - y) * 0.06;
+          if (x <= 8 || x >= window.innerWidth - petW() - 8) {
+            dir *= -1;
+            if (Math.random() < 0.3) {
+              state = 'idle';
+              stateUntil = now + 1500 + Math.random() * 2500;
+            }
+          }
+          x = clampX(x);
+          el.classList.toggle('facing-left', dir < 0);
+          setReading(false);
+          setPos(x, y);
+
+          if (walkTicks > 120 && tryReadQuoteCard()) walkTicks = 0;
+        } else if (state === 'goto') {
+          x += (targetX - x) * 0.07;
+          y += (targetY - y) * 0.07;
+          dir = targetX > x ? 1 : -1;
+          el.classList.toggle('facing-left', dir < 0);
+          setPos(x, y);
+
+          if (Math.abs(targetX - x) < 3 && Math.abs(targetY - y) < 3) {
+            state = 'read';
+            stateUntil = now + 2800 + Math.random() * 3200;
+            setReading(true);
+            const lines = focusMode ? FOCUS_LINES : READ_LINES;
+            showBubble(lines[Math.floor(Math.random() * lines.length)]);
+          }
+        } else if (state === 'read') {
+          if (now > stateUntil) {
+            setReading(false);
+            if (focusMode) {
+              state = 'read';
+              stateUntil = now + 3500 + Math.random() * 2000;
+              setReading(true);
+              showBubble(FOCUS_LINES[Math.floor(Math.random() * FOCUS_LINES.length)]);
+            } else {
+              state = 'goto';
+              targetX = clampX(x);
+              targetY = baselineY();
+            }
+          }
+        } else if (state === 'idle') {
+          y += (baselineY() - y) * 0.04;
+          setPos(x, y);
+          if (now > stateUntil) {
+            state = 'walk';
+            if (Math.random() < 0.15) showBubble(PET_LINES[Math.floor(Math.random() * PET_LINES.length)]);
+          }
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      setPos(clampX(x), y);
+      requestAnimationFrame(tick);
+
+      return {
+        goToFocusSlot,
+        resumeWalk() {
+          setReading(false);
+          state = 'goto';
+          targetX = clampX(x);
+          targetY = baselineY();
+        },
+      };
+    }
+
+    let petsInited = false;
+    function initPets() {
+      if (petsInited || !petsEnabled) return;
+      petsInited = true;
+      petControllers.push(createPetController(
+        document.getElementById('pet-cat'),
+        document.getElementById('bubble-cat'),
+        0.42
+      ));
+    }
+
+    window.petSystem = {
+      enterFocusMode() {
+        focusMode = true;
+        if (!petControllers.length) return;
+        petControllers[0].goToFocusSlot(0.5);
+      },
+      exitFocusMode() {
+        focusMode = false;
+        petControllers.forEach(p => p.resumeWalk());
+      },
+    };
+
+    if (petsEnabled) initPets();
+
+    document.getElementById('add-btn').addEventListener('click', () => {
+      alert('新增名言 — MVP 功能預覽');
+    });
+  </script>
+</body>
+</html>
