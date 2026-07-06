@@ -1,0 +1,44 @@
+---
+import '@/styles/global.css';
+import SiteHeader from '@/components/SiteHeader.astro';
+import { PageCat } from '@/components/PageCat';
+import { withBase } from '@/lib/base-url';
+
+interface Props {
+  title?: string;
+  hideCat?: boolean;
+}
+
+const { title = '智慧語錄', hideCat = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-Hant" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="記錄與管理智慧名言的個人語錄集" />
+    <link rel="icon" type="image/svg+xml" href={withBase('favicon.svg')} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem('wq-theme');
+        const theme = stored === 'dark' ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    {!hideCat && <PageCat client:only="react" />}
+    <div class="app">
+      <SiteHeader />
+      <slot />
+    </div>
+  </body>
+</html>

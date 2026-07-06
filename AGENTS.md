@@ -8,37 +8,28 @@
 
 ## Quick Commands
 
-> Update these once the project scaffold is in place.
-
 ```bash
 # Development
-npm run dev
+aubr dev          # or: npm run dev
 
 # Build (outputs to dist/ for GitHub Pages)
-npm run build
+aubr build
 
 # Preview production build
-npm run preview
+aubr preview
 
 # Type checking
-npm run typecheck
-
-# Tests
-npm run test
+aubr typecheck
 
 # Lint / Format
-npm run lint
-npm run format
-
-# Preview design mockup (no build required)
-npx serve mockup
+aubr lint
+aubr format
 ```
 
 ## Architecture Overview
 
 ```
 /
-├── mockup/             # Interactive HTML design preview
 ├── src/
 │   ├── components/     # UI components (quote cards, search, theme toggle)
 │   ├── pages/          # Routes (home, authors, focus mode, settings)
@@ -112,7 +103,7 @@ interface QuoteCollection {
 - **Planning**: use GitHub Issues — do not add parallel planning docs in `docs/`
 - **Testing**: run `npm run typecheck` and `npm run test` before submitting
 - **Build verification**: `npm run build` must succeed and `dist/` must be deployable as-is
-- **UI changes**: verify both Light/Dark themes and mobile layouts; reference `mockup/index.html`
+- **UI changes**: verify both Light/Dark themes and mobile layouts
 - **Animation**: any new motion must degrade gracefully under `prefers-reduced-motion: reduce`
 
 ## Security & Privacy

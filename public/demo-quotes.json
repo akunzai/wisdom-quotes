@@ -1,0 +1,456 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-07-06T17:00:00.000Z",
+  "quotes": [
+    {
+      "id": "a0000000-0000-4000-8000-000000000001",
+      "text": "千里之行，始於足下。",
+      "author": "老子",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://ctext.org/dao-de-jing/zh"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000002",
+      "text": "學而時習之，不亦說乎。",
+      "author": "孔子",
+      "createdAt": "2026-01-01T00:00:01.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://ctext.org/analects/xue-er"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000003",
+      "text": "吾生也有涯，而知也無涯。",
+      "author": "莊子",
+      "createdAt": "2026-01-01T00:00:02.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://ctext.org/zhuangzi/zhi-le"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000004",
+      "text": "生於憂患，死於安樂。",
+      "author": "孟子",
+      "createdAt": "2026-01-01T00:00:03.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://ctext.org/mengzi/gao-zi/xia"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000005",
+      "text": "人生如逆旅，我亦是行人。",
+      "author": "蘇軾",
+      "createdAt": "2026-01-01T00:00:04.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://zh.wikiquote.org/wiki/%E8%8B%8F%E8%BD%BC"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000006",
+      "text": "世上本沒有路，走的人多了，也便成了路。",
+      "author": "魯迅",
+      "createdAt": "2026-01-01T00:00:05.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://zh.wikiquote.org/wiki/%E9%AD%AF%E8%BF%85"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000007",
+      "text": "知行合一。",
+      "author": "王陽明",
+      "createdAt": "2026-01-01T00:00:06.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://ctext.org/wiki.pl?if=gb&res=820444"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000008",
+      "text": "大膽假設，小心求證。",
+      "author": "胡適",
+      "createdAt": "2026-01-01T00:00:07.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://zh.wikiquote.org/wiki/%E8%83%A1%E9%81%A9"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000009",
+      "text": "優雅的態度，是面對困難仍能從容。",
+      "author": "林語堂",
+      "createdAt": "2026-01-01T00:00:08.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://zh.wikiquote.org/wiki/%E6%9E%97%E8%AA%9E%E5%A0%82"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000010",
+      "text": "偏見比無知更可怕，因為無知是誠實的。",
+      "author": "羅素",
+      "createdAt": "2026-01-01T00:00:09.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Bertrand_Russell"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000011",
+      "text": "未經審視的人生不值得過。",
+      "author": "蘇格拉底",
+      "createdAt": "2026-01-01T00:00:10.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Socrates#Apology_(Plato)"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000012",
+      "text": "吾愛吾師，吾更愛真理。",
+      "author": "亞里士多德",
+      "createdAt": "2026-01-01T00:00:11.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Aristotle"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000013",
+      "text": "我思故我在。",
+      "author": "笛卡兒",
+      "createdAt": "2026-01-01T00:00:12.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Ren%C3%A9_Descartes"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000014",
+      "text": "位我上者，燦爛星空；道德律令，在我心中。",
+      "author": "康德",
+      "createdAt": "2026-01-01T00:00:13.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Immanuel_Kant"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000015",
+      "text": "殺不死我的，必使我更強大。",
+      "author": "尼采",
+      "createdAt": "2026-01-01T00:00:14.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Friedrich_Nietzsche"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000016",
+      "text": "生命是一團欲望，欲望不滿足便痛苦，滿足便空虛。",
+      "author": "叔本華",
+      "createdAt": "2026-01-01T00:00:15.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Arthur_Schopenhauer"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000017",
+      "text": "我不同意你的觀點，但我誓死捍衛你說話的權利。",
+      "author": "伏爾泰",
+      "createdAt": "2026-01-01T00:00:16.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Evelyn_Beatrice_Hall"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000018",
+      "text": "人生而自由，卻無往不在枷鎖之中。",
+      "author": "盧梭",
+      "createdAt": "2026-01-01T00:00:17.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Jean-Jacques_Rousseau"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000019",
+      "text": "對於不可說的，我們應該保持沉默。",
+      "author": "維根斯坦",
+      "createdAt": "2026-01-01T00:00:18.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Ludwig_Wittgenstein"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000020",
+      "text": "人只受自己理解的束縛。",
+      "author": "斯賓諾莎",
+      "createdAt": "2026-01-01T00:00:19.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Baruch_Spinoza"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000021",
+      "text": "存在先於本質。",
+      "author": "沙特",
+      "createdAt": "2026-01-01T00:00:20.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Jean-Paul_Sartre"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000022",
+      "text": "想像力比知識更重要。",
+      "author": "愛因斯坦",
+      "createdAt": "2026-01-01T00:00:21.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Albert_Einstein"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000023",
+      "text": "上帝不擲骰子。",
+      "author": "愛因斯坦",
+      "createdAt": "2026-01-01T00:00:22.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Albert_Einstein#Disputed"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000024",
+      "text": "如果我看得更遠，那是因為我站在巨人的肩膀上。",
+      "author": "牛頓",
+      "createdAt": "2026-01-01T00:00:23.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Isaac_Newton"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000025",
+      "text": "物競天擇，適者生存。",
+      "author": "達爾文",
+      "createdAt": "2026-01-01T00:00:24.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Charles_Darwin"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000026",
+      "text": "縱然如此，地球依然在轉動。",
+      "author": "伽利略",
+      "createdAt": "2026-01-01T00:00:25.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Galileo_Galilei"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000027",
+      "text": "人類需要夢想，永遠不要放棄。",
+      "author": "居禮夫人",
+      "createdAt": "2026-01-01T00:00:26.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Marie_Curie"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000028",
+      "text": "記住要仰望星空，永遠不要放棄希望。",
+      "author": "霍金",
+      "createdAt": "2026-01-01T00:00:27.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Stephen_Hawking"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000029",
+      "text": "科學的價值在於為人類進步服務。",
+      "author": "費曼",
+      "createdAt": "2026-01-01T00:00:28.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Richard_Feynman"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000030",
+      "text": "第一件事就是不要欺騙自己，而你是最容易被自己欺騙的人。",
+      "author": "費曼",
+      "createdAt": "2026-01-01T00:00:29.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://calteches.library.caltech.edu/51/2/CargoCult.htm"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000031",
+      "text": "我們只能看到眼前的一小段距離，卻能完整地理解那條路。",
+      "author": "圖靈",
+      "createdAt": "2026-01-01T00:00:30.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Alan_Turing"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000032",
+      "text": "科學是進步的事業，後人必勝前人。",
+      "author": "普朗克",
+      "createdAt": "2026-01-01T00:00:31.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Max_Planck"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000033",
+      "text": "宇宙不僅比我們想像的更奇怪，甚至比那還要奇怪。",
+      "author": "海森堡",
+      "createdAt": "2026-01-01T00:00:32.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Werner_Heisenberg"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000034",
+      "text": "生命以負熵為生。",
+      "author": "薛丁格",
+      "createdAt": "2026-01-01T00:00:33.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Erwin_Schr%C3%B6dinger"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000035",
+      "text": "相反的想法並非彼此矛盾，而是並存於更完整的真理之中。",
+      "author": "玻爾",
+      "createdAt": "2026-01-01T00:00:34.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Niels_Bohr"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000036",
+      "text": "天才是百分之一的靈感，加上百分之九十九的汗水。",
+      "author": "愛迪生",
+      "createdAt": "2026-01-01T00:00:35.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Thomas_Edison"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000037",
+      "text": "科學沒有國界，但科學家有祖國。",
+      "author": "李政道",
+      "createdAt": "2026-01-01T00:00:36.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://zh.wikipedia.org/wiki/%E6%9D%8E%E6%94%BF%E9%81%93"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000038",
+      "text": "不要失去信心，只要堅持不懈，就終會有成果的。",
+      "author": "錢學森",
+      "createdAt": "2026-01-01T00:00:37.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://zh.wikiquote.org/wiki/%E9%92%B1%E5%AD%A6%E6%A3%AE"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000039",
+      "text": "在科學的入口處，與在地獄的入口處，可見這樣的告示：在這裡必須把心中的一切疑念清除乾淨。",
+      "author": "馬克思",
+      "createdAt": "2026-01-01T00:00:38.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Karl_Marx"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000040",
+      "text": "科學的事實與一個石頭一樣，不會因為你相信它而移動。",
+      "author": "尼爾·德格拉塞·泰森",
+      "createdAt": "2026-01-01T00:00:39.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Neil_deGrasse_Tyson"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000041",
+      "text": "我們都是星塵。",
+      "author": "卡爾·薩根",
+      "createdAt": "2026-01-01T00:00:40.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Carl_Sagan"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000042",
+      "text": "科學是一種思考方式，也是一種生活方式。",
+      "author": "卡爾·波普爾",
+      "createdAt": "2026-01-01T00:00:41.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Karl_Popper"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000043",
+      "text": "進步並非必然，它需要努力與選擇。",
+      "author": "卡爾·薩根",
+      "createdAt": "2026-01-01T00:00:42.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Carl_Sagan"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000044",
+      "text": "成功是從失敗到失敗，也依然不改熱情。",
+      "author": "邱吉爾",
+      "createdAt": "2026-01-01T00:00:43.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Winston_Churchill"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000045",
+      "text": "成為你想在這個世界上看到的改變。",
+      "author": "甘地",
+      "createdAt": "2026-01-01T00:00:44.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Mahatma_Gandhi"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000046",
+      "text": "教育是最強大的武器，你可以用它來改變世界。",
+      "author": "曼德拉",
+      "createdAt": "2026-01-01T00:00:45.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Nelson_Mandela"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000047",
+      "text": "我有一個夢想，有一天這個國家會站起來，真正踐行信條的真諦。",
+      "author": "馬丁·路德·金",
+      "createdAt": "2026-01-01T00:00:46.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/I_Have_a_Dream"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000048",
+      "text": "求知若渴，虛心若愚。",
+      "author": "賈伯斯",
+      "createdAt": "2026-01-01T00:00:47.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Steve_Jobs"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000049",
+      "text": "人可以被毀滅，但不能被打敗。",
+      "author": "海明威",
+      "createdAt": "2026-01-01T00:00:48.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Ernest_Hemingway"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000050",
+      "text": "知識就是力量。",
+      "author": "培根",
+      "createdAt": "2026-01-01T00:00:49.000Z",
+      "updatedAt": "2026-07-06T17:00:00.000Z",
+      "visibility": "private",
+      "sourceUrl": "https://en.wikiquote.org/wiki/Francis_Bacon"
+    }
+  ]
+}
