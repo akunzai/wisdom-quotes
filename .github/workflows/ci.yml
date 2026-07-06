@@ -17,6 +17,7 @@ jobs:
       - uses: jdx/mise-action@v4
       - run: aube ci
       - run: aubr build
+      - run: npm run test:unit
 
   smoke:
     runs-on: ubuntu-latest

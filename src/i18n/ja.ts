@@ -107,6 +107,7 @@ export const ja: Messages = {
     importFailed: 'インポートに失敗しました。ファイル形式を確認してください',
     demoDone: 'サンプル名言：{imported} 件追加、{updated} 件更新',
     demoFailed: 'サンプル名言を読み込めませんでした',
+    demoAlreadyLoaded: 'サンプル名言はすでにコレクションにあります',
     clearConfirm: 'すべてのローカル名言を削除しますか？元に戻せません。先にバックアップをエクスポートしてください。',
     cleared: '{count} 件の名言を消去しました',
     nothingToClear: '消去する名言がありません',

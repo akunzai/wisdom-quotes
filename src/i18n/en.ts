@@ -107,6 +107,7 @@ export const en: Messages = {
     importFailed: 'Import failed — check the file format',
     demoDone: 'Sample quotes: {imported} added, {updated} updated',
     demoFailed: 'Could not load sample quotes',
+    demoAlreadyLoaded: 'Sample quotes are already in your collection',
     clearConfirm: 'Delete all local quotes? This cannot be undone. Export a backup first.',
     cleared: 'Cleared {count} quotes',
     nothingToClear: 'No quotes to clear',

@@ -17,11 +17,14 @@ export function SettingsApp() {
   const [pets, setPets] = useState(true);
   const [focusAutoMinutes, setFocusAutoMinutes] = useState(5);
   const [message, setMessage] = useState('');
+  const [ready, setReady] = useState(false);
+  const [importingDemo, setImportingDemo] = useState(false);
 
   useEffect(() => {
     setDark(getStoredTheme() === 'dark');
     setPets(getPetsEnabled());
     setFocusAutoMinutes(getFocusAutoIntervalMinutes());
+    setReady(true);
   }, []);
 
   async function handleExport() {
@@ -44,12 +47,20 @@ export function SettingsApp() {
   }
 
   async function handleImportDemo() {
+    if (!ready || importingDemo) return;
+    setImportingDemo(true);
     try {
       const { importDemoQuotes } = await import('@/lib/import-export');
       const result = await importDemoQuotes();
-      setMessage(t(m.settings.demoDone, { imported: result.imported, updated: result.updated }));
+      if (result.imported === 0 && result.updated === 0) {
+        setMessage(m.settings.demoAlreadyLoaded);
+      } else {
+        setMessage(t(m.settings.demoDone, { imported: result.imported, updated: result.updated }));
+      }
     } catch {
       setMessage(m.settings.demoFailed);
+    } finally {
+      setImportingDemo(false);
     }
   }
 
@@ -67,8 +78,12 @@ export function SettingsApp() {
   }
 
   return (
-    <div className="settings-section">
-      {message && <p className="setting-desc" style={{ marginBottom: '1rem' }}>{message}</p>}
+    <div className="settings-section" data-settings-ready={ready || undefined}>
+      {message && (
+        <p className="settings-feedback setting-desc" style={{ marginBottom: '1rem' }}>
+          {message}
+        </p>
+      )}
 
       <div className="settings-group">
         <p className="settings-group-title">{m.settings.appearance}</p>
@@ -138,7 +153,13 @@ export function SettingsApp() {
             <p className="setting-label">{m.settings.importDemo}</p>
             <p className="setting-desc">{m.settings.importDemoDesc}</p>
           </div>
-          <button type="button" className="btn-secondary" onClick={() => void handleImportDemo()}>
+          <button
+            type="button"
+            className="btn-secondary"
+            disabled={!ready || importingDemo}
+            aria-busy={importingDemo || undefined}
+            onClick={() => void handleImportDemo()}
+          >
             {m.settings.importDemoBtn}
           </button>
         </div>

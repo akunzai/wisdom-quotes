@@ -59,6 +59,15 @@ if [[ "${BROWSER_ALREADY_OPEN:-}" != "1" ]]; then
   sleep 1
 fi
 
+import_demo_result=$(run_code_file scripts/e2e-import-demo.mjs)
+import_demo_ok=$(printf '%s' "$import_demo_result" | parse_json_result ok 2>/dev/null | tr '[:upper:]' '[:lower:]')
+
+if [[ "$import_demo_ok" == "true" ]]; then
+  pass "Import demo quotes via client-side settings nav"
+else
+  fail "Import demo quotes via client-side settings nav" "$(printf '%s' "$import_demo_result" | python3 -c 'import json,sys; print(json.dumps(json.load(sys.stdin), ensure_ascii=False))' 2>/dev/null || echo "$import_demo_result")"
+fi
+
 client_nav_result=$(run_code_file scripts/e2e-client-navigation.mjs)
 client_nav_ok=$(printf '%s' "$client_nav_result" | parse_json_result ok 2>/dev/null | tr '[:upper:]' '[:lower:]')
 

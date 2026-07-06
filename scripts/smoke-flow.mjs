@@ -54,14 +54,9 @@ async (page) => {
   if (quoteCount < 50) {
     await page.goto(`${base}settings/`);
     await waitForAppShell();
+    await page.waitForSelector('[data-settings-ready]', { timeout: 10000 });
     await page.getByRole('button', { name: '匯入範例' }).click();
-    await page.waitForFunction(
-      () => {
-        const msg = document.querySelector('.setting-desc')?.textContent || '';
-        return msg.includes('匯入') || msg.includes('imported') || msg.includes('更新');
-      },
-      { timeout: 10000 },
-    ).catch(() => {});
+    await page.waitForSelector('.settings-feedback', { timeout: 10000 });
     await page.goto(base);
     await waitForQuotesReady(50);
     quoteCount = await page.locator('article').count();
@@ -88,6 +83,10 @@ async (page) => {
 
   // 3. Authors
   await navTo('authors');
+  await page.waitForFunction(
+    () => document.querySelectorAll('.author-card').length > 0,
+    { timeout: 15000 },
+  );
   pass('作者頁標題', (await page.title()) === '智慧語錄 — 作者', await page.title());
   const authorCards = await page.locator('.author-card').count();
   pass('作者卡片', authorCards > 0, String(authorCards));
