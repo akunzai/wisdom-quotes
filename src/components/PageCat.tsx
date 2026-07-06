@@ -3,9 +3,18 @@ import { getPetsEnabled } from '@/lib/prefs';
 
 const PET_LINES = ['喵～一起讀名言嗎？', '今天也要好好思考喔', '伸個懶腰…', '這則語錄好棒！'];
 const READ_LINES = ['認真閱讀中…', '嗯…有意思', '喵～再看一次'];
+const FOCUS_LINES = ['靜靜品味這句話…', '嗯…', '好喜歡這則語錄'];
+
+function pickLine(lines: string[]) {
+  return lines[Math.floor(Math.random() * lines.length)];
+}
 
 function baselineY() {
   return window.innerHeight - (window.innerWidth <= 720 ? 56 : 72) - 20;
+}
+
+function rectsIntersect(a: DOMRect, b: DOMRect): boolean {
+  return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
 }
 
 export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
@@ -29,6 +38,29 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, []);
+
+  useEffect(() => {
+    if (!enabled || !focusMode || !petRef.current) return;
+
+    const el = petRef.current;
+    const petW = el.offsetWidth || 72;
+    const s = stateRef.current;
+    const clampX = (px: number) =>
+      Math.max(8, Math.min(window.innerWidth - petW - 8, px));
+
+    const goToFocusSlot = () => {
+      s.targetX = clampX(window.innerWidth * 0.5 - petW * 0.5);
+      s.targetY = window.innerHeight * 0.72;
+      s.state = 'goto';
+      s.dir = s.targetX > s.x ? 1 : -1;
+      el.classList.toggle('facing-left', s.dir < 0);
+    };
+
+    goToFocusSlot();
+    const onResize = () => goToFocusSlot();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [enabled, focusMode]);
 
   useEffect(() => {
     if (!enabled || !petRef.current) return;
@@ -58,14 +90,19 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
     const clampX = (px: number) =>
       Math.max(8, Math.min(window.innerWidth - petW() - 8, px));
 
+    const updatePointerEvents = () => {
+      const s = stateRef.current;
+      const petRect = el.getBoundingClientRect();
+      const overlapsCard = [...document.querySelectorAll('.quote-card')].some((card) => {
+        const rect = card.getBoundingClientRect();
+        return rect.width > 0 && rectsIntersect(petRect, rect);
+      });
+      const passThrough = overlapsCard || s.state === 'read' || s.state === 'goto';
+      el.style.pointerEvents = passThrough ? 'none' : 'auto';
+    };
+
     const tick = (now: number) => {
       const s = stateRef.current;
-
-      if (focusMode) {
-        s.state = 'goto';
-        s.targetX = clampX(window.innerWidth * 0.5 - petW() * 0.5);
-        s.targetY = window.innerHeight * 0.72;
-      }
 
       if (s.state === 'walk') {
         s.walkTicks++;
@@ -104,15 +141,16 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
         setPos(s.x, s.y);
         if (Math.abs(s.targetX - s.x) < 3 && Math.abs(s.targetY - s.y) < 3) {
           s.state = 'read';
-          s.stateUntil = now + 3000;
+          s.stateUntil = now + 2800 + Math.random() * 3200;
           el.classList.add('reading');
-          showBubble(READ_LINES[Math.floor(Math.random() * READ_LINES.length)]);
+          showBubble(pickLine(focusMode ? FOCUS_LINES : READ_LINES));
         }
       } else if (s.state === 'read') {
         if (now > s.stateUntil) {
           if (focusMode) {
-            s.stateUntil = now + 3500;
-            showBubble('靜靜品味這句話…');
+            s.stateUntil = now + 3500 + Math.random() * 2000;
+            el.classList.add('reading');
+            showBubble(pickLine(FOCUS_LINES));
           } else {
             el.classList.remove('reading');
             s.state = 'goto';
@@ -124,6 +162,7 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
         s.state = 'walk';
       }
 
+      updatePointerEvents();
       raf = requestAnimationFrame(tick);
     };
 
@@ -133,7 +172,7 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
       el.classList.remove('happy');
       void el.offsetWidth;
       el.classList.add('happy');
-      showBubble(PET_LINES[Math.floor(Math.random() * PET_LINES.length)]);
+      showBubble(pickLine(PET_LINES));
       stateRef.current.state = 'idle';
       stateRef.current.stateUntil = performance.now() + 1800;
     };
