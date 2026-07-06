@@ -11,10 +11,28 @@
   "theme_color": "#8b6914",
   "icons": [
     {
-      "src": "/wisdom-quotes/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/wisdom-quotes/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/wisdom-quotes/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wisdom-quotes/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wisdom-quotes/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

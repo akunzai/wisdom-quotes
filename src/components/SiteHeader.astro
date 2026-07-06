@@ -20,7 +20,7 @@ const links: { id: PageId; href: string; labelKey: 'quotes' | 'authors' | 'setti
 
 <header class="site-header" transition:persist="site-header">
   <a class="logo" href={base}>
-    <div class="logo-mark" data-app-mark>{navBoot['zh-Hant'].appName.charAt(0)}</div>
+    <img class="logo-mark" src={withBase('favicon.svg')} alt="" width="36" height="36" decoding="async" />
     <div>
       <span class="logo-text" data-app-name>{navBoot['zh-Hant'].appName}</span>
     </div>
@@ -64,9 +64,7 @@ const links: { id: PageId; href: string; labelKey: 'quotes' | 'authors' | 'setti
     const m = navBoot[locale];
     if (!m) return;
     const appName = document.querySelector('[data-app-name]');
-    const appMark = document.querySelector('[data-app-mark]');
     if (appName) appName.textContent = m.appName;
-    if (appMark) appMark.textContent = m.appName.charAt(0);
     const nav = document.querySelector('.site-nav');
     if (nav) nav.setAttribute('aria-label', m.main);
     document.querySelectorAll('[data-nav-label]').forEach((el) => {

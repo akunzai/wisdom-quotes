@@ -1,5 +1,5 @@
 const BASE = '/wisdom-quotes/';
-const CACHE = 'wisdom-quotes-v4';
+const CACHE = 'wisdom-quotes-v5';
 const PRECACHE = [
   BASE,
   `${BASE}index.html`,
@@ -10,6 +10,10 @@ const PRECACHE = [
   `${BASE}focus/`,
   `${BASE}focus/index.html`,
   `${BASE}favicon.svg`,
+  `${BASE}icon.svg`,
+  `${BASE}apple-touch-icon.png`,
+  `${BASE}icon-192.png`,
+  `${BASE}icon-512.png`,
   `${BASE}manifest.webmanifest`,
   `${BASE}demo-quotes.json`,
 ];
@@ -29,6 +33,16 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+function isHtmlRequest(request) {
+  if (request.mode === 'navigate') return true;
+  if (request.destination === 'document') return true;
+  return (request.headers.get('accept') || '').includes('text/html');
+}
+
+function isHashedAsset(pathname) {
+  return pathname.includes('/_astro/');
+}
+
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
@@ -36,36 +50,52 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
   if (!url.pathname.startsWith(BASE)) return;
 
-  const isDocument =
-    event.request.mode === 'navigate' ||
-    event.request.destination === 'document' ||
-    (event.request.headers.get('accept') || '').includes('text/html');
-
-  if (isDocument) {
-    // Network-first for full navigations; ClientRouter fetches still benefit from cache below.
+  // Never cache HTML at runtime — ClientRouter needs fresh shells after deploy.
+  // Precache above is only used when offline.
+  if (isHtmlRequest(event.request)) {
     event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          if (response.ok && response.type !== 'opaque') {
-            const copy = response.clone();
-            caches.open(CACHE).then((cache) => cache.put(event.request, copy));
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request)),
+      fetch(event.request).catch(async () => {
+        const cached = await caches.match(event.request);
+        if (cached) return cached;
+        if (url.pathname === BASE || url.pathname === `${BASE}index.html`) {
+          return caches.match(`${BASE}index.html`);
+        }
+        if (url.pathname.endsWith('/')) {
+          const named = await caches.match(`${url.pathname}index.html`);
+          if (named) return named;
+        }
+        return caches.match(`${BASE}index.html`);
+      }),
     );
     return;
   }
 
+  // Hashed build assets are immutable — cache-first is safe.
+  if (isHashedAsset(url.pathname)) {
+    event.respondWith(
+      caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(event.request).then((response) => {
+          if (!response.ok || response.type === 'opaque') return response;
+          const copy = response.clone();
+          caches.open(CACHE).then((cache) => cache.put(event.request, copy));
+          return response;
+        });
+      }),
+    );
+    return;
+  }
+
+  // Icons, manifest, demo data — network-first with cache fallback.
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (!response.ok || response.type === 'opaque') return response;
-        const copy = response.clone();
-        caches.open(CACHE).then((cache) => cache.put(event.request, copy));
+    fetch(event.request)
+      .then((response) => {
+        if (response.ok && response.type !== 'opaque') {
+          const copy = response.clone();
+          caches.open(CACHE).then((cache) => cache.put(event.request, copy));
+        }
         return response;
-      });
-    }),
+      })
+      .catch(() => caches.match(event.request)),
   );
 });

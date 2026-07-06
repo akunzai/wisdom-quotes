@@ -13,7 +13,6 @@ interface Props {
 }
 
 const { pageKey = 'quotes', title, hideCat = false } = Astro.props;
-const isDev = import.meta.env.DEV;
 const resolvedTitle = title ?? formatPageTitle(pageKey, 'zh-Hant');
 const titleBoot = getTitleBootPayload();
 const defaultFontUrl = fontStylesheetUrl('zh-Hant');
@@ -32,36 +31,53 @@ const fontUrls = {
     <meta name="description" content={titleBoot['zh-Hant'].description} />
     <meta name="theme-color" content="#8b6914" />
     <link rel="icon" type="image/svg+xml" href={withBase('favicon.svg')} />
+    <link rel="apple-touch-icon" href={withBase('apple-touch-icon.png')} />
     <link rel="manifest" href={withBase('manifest.webmanifest')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link id="wq-fonts" rel="stylesheet" href={defaultFontUrl} />
     <title>{resolvedTitle}</title>
-    <script is:inline define:vars={{ isDev }}>
+    <script is:inline>
       (function () {
         const isLocal =
           location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-        if (!isLocal) return;
 
-        // Run before ClientRouter/islands: stale SW or caches from preview/prod break dev module imports.
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.getRegistrations().then((regs) => {
-            for (const reg of regs) void reg.unregister();
-          });
+        if (isLocal) {
+          // Run before ClientRouter/islands: stale SW or caches from preview/prod break dev module imports.
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then((regs) => {
+              for (const reg of regs) void reg.unregister();
+            });
+          }
+          if ('caches' in window) {
+            caches.keys().then((keys) => {
+              for (const key of keys) void caches.delete(key);
+            });
+          }
         }
-        if ('caches' in window) {
-          caches.keys().then((keys) => {
-            for (const key of keys) void caches.delete(key);
-          });
-        }
-
-        if (!isDev) return;
 
         document.addEventListener('astro:hydration-error', () => {
           const key = `wq-hydration-reload:${location.pathname}`;
           if (sessionStorage.getItem(key)) return;
           sessionStorage.setItem(key, '1');
           location.reload();
+        });
+
+        function appShellMissing() {
+          return !document.querySelector(
+            '.search-bar, .authors-grid, .settings-section, .focus-quote, .empty-state',
+          );
+        }
+
+        window.addEventListener('pageshow', (event) => {
+          if (!event.persisted) return;
+          requestAnimationFrame(() => {
+            if (!appShellMissing()) return;
+            const key = `wq-bfcache-reload:${location.pathname}`;
+            if (sessionStorage.getItem(key)) return;
+            sessionStorage.setItem(key, '1');
+            location.reload();
+          });
         });
       })();
     </script>
