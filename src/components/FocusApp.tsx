@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { PageCat } from '@/components/PageCat';
+import { useI18n } from '@/i18n/useI18n';
 import { getFocusAutoIntervalMinutes } from '@/lib/prefs';
 import { getQuote, listQuotes } from '@/lib/storage/quotes';
+import {
+  displayAuthorName,
+  UNKNOWN_AUTHOR,
+} from '@/lib/unknown-author';
 import type { Quote } from '@/types/quote';
 
 interface FocusAppProps {
@@ -13,6 +18,7 @@ function focusPath(baseUrl: string, id: string): string {
 }
 
 export function FocusApp({ baseUrl }: FocusAppProps) {
+  const { messages: m, t } = useI18n();
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [index, setIndex] = useState(0);
   const [ready, setReady] = useState(false);
@@ -127,7 +133,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
   if (!ready) {
     return (
       <div className="focus-overlay">
-        <p className="empty-state">載入中…</p>
+        <p className="empty-state">{m.focus.loading}</p>
       </div>
     );
   }
@@ -135,16 +141,17 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
   if (!quote) {
     return (
       <div className="focus-overlay">
-        <p className="empty-state">找不到這則名言</p>
+        <p className="empty-state">{m.focus.notFound}</p>
         <a className="btn-secondary" href={baseUrl}>
-          返回首頁
+          {m.focus.backHome}
         </a>
       </div>
     );
   }
 
-  const displayAuthor = quote.author || '未知';
-  const authorHref = `${baseUrl}?author=${encodeURIComponent(displayAuthor)}`;
+  const authorKey = quote.author || UNKNOWN_AUTHOR;
+  const displayAuthor = displayAuthorName(authorKey, m.unknown);
+  const authorHref = `${baseUrl}?author=${encodeURIComponent(authorKey)}`;
 
   return (
     <>
@@ -163,7 +170,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
             <button
               type="button"
               className="icon-btn focus-nav focus-nav-prev"
-              aria-label="上一則名言"
+              aria-label={m.focus.prev}
               onClick={goPrev}
             >
               ‹
@@ -171,7 +178,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
             <button
               type="button"
               className="icon-btn focus-nav focus-nav-next"
-              aria-label="下一則名言"
+              aria-label={m.focus.next}
               onClick={goNext}
             >
               ›
@@ -190,7 +197,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
             <a
               className="focus-author-link"
               href={authorHref}
-              aria-label={`瀏覽「${displayAuthor}」的所有名言`}
+              aria-label={t(m.focus.browseAuthor, { author: displayAuthor })}
             >
               {displayAuthor}
             </a>
@@ -198,7 +205,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
           {quote.sourceUrl && (
             <p className="focus-source" style={{ marginTop: '1.5rem' }}>
               <a href={quote.sourceUrl} target="_blank" rel="noopener noreferrer">
-                查看原文
+                {m.focus.viewSource}
               </a>
             </p>
           )}

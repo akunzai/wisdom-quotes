@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Local smoke test for 智慧語錄 — requires preview/dev server and playwright-cli.
+# Local smoke test for Wisdom Quotes — requires preview/dev server and playwright-cli.
 set -uo pipefail
 
 BASE="${SMOKE_BASE_URL:-http://localhost:4322/wisdom-quotes/}"
@@ -95,7 +95,7 @@ assert_true() {
   if [[ "$actual" == "true" ]]; then pass "$name"; else fail "$name" "got '$actual'"; fi
 }
 
-echo "=== 智慧語錄 Smoke Test ==="
+echo "=== Wisdom Quotes Smoke Test ==="
 echo "Base URL: $BASE"
 echo ""
 
@@ -206,7 +206,25 @@ title=$(eval_js 'document.querySelector(".quotes-title")?.textContent || ""')
 assert_contains "作者篩選標題" "蘇格拉底" "$title"
 assert_eq "作者篩選數量" "1" "$(eval_js 'document.querySelectorAll("article").length')"
 
-# 11. Page cat
+# 11. Locale switch (en)
+playwright-cli goto "${BASE}settings/" >/dev/null 2>&1
+sleep 1.5
+eval_js '(() => {
+  const sel = document.querySelector("select.locale-select");
+  if (!sel) return false;
+  const setter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value")?.set;
+  setter?.call(sel, "en");
+  sel.dispatchEvent(new Event("change", { bubbles: true }));
+  return true;
+})()' >/dev/null
+sleep 1
+assert_eq "英文設定頁標題" "Wisdom Quotes — Settings" "$(eval_js 'document.title')"
+playwright-cli goto "$BASE" >/dev/null 2>&1
+sleep 1.5
+nav_en=$(eval_js 'JSON.stringify([...document.querySelectorAll("nav a")].map(a => a.textContent.trim()))')
+assert_contains "英文導覽：Quotes" "Quotes" "$nav_en"
+
+# 12. Page cat
 playwright-cli goto "$BASE" >/dev/null 2>&1
 sleep 1.5
 assert_true "頁面小貓" "$(eval_js '!!document.querySelector(".pet.cat")')"

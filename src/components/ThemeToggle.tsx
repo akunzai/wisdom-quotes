@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useI18n } from '@/i18n/useI18n';
 import { applyTheme, getStoredTheme, toggleTheme, type Theme } from '@/lib/theme';
 
 export function ThemeToggle() {
+  const { messages: m } = useI18n();
   const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
@@ -12,8 +14,8 @@ export function ThemeToggle() {
     <button
       type="button"
       className="icon-btn"
-      aria-label="切換主題"
-      title="切換主題"
+      aria-label={m.theme.toggle}
+      title={m.theme.toggle}
       onClick={() => setTheme(toggleTheme())}
     >
       {theme === 'light' ? '☀' : '☾'}
@@ -28,11 +30,13 @@ export function ThemeSwitch({
   checked: boolean;
   onChange: (dark: boolean) => void;
 }) {
+  const { messages: m } = useI18n();
+
   return (
     <button
       type="button"
       className={`toggle ${checked ? 'on' : ''}`}
-      aria-label="深色模式"
+      aria-label={m.theme.dark}
       onClick={() => {
         const next = !checked;
         applyTheme(next ? 'dark' : 'light');

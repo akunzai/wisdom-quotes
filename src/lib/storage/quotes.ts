@@ -1,4 +1,5 @@
 import { db } from '@/lib/storage/db';
+import { isUnknownAuthor, UNKNOWN_AUTHOR } from '@/lib/unknown-author';
 import type { Quote, QuoteInput } from '@/types/quote';
 
 function nowIso(): string {
@@ -80,20 +81,20 @@ export async function searchQuotes(query: string): Promise<Quote[]> {
 
 export async function listQuotesByAuthor(author: string): Promise<Quote[]> {
   const all = await listQuotes();
-  if (author === '未知') {
+  if (isUnknownAuthor(author)) {
     return all.filter((quote) => !quote.author);
   }
   return all.filter((quote) => quote.author === author);
 }
 
-export async function listAuthors(): Promise<
-  { name: string; count: number; preview: string }[]
-> {
+export async function listAuthors(
+  locale = 'zh-Hant',
+): Promise<{ name: string; count: number; preview: string }[]> {
   const all = await listQuotes();
   const map = new Map<string, Quote[]>();
 
   for (const quote of all) {
-    const name = quote.author || '未知';
+    const name = quote.author || UNKNOWN_AUTHOR;
     const list = map.get(name) ?? [];
     list.push(quote);
     map.set(name, list);
@@ -105,6 +106,6 @@ export async function listAuthors(): Promise<
       count: quotes.length,
       preview: quotes[0]?.text ?? '',
     }))
-    .sort((a, b) => a.name.localeCompare(b.name, 'zh-Hant'));
+    .sort((a, b) => a.name.localeCompare(b.name, locale));
 }
 

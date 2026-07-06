@@ -1,3 +1,5 @@
+import { useI18n } from '@/i18n/useI18n';
+import { displayAuthorName, UNKNOWN_AUTHOR } from '@/lib/unknown-author';
 import type { Quote } from '@/types/quote';
 
 interface QuoteCardProps {
@@ -25,14 +27,21 @@ function LinkIcon() {
 }
 
 export function QuoteCard({ quote, baseUrl, onEdit }: QuoteCardProps) {
+  const { messages: m, t } = useI18n();
   const focusHref = `${baseUrl}focus/?id=${encodeURIComponent(quote.id)}`;
 
   return (
     <article className="quote-card">
-      <a className="quote-card-hit" href={focusHref} aria-label={`專注閱讀：${quote.text}`} />
+      <a
+        className="quote-card-hit"
+        href={focusHref}
+        aria-label={t(m.card.focusRead, { text: quote.text })}
+      />
       <p className="quote-text">{quote.text}</p>
       <div className="quote-meta">
-        <span className="quote-author">{quote.author || '未知'}</span>
+        <span className="quote-author">
+          {displayAuthorName(quote.author || UNKNOWN_AUTHOR, m.unknown)}
+        </span>
         <div className="quote-actions">
           {quote.sourceUrl && (
             <a
@@ -40,7 +49,7 @@ export function QuoteCard({ quote, baseUrl, onEdit }: QuoteCardProps) {
               href={quote.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="查看原文"
+              aria-label={m.card.viewSource}
               onClick={(e) => e.stopPropagation()}
             >
               <LinkIcon />
@@ -49,7 +58,7 @@ export function QuoteCard({ quote, baseUrl, onEdit }: QuoteCardProps) {
           <button
             type="button"
             className="quote-icon-btn"
-            aria-label="編輯"
+            aria-label={m.card.edit}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();

@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { useI18n } from '@/i18n/useI18n';
 import { getPetsEnabled } from '@/lib/prefs';
-
-const PET_LINES = ['喵～一起讀名言嗎？', '今天也要好好思考喔', '伸個懶腰…', '這則語錄好棒！'];
-const READ_LINES = ['認真閱讀中…', '嗯…有意思', '喵～再看一次'];
-const FOCUS_LINES = ['靜靜品味這句話…', '嗯…', '好喜歡這則語錄'];
 
 function pickLine(lines: string[]) {
   return lines[Math.floor(Math.random() * lines.length)];
@@ -18,6 +15,7 @@ function rectsIntersect(a: DOMRect, b: DOMRect): boolean {
 }
 
 export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
+  const { messages: m } = useI18n();
   const [enabled, setEnabled] = useState(false);
   const petRef = useRef<HTMLDivElement>(null);
   const bubbleRef = useRef<HTMLDivElement>(null);
@@ -143,14 +141,14 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
           s.state = 'read';
           s.stateUntil = now + 2800 + Math.random() * 3200;
           el.classList.add('reading');
-          showBubble(pickLine(focusMode ? FOCUS_LINES : READ_LINES));
+          showBubble(pickLine(focusMode ? m.pet.focusLines : m.pet.readLines));
         }
       } else if (s.state === 'read') {
         if (now > s.stateUntil) {
           if (focusMode) {
             s.stateUntil = now + 3500 + Math.random() * 2000;
             el.classList.add('reading');
-            showBubble(pickLine(FOCUS_LINES));
+            showBubble(pickLine(m.pet.focusLines));
           } else {
             el.classList.remove('reading');
             s.state = 'goto';
@@ -172,7 +170,7 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
       el.classList.remove('happy');
       void el.offsetWidth;
       el.classList.add('happy');
-      showBubble(pickLine(PET_LINES));
+      showBubble(pickLine(m.pet.lines));
       stateRef.current.state = 'idle';
       stateRef.current.stateUntil = performance.now() + 1800;
     };
@@ -183,13 +181,13 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
       el.removeEventListener('click', onClick);
       clearTimeout(bubbleTimer);
     };
-  }, [enabled, focusMode]);
+  }, [enabled, focusMode, m.pet]);
 
   if (!enabled) return null;
 
   return (
-    <div id="pets-layer" aria-label="網頁小夥伴">
-      <div className="pet cat" ref={petRef} title="點點我～">
+    <div id="pets-layer" aria-label={m.pet.layerLabel}>
+      <div className="pet cat" ref={petRef} title={m.pet.clickHint}>
         <div className="pet-bubble" ref={bubbleRef} />
         <div className="pet-figure">
           <span className="pet-book" aria-hidden="true">

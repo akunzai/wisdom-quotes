@@ -1,15 +1,19 @@
 ---
 import '@/styles/global.css';
-import SiteHeader from '@/components/SiteHeader.astro';
+import { SiteHeader } from '@/components/SiteHeader';
 import { PageCat } from '@/components/PageCat';
+import { formatPageTitle, getTitleBootPayload } from '@/i18n/index';
 import { withBase } from '@/lib/base-url';
 
 interface Props {
   title?: string;
+  pageKey?: 'quotes' | 'authors' | 'settings' | 'focus';
   hideCat?: boolean;
 }
 
-const { title = '智慧語錄', hideCat = false } = Astro.props;
+const { pageKey = 'quotes', title, hideCat = false } = Astro.props;
+const resolvedTitle = title ?? formatPageTitle(pageKey, 'zh-Hant');
+const titleBoot = getTitleBootPayload();
 ---
 
 <!doctype html>
@@ -17,22 +21,34 @@ const { title = '智慧語錄', hideCat = false } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="記錄與管理智慧名言的個人語錄集" />
+    <meta name="description" content={titleBoot['zh-Hant'].description} />
     <meta name="theme-color" content="#8b6914" />
     <link rel="icon" type="image/svg+xml" href={withBase('favicon.svg')} />
     <link rel="manifest" href={withBase('manifest.webmanifest')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+TC:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <title>{title}</title>
-    <script is:inline>
+    <title>{resolvedTitle}</title>
+    <script is:inline define:vars={{ titleBoot, pageKey }}>
       (function () {
-        const stored = localStorage.getItem('wq-theme');
-        const theme = stored === 'dark' ? 'dark' : 'light';
-        document.documentElement.dataset.theme = theme;
+        const storedTheme = localStorage.getItem('wq-theme');
+        document.documentElement.dataset.theme = storedTheme === 'dark' ? 'dark' : 'light';
+
+        const storedLocale = localStorage.getItem('wq-locale');
+        const locale = storedLocale === 'en' || storedLocale === 'ja' ? storedLocale : 'zh-Hant';
+        document.documentElement.lang = locale;
+
+        const m = titleBoot[locale];
+        if (m?.page?.[pageKey]) {
+          document.title = m.app + ' — ' + m.page[pageKey];
+        }
+        if (m?.description) {
+          const meta = document.querySelector('meta[name="description"]');
+          if (meta) meta.setAttribute('content', m.description);
+        }
       })();
     </script>
     <script is:inline define:vars={{ swUrl: withBase('sw.js'), swScope: withBase() }}>
@@ -46,7 +62,7 @@ const { title = '智慧語錄', hideCat = false } = Astro.props;
   <body>
     {!hideCat && <PageCat client:only="react" />}
     <div class="app">
-      <SiteHeader />
+      <SiteHeader client:load activePage={pageKey} />
       <slot />
     </div>
   </body>
