@@ -13,6 +13,7 @@ interface Props {
 }
 
 const { pageKey = 'quotes', title, hideCat = false } = Astro.props;
+const isDev = import.meta.env.DEV;
 const resolvedTitle = title ?? formatPageTitle(pageKey, 'zh-Hant');
 const titleBoot = getTitleBootPayload();
 const defaultFontUrl = fontStylesheetUrl('zh-Hant');
@@ -36,6 +37,34 @@ const fontUrls = {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link id="wq-fonts" rel="stylesheet" href={defaultFontUrl} />
     <title>{resolvedTitle}</title>
+    <script is:inline define:vars={{ isDev }}>
+      (function () {
+        const isLocal =
+          location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        if (!isLocal) return;
+
+        // Run before ClientRouter/islands: stale SW or caches from preview/prod break dev module imports.
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then((regs) => {
+            for (const reg of regs) void reg.unregister();
+          });
+        }
+        if ('caches' in window) {
+          caches.keys().then((keys) => {
+            for (const key of keys) void caches.delete(key);
+          });
+        }
+
+        if (!isDev) return;
+
+        document.addEventListener('astro:hydration-error', () => {
+          const key = `wq-hydration-reload:${location.pathname}`;
+          if (sessionStorage.getItem(key)) return;
+          sessionStorage.setItem(key, '1');
+          location.reload();
+        });
+      })();
+    </script>
     <ClientRouter />
     <script is:inline define:vars={{ titleBoot, pageKey, fontUrls }}>
       (function () {
@@ -70,12 +99,7 @@ const fontUrls = {
       if ('serviceWorker' in navigator) {
         const isLocal =
           location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-        if (isLocal) {
-          // SW cache-first breaks ClientRouter during local dev; clear any stale registration.
-          navigator.serviceWorker.getRegistrations().then((regs) => {
-            for (const reg of regs) reg.unregister();
-          });
-        } else {
+        if (!isLocal) {
           window.addEventListener('load', () => {
             navigator.serviceWorker.register(swUrl, { scope: swScope }).catch(() => {});
           });
