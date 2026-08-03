@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: jdx/mise-action@v4
+      - uses: jdx/mise-action@v4.2.3
       - run: aube ci
       - run: aubr build
       - run: npm run test:unit
@@ -24,7 +24,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v7
-      - uses: jdx/mise-action@v4
+      - uses: jdx/mise-action@v4.2.3
       - run: aube ci
       - run: aubr build
       - run: npm install -g @playwright/cli@latest
