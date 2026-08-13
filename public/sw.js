@@ -1,5 +1,5 @@
-const BASE = '/wisdom-quotes/';
-const CACHE = 'wisdom-quotes-v5';
+const BASE = "/wisdom-quotes/";
+const CACHE = "wisdom-quotes-v5";
 const PRECACHE = [
   BASE,
   `${BASE}index.html`,
@@ -18,33 +18,38 @@ const PRECACHE = [
   `${BASE}demo-quotes.json`,
 ];
 
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(PRECACHE)).then(() => self.skipWaiting()),
+    caches
+      .open(CACHE)
+      .then((cache) => cache.addAll(PRECACHE))
+      .then(() => self.skipWaiting()),
   );
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))))
+      .then((keys) =>
+        Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))),
+      )
       .then(() => self.clients.claim()),
   );
 });
 
 function isHtmlRequest(request) {
-  if (request.mode === 'navigate') return true;
-  if (request.destination === 'document') return true;
-  return (request.headers.get('accept') || '').includes('text/html');
+  if (request.mode === "navigate") return true;
+  if (request.destination === "document") return true;
+  return (request.headers.get("accept") || "").includes("text/html");
 }
 
 function isHashedAsset(pathname) {
-  return pathname.includes('/_astro/');
+  return pathname.includes("/_astro/");
 }
 
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
 
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
@@ -60,7 +65,7 @@ self.addEventListener('fetch', (event) => {
         if (url.pathname === BASE || url.pathname === `${BASE}index.html`) {
           return caches.match(`${BASE}index.html`);
         }
-        if (url.pathname.endsWith('/')) {
+        if (url.pathname.endsWith("/")) {
           const named = await caches.match(`${url.pathname}index.html`);
           if (named) return named;
         }
@@ -76,7 +81,7 @@ self.addEventListener('fetch', (event) => {
       caches.match(event.request).then((cached) => {
         if (cached) return cached;
         return fetch(event.request).then((response) => {
-          if (!response.ok || response.type === 'opaque') return response;
+          if (!response.ok || response.type === "opaque") return response;
           const copy = response.clone();
           caches.open(CACHE).then((cache) => cache.put(event.request, copy));
           return response;
@@ -90,7 +95,7 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        if (response.ok && response.type !== 'opaque') {
+        if (response.ok && response.type !== "opaque") {
           const copy = response.clone();
           caches.open(CACHE).then((cache) => cache.put(event.request, copy));
         }

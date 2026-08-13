@@ -1,12 +1,12 @@
-@import 'tailwindcss';
-@import './ui.css';
+@import "tailwindcss";
+@import "./ui.css";
 
 @theme {
-  --font-sans: 'Noto Sans TC', system-ui, sans-serif;
-  --font-serif: 'Noto Serif TC', ui-serif, serif;
+  --font-sans: "Noto Sans TC", system-ui, sans-serif;
+  --font-serif: "Noto Serif TC", ui-serif, serif;
 }
 
-:root[data-theme='light'] {
+:root[data-theme="light"] {
   --bg: #f3ede4;
   --bg-elevated: #faf7f2;
   --text: #1a1714;
@@ -24,7 +24,7 @@
   --grain-opacity: 0.04;
 }
 
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
   --bg: #0a0e14;
   --bg-elevated: #111820;
   --text: #e8e4dc;
@@ -51,11 +51,13 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100dvh;
-  transition: background 0.4s ease, color 0.4s ease;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease;
 }
 
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;

@@ -26,22 +26,22 @@ aubr dev
 
 ## スクリプト
 
-| コマンド | 説明 |
-|---------|------|
-| `aubr dev` | 開発サーバーを起動 |
-| `aubr build` | 型チェックして `dist/` にビルド |
-| `aubr preview` | 本番ビルドをプレビュー |
-| `aubr typecheck` | Astro／TypeScript チェック |
-| `aubr lint` | コードのリント |
-| `aubr format` | Prettier でフォーマット |
+| コマンド         | 説明                            |
+| ---------------- | ------------------------------- |
+| `aubr dev`       | 開発サーバーを起動              |
+| `aubr build`     | 型チェックして `dist/` にビルド |
+| `aubr preview`   | 本番ビルドをプレビュー          |
+| `aubr typecheck` | Astro／TypeScript チェック      |
+| `aubr lint`      | コードのリント                  |
+| `aubr format`    | Prettier でフォーマット         |
 
 ## ローカライゼーション
 
-| ファイル | 言語 |
-|---------|------|
-| [README.md](README.md) | 英語（デフォルト） |
-| [README.zh-Hant.md](README.zh-Hant.md) | 繁体字中国語 |
-| [README.ja.md](README.ja.md) | 日本語 |
+| ファイル                               | 言語               |
+| -------------------------------------- | ------------------ |
+| [README.md](README.md)                 | 英語（デフォルト） |
+| [README.zh-Hant.md](README.zh-Hant.md) | 繁体字中国語       |
+| [README.ja.md](README.ja.md)           | 日本語             |
 
 ## コントリビューション
 

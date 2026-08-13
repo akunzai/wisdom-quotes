@@ -1,17 +1,13 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-import { useEffect, useMemo, useState } from 'react';
-import { QuoteCard } from '@/components/QuoteCard';
-import { QuoteForm } from '@/components/QuoteForm';
-import { useI18n } from '@/i18n/useI18n';
-import { pickDailyItem } from '@/lib/daily-quote';
-import { db } from '@/lib/storage/db';
-import { createQuote, deleteQuote, updateQuote } from '@/lib/storage/quotes';
-import {
-  displayAuthorName,
-  isUnknownAuthor,
-  UNKNOWN_AUTHOR,
-} from '@/lib/unknown-author';
-import type { Quote, QuoteInput } from '@/types/quote';
+import { useLiveQuery } from "dexie-react-hooks";
+import { useEffect, useMemo, useState } from "react";
+import { QuoteCard } from "@/components/QuoteCard";
+import { QuoteForm } from "@/components/QuoteForm";
+import { useI18n } from "@/i18n/useI18n";
+import { pickDailyItem } from "@/lib/daily-quote";
+import { db } from "@/lib/storage/db";
+import { createQuote, deleteQuote, updateQuote } from "@/lib/storage/quotes";
+import { displayAuthorName, isUnknownAuthor, UNKNOWN_AUTHOR } from "@/lib/unknown-author";
+import type { Quote, QuoteInput } from "@/types/quote";
 
 interface QuotesAppProps {
   baseUrl: string;
@@ -20,18 +16,18 @@ interface QuotesAppProps {
 
 export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
   const { locale, messages: m, t } = useI18n();
-  const [query, setQuery] = useState('');
-  const [sidebarAuthor, setSidebarAuthor] = useState<string>('all');
+  const [query, setQuery] = useState("");
+  const [sidebarAuthor, setSidebarAuthor] = useState<string>("all");
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Quote | undefined>();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const author = params.get('author');
+    const author = params.get("author");
     if (author) setSidebarAuthor(decodeURIComponent(author));
   }, []);
 
-  const quotes = useLiveQuery(() => db.quotes.orderBy('updatedAt').reverse().toArray(), []);
+  const quotes = useLiveQuery(() => db.quotes.orderBy("updatedAt").reverse().toArray(), []);
 
   const authors = useMemo(() => {
     const map = new Map<string, number>();
@@ -48,8 +44,7 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
   );
 
   const hero = useMemo(() => pickDailyItem(quotes ?? []), [quotes]);
-  const activeAuthor =
-    authorFilter ?? (sidebarAuthor === 'all' ? undefined : sidebarAuthor);
+  const activeAuthor = authorFilter ?? (sidebarAuthor === "all" ? undefined : sidebarAuthor);
 
   const filtered = useMemo(() => {
     if (!quotes) return [];
@@ -58,8 +53,7 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
 
     return quotes.filter((quote) => {
       const matchAuthor =
-        !author ||
-        (isUnknownAuthor(author) ? !quote.author : quote.author === author);
+        !author || (isUnknownAuthor(author) ? !quote.author : quote.author === author);
       const matchSearch =
         !q ||
         quote.text.toLowerCase().includes(q) ||
@@ -80,9 +74,7 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
     await deleteQuote(id);
   }
 
-  const activeAuthorLabel = activeAuthor
-    ? displayAuthorName(activeAuthor, m.unknown)
-    : undefined;
+  const activeAuthorLabel = activeAuthor ? displayAuthorName(activeAuthor, m.unknown) : undefined;
 
   return (
     <>
@@ -98,7 +90,14 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
 
       <div className="search-bar">
         <div className="search-input-wrap">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.3-4.3" />
           </svg>
@@ -111,7 +110,14 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
             aria-label={m.search.label}
           />
         </div>
-        <button type="button" className="btn-primary" onClick={() => { setEditing(undefined); setFormOpen(true); }}>
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={() => {
+            setEditing(undefined);
+            setFormOpen(true);
+          }}
+        >
           {m.quotes.add}
         </button>
       </div>
@@ -123,9 +129,12 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
             <ul className="author-list">
               <li>
                 <a
-                  className={`author-item ${sidebarAuthor === 'all' ? 'active' : ''}`}
+                  className={`author-item ${sidebarAuthor === "all" ? "active" : ""}`}
                   href="#"
-                  onClick={(e) => { e.preventDefault(); setSidebarAuthor('all'); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSidebarAuthor("all");
+                  }}
                 >
                   <span>{m.sidebar.all}</span>
                   <span>{quotes?.length ?? 0}</span>
@@ -134,7 +143,7 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
               {authors.map(([name, count]) => (
                 <li key={name}>
                   <a
-                    className={`author-item ${sidebarAuthor === name ? 'active' : ''}`}
+                    className={`author-item ${sidebarAuthor === name ? "active" : ""}`}
                     href={`${baseUrl}?author=${encodeURIComponent(name)}`}
                   >
                     <span>{displayAuthorName(name, m.unknown)}</span>
@@ -167,7 +176,10 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
                   key={quote.id}
                   quote={quote}
                   baseUrl={baseUrl}
-                  onEdit={(q) => { setEditing(q); setFormOpen(true); }}
+                  onEdit={(q) => {
+                    setEditing(q);
+                    setFormOpen(true);
+                  }}
                 />
               ))}
             </div>
@@ -179,7 +191,10 @@ export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
         open={formOpen}
         initial={editing}
         authorOptions={authorOptions}
-        onClose={() => { setFormOpen(false); setEditing(undefined); }}
+        onClose={() => {
+          setFormOpen(false);
+          setEditing(undefined);
+        }}
         onSave={handleSave}
         onDelete={editing ? handleDelete : undefined}
       />

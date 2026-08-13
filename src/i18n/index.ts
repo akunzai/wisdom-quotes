@@ -1,22 +1,22 @@
-import { en } from '@/i18n/en';
-import { ja } from '@/i18n/ja';
-import { zhHant } from '@/i18n/zh-Hant';
-import type { Locale, Messages, PageId } from '@/i18n/types';
+import { en } from "@/i18n/en";
+import { ja } from "@/i18n/ja";
+import { zhHant } from "@/i18n/zh-Hant";
+import type { Locale, Messages, PageId } from "@/i18n/types";
 
 export type { Locale, Messages, PageId };
 
-export const DEFAULT_LOCALE: Locale = 'zh-Hant';
+export const DEFAULT_LOCALE: Locale = "zh-Hant";
 
-export const SUPPORTED_LOCALES: readonly Locale[] = ['zh-Hant', 'en', 'ja'] as const;
+export const SUPPORTED_LOCALES: readonly Locale[] = ["zh-Hant", "en", "ja"] as const;
 
 export const catalogs: Record<Locale, Messages> = {
-  'zh-Hant': zhHant,
+  "zh-Hant": zhHant,
   en,
   ja,
 };
 
 export function isLocale(value: string | null | undefined): value is Locale {
-  return value === 'zh-Hant' || value === 'en' || value === 'ja';
+  return value === "zh-Hant" || value === "en" || value === "ja";
 }
 
 export function interpolate(template: string, vars: Record<string, string | number>): string {
@@ -29,10 +29,10 @@ export function formatPageTitle(page: PageId, locale: Locale): string {
 }
 
 export function resolvePageId(pathname: string): PageId {
-  if (pathname.includes('/focus')) return 'focus';
-  if (pathname.includes('/authors')) return 'authors';
-  if (pathname.includes('/settings')) return 'settings';
-  return 'quotes';
+  if (pathname.includes("/focus")) return "focus";
+  if (pathname.includes("/authors")) return "authors";
+  if (pathname.includes("/settings")) return "settings";
+  return "quotes";
 }
 
 export function focusIntervalLabel(locale: Locale, minutes: number): string {
@@ -49,7 +49,7 @@ export function getTitleBootPayload(): Record<
   { app: string; page: Record<PageId, string>; description: string }
 > {
   return {
-    'zh-Hant': {
+    "zh-Hant": {
       app: zhHant.app.name,
       page: zhHant.page,
       description: zhHant.app.description,
@@ -74,11 +74,11 @@ export function getNavBootPayload(): Record<
     appName: string;
     main: string;
     themeToggle: string;
-    labels: Record<'quotes' | 'authors' | 'settings', string>;
+    labels: Record<"quotes" | "authors" | "settings", string>;
   }
 > {
   return {
-    'zh-Hant': {
+    "zh-Hant": {
       appName: zhHant.app.name,
       main: zhHant.nav.main,
       themeToggle: zhHant.theme.toggle,
@@ -112,12 +112,11 @@ export function getNavBootPayload(): Record<
 }
 
 const FONT_BASE =
-  'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;500;600';
-const FONT_JA =
-  '&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600';
+  "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;500;600";
+const FONT_JA = "&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600";
 
 /** Locale-aware Google Fonts stylesheet (TC only for zh-Hant/en; adds JP for ja). */
 export function fontStylesheetUrl(locale: Locale): string {
-  const suffix = locale === 'ja' ? FONT_JA : '';
+  const suffix = locale === "ja" ? FONT_JA : "";
   return `${FONT_BASE}${suffix}&display=swap`;
 }

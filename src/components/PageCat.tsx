@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { useI18n } from '@/i18n/useI18n';
-import { getPetsEnabled } from '@/lib/prefs';
+import { useEffect, useRef, useState } from "react";
+import { useI18n } from "@/i18n/useI18n";
+import { getPetsEnabled } from "@/lib/prefs";
 
 function pickLine(lines: string[]) {
   return lines[Math.floor(Math.random() * lines.length)];
 }
 
 function baselineY() {
-  if (typeof window === 'undefined') return 0;
+  if (typeof window === "undefined") return 0;
   return window.innerHeight - (window.innerWidth <= 720 ? 56 : 72) - 20;
 }
 
@@ -15,7 +15,7 @@ type PetState = {
   x: number;
   y: number;
   dir: number;
-  state: 'walk' | 'idle' | 'goto' | 'read';
+  state: "walk" | "idle" | "goto" | "read";
   stateUntil: number;
   targetX: number;
   targetY: number;
@@ -23,12 +23,12 @@ type PetState = {
 };
 
 function initialPetState(): PetState {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return {
       x: 0,
       y: 0,
       dir: 1,
-      state: 'walk',
+      state: "walk",
       stateUntil: 0,
       targetX: 0,
       targetY: 0,
@@ -39,7 +39,7 @@ function initialPetState(): PetState {
     x: window.innerWidth * 0.42,
     y: baselineY(),
     dir: 1,
-    state: 'walk',
+    state: "walk",
     stateUntil: 0,
     targetX: 0,
     targetY: 0,
@@ -61,8 +61,8 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
   useEffect(() => {
     setEnabled(getPetsEnabled());
     const onStorage = () => setEnabled(getPetsEnabled());
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   useEffect(() => {
@@ -71,21 +71,20 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
     const el = petRef.current;
     const petW = el.offsetWidth || 72;
     const s = stateRef.current;
-    const clampX = (px: number) =>
-      Math.max(8, Math.min(window.innerWidth - petW - 8, px));
+    const clampX = (px: number) => Math.max(8, Math.min(window.innerWidth - petW - 8, px));
 
     const goToFocusSlot = () => {
       s.targetX = clampX(window.innerWidth * 0.5 - petW * 0.5);
       s.targetY = window.innerHeight * 0.72;
-      s.state = 'goto';
+      s.state = "goto";
       s.dir = s.targetX > s.x ? 1 : -1;
-      el.classList.toggle('facing-left', s.dir < 0);
+      el.classList.toggle("facing-left", s.dir < 0);
     };
 
     goToFocusSlot();
     const onResize = () => goToFocusSlot();
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, [enabled, focusMode]);
 
   useEffect(() => {
@@ -100,9 +99,9 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
 
     const showBubble = (text: string) => {
       bubble.textContent = text;
-      bubble.classList.add('show');
+      bubble.classList.add("show");
       clearTimeout(bubbleTimer);
-      bubbleTimer = setTimeout(() => bubble.classList.remove('show'), 2400);
+      bubbleTimer = setTimeout(() => bubble.classList.remove("show"), 2400);
     };
 
     const setPos = (px: number, py: number) => {
@@ -113,41 +112,40 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
       el.style.top = `${py}px`;
     };
 
-    const clampX = (px: number) =>
-      Math.max(8, Math.min(window.innerWidth - petW() - 8, px));
+    const clampX = (px: number) => Math.max(8, Math.min(window.innerWidth - petW() - 8, px));
 
     const updatePointerEvents = () => {
       const s = stateRef.current;
       const petRect = el.getBoundingClientRect();
-      const overlapsCard = [...document.querySelectorAll('.quote-card')].some((card) => {
+      const overlapsCard = [...document.querySelectorAll(".quote-card")].some((card) => {
         const rect = card.getBoundingClientRect();
         return rect.width > 0 && rectsIntersect(petRect, rect);
       });
-      const passThrough = overlapsCard || s.state === 'read' || s.state === 'goto';
-      el.style.pointerEvents = passThrough ? 'none' : 'auto';
+      const passThrough = overlapsCard || s.state === "read" || s.state === "goto";
+      el.style.pointerEvents = passThrough ? "none" : "auto";
     };
 
     const tick = (now: number) => {
       const s = stateRef.current;
 
-      if (s.state === 'walk') {
+      if (s.state === "walk") {
         s.walkTicks++;
         s.x += s.dir * (0.4 + Math.random() * 0.3);
         s.y += (baselineY() - s.y) * 0.06;
         if (s.x <= 8 || s.x >= window.innerWidth - petW() - 8) {
           s.dir *= -1;
           if (Math.random() < 0.3) {
-            s.state = 'idle';
+            s.state = "idle";
             s.stateUntil = now + 2000;
           }
         }
         s.x = clampX(s.x);
-        el.classList.toggle('facing-left', s.dir < 0);
-        el.classList.remove('reading');
+        el.classList.toggle("facing-left", s.dir < 0);
+        el.classList.remove("reading");
         setPos(s.x, s.y);
 
         if (!focusMode && s.walkTicks > 120) {
-          const cards = [...document.querySelectorAll('.quote-card')].filter((card) => {
+          const cards = [...document.querySelectorAll(".quote-card")].filter((card) => {
             const r = card.getBoundingClientRect();
             return r.width > 0 && r.top < window.innerHeight;
           });
@@ -156,36 +154,36 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
             const rect = card.getBoundingClientRect();
             s.targetX = clampX(rect.left + rect.width * 0.5 - petW() * 0.5);
             s.targetY = Math.max(80, rect.bottom - petH() + 4);
-            s.state = 'goto';
+            s.state = "goto";
             s.walkTicks = 0;
           }
         }
-      } else if (s.state === 'goto') {
+      } else if (s.state === "goto") {
         s.x += (s.targetX - s.x) * 0.07;
         s.y += (s.targetY - s.y) * 0.07;
-        el.classList.toggle('facing-left', s.targetX > s.x);
+        el.classList.toggle("facing-left", s.targetX > s.x);
         setPos(s.x, s.y);
         if (Math.abs(s.targetX - s.x) < 3 && Math.abs(s.targetY - s.y) < 3) {
-          s.state = 'read';
+          s.state = "read";
           s.stateUntil = now + 2800 + Math.random() * 3200;
-          el.classList.add('reading');
+          el.classList.add("reading");
           showBubble(pickLine(focusMode ? m.pet.focusLines : m.pet.readLines));
         }
-      } else if (s.state === 'read') {
+      } else if (s.state === "read") {
         if (now > s.stateUntil) {
           if (focusMode) {
             s.stateUntil = now + 3500 + Math.random() * 2000;
-            el.classList.add('reading');
+            el.classList.add("reading");
             showBubble(pickLine(m.pet.focusLines));
           } else {
-            el.classList.remove('reading');
-            s.state = 'goto';
+            el.classList.remove("reading");
+            s.state = "goto";
             s.targetX = clampX(s.x);
             s.targetY = baselineY();
           }
         }
-      } else if (s.state === 'idle' && now > s.stateUntil) {
-        s.state = 'walk';
+      } else if (s.state === "idle" && now > s.stateUntil) {
+        s.state = "walk";
       }
 
       updatePointerEvents();
@@ -195,18 +193,18 @@ export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
     raf = requestAnimationFrame(tick);
 
     const onClick = () => {
-      el.classList.remove('happy');
+      el.classList.remove("happy");
       void el.offsetWidth;
-      el.classList.add('happy');
+      el.classList.add("happy");
       showBubble(pickLine(m.pet.lines));
-      stateRef.current.state = 'idle';
+      stateRef.current.state = "idle";
       stateRef.current.stateUntil = performance.now() + 1800;
     };
 
-    el.addEventListener('click', onClick);
+    el.addEventListener("click", onClick);
     return () => {
       cancelAnimationFrame(raf);
-      el.removeEventListener('click', onClick);
+      el.removeEventListener("click", onClick);
       clearTimeout(bubbleTimer);
     };
   }, [enabled, focusMode, m.pet]);

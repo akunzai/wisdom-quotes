@@ -1,6 +1,6 @@
-export type Locale = 'zh-Hant' | 'en' | 'ja';
+export type Locale = "zh-Hant" | "en" | "ja";
 
-export type PageId = 'quotes' | 'authors' | 'settings' | 'focus';
+export type PageId = "quotes" | "authors" | "settings" | "focus";
 
 export interface Messages {
   app: {

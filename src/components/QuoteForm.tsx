@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState, type SubmitEvent } from 'react';
-import { useI18n } from '@/i18n/useI18n';
-import type { Quote, QuoteInput } from '@/types/quote';
+import { useEffect, useMemo, useState, type SubmitEvent } from "react";
+import { useI18n } from "@/i18n/useI18n";
+import type { Quote, QuoteInput } from "@/types/quote";
 
 interface QuoteFormProps {
   open: boolean;
@@ -11,7 +11,7 @@ interface QuoteFormProps {
   onDelete?: (id: string) => Promise<void>;
 }
 
-const AUTHOR_LIST_ID = 'wq-author-list';
+const AUTHOR_LIST_ID = "wq-author-list";
 
 export function QuoteForm({
   open,
@@ -22,16 +22,16 @@ export function QuoteForm({
   onDelete,
 }: QuoteFormProps) {
   const { messages: m } = useI18n();
-  const [text, setText] = useState('');
-  const [author, setAuthor] = useState('');
-  const [sourceUrl, setSourceUrl] = useState('');
+  const [text, setText] = useState("");
+  const [author, setAuthor] = useState("");
+  const [sourceUrl, setSourceUrl] = useState("");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (!open) return;
-    setText(initial?.text ?? '');
-    setAuthor(initial?.author ?? '');
-    setSourceUrl(initial?.sourceUrl ?? '');
+    setText(initial?.text ?? "");
+    setAuthor(initial?.author ?? "");
+    setSourceUrl(initial?.sourceUrl ?? "");
   }, [open, initial]);
 
   const authorMatches = useMemo(() => {
@@ -101,7 +101,9 @@ export function QuoteForm({
           {authorOptions.length > 0 && (
             <datalist id={AUTHOR_LIST_ID}>
               {authorOptions.map((name) => (
-                <option key={name} value={name} />
+                <option key={name} value={name}>
+                  {name}
+                </option>
               ))}
             </datalist>
           )}
@@ -113,6 +115,7 @@ export function QuoteForm({
                   type="button"
                   className="author-chip"
                   role="option"
+                  aria-selected={author === name}
                   onClick={() => setAuthor(name)}
                 >
                   {name}

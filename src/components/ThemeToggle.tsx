@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useI18n } from '@/i18n/useI18n';
-import { applyTheme, getStoredTheme, toggleTheme, type Theme } from '@/lib/theme';
+import { useEffect, useState } from "react";
+import { useI18n } from "@/i18n/useI18n";
+import { applyTheme, getStoredTheme, toggleTheme, type Theme } from "@/lib/theme";
 
 export function ThemeToggle() {
   const { messages: m } = useI18n();
-  const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     setTheme(getStoredTheme());
@@ -18,7 +18,7 @@ export function ThemeToggle() {
       title={m.theme.toggle}
       onClick={() => setTheme(toggleTheme())}
     >
-      {theme === 'light' ? '☀' : '☾'}
+      {theme === "light" ? "☀" : "☾"}
     </button>
   );
 }
@@ -35,11 +35,11 @@ export function ThemeSwitch({
   return (
     <button
       type="button"
-      className={`toggle ${checked ? 'on' : ''}`}
+      className={`toggle ${checked ? "on" : ""}`}
       aria-label={m.theme.dark}
       onClick={() => {
         const next = !checked;
-        applyTheme(next ? 'dark' : 'light');
+        applyTheme(next ? "dark" : "light");
         onChange(next);
       }}
     />
