@@ -117,7 +117,16 @@ interface QuoteCollection {
 
 ## Claude Code Compatibility
 
-> [!NOTE]
-> This repository maintains compatibility with Claude Code. `CLAUDE.md` is a symbolic link pointing to `AGENTS.md`.
-> All commands, style guides, and workflows defined in `AGENTS.md` apply to both agentic assistants and Claude Code.
-> **Do not** delete or edit `CLAUDE.md` independently; update guidelines directly in `AGENTS.md`.
+`CLAUDE.md` is a symbolic link to `AGENTS.md`. Update guidelines directly in `AGENTS.md`.
+
+## Self-Reflection
+
+When problem-solving reveals non-obvious knowledge (gotchas, hidden config, env var quirks):
+
+1. **Candidate**: Distill into a concise, non-derivable rule (≤ 2 bullets, context-tagged, no micromanagement).
+2. **Promote**: Present candidate to user for explicit confirmation before writing to a dedicated topic file (`docs/<topic>.md`) or fallback `docs/lessons-learned.md`. Add or update a single `@path` reference line under Rich References — never inline in `AGENTS.md`.
+3. **Prune**: Periodically propose dropping stale entries (upgraded past tagged context, now enforced by linter/test, or duplicated).
+
+## Rich References
+
+- `@src/types/quote.ts` — Core quote and collection interfaces.
