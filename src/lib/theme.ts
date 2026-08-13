@@ -1,11 +1,11 @@
-export type Theme = 'light' | 'dark';
+export type Theme = "light" | "dark";
 
-const STORAGE_KEY = 'wq-theme';
+const STORAGE_KEY = "wq-theme";
 
 export function getStoredTheme(): Theme {
-  if (typeof window === 'undefined') return 'light';
+  if (typeof window === "undefined") return "light";
   const stored = localStorage.getItem(STORAGE_KEY);
-  return stored === 'dark' ? 'dark' : 'light';
+  return stored === "dark" ? "dark" : "light";
 }
 
 export function applyTheme(theme: Theme): void {
@@ -14,7 +14,7 @@ export function applyTheme(theme: Theme): void {
 }
 
 export function toggleTheme(): Theme {
-  const next: Theme = getStoredTheme() === 'light' ? 'dark' : 'light';
+  const next: Theme = getStoredTheme() === "light" ? "dark" : "light";
   applyTheme(next);
   return next;
 }

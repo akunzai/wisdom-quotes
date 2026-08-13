@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const quoteSchema = z.object({
   id: z.uuid(),
@@ -8,7 +8,7 @@ export const quoteSchema = z.object({
   tags: z.array(z.string()).optional(),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
-  visibility: z.enum(['private', 'public']).default('private'),
+  visibility: z.enum(["private", "public"]).default("private"),
 });
 
 export const quoteCollectionSchema = z.object({

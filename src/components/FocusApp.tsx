@@ -1,13 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { PageCat } from '@/components/PageCat';
-import { useI18n } from '@/i18n/useI18n';
-import { getFocusAutoIntervalMinutes } from '@/lib/prefs';
-import { getQuote, listQuotes } from '@/lib/storage/quotes';
-import {
-  displayAuthorName,
-  UNKNOWN_AUTHOR,
-} from '@/lib/unknown-author';
-import type { Quote } from '@/types/quote';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { PageCat } from "@/components/PageCat";
+import { useI18n } from "@/i18n/useI18n";
+import { getFocusAutoIntervalMinutes } from "@/lib/prefs";
+import { getQuote, listQuotes } from "@/lib/storage/quotes";
+import { displayAuthorName, UNKNOWN_AUTHOR } from "@/lib/unknown-author";
+import type { Quote } from "@/types/quote";
 
 interface FocusAppProps {
   baseUrl: string;
@@ -36,7 +33,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
       if (current.length === 0) return;
       const wrapped = ((nextIndex % current.length) + current.length) % current.length;
       setIndex(wrapped);
-      history.replaceState(null, '', focusPath(baseUrl, current[wrapped].id));
+      history.replaceState(null, "", focusPath(baseUrl, current[wrapped].id));
     },
     [baseUrl],
   );
@@ -46,7 +43,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
 
   useEffect(() => {
     async function load() {
-      const id = new URLSearchParams(window.location.search).get('id');
+      const id = new URLSearchParams(window.location.search).get("id");
       const all = await listQuotes();
 
       if (all.length === 0) {
@@ -80,7 +77,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
       setQuotes(all);
       setIndex(nextIndex);
       if (!id || all[nextIndex]?.id !== id) {
-        history.replaceState(null, '', focusPath(baseUrl, all[nextIndex].id));
+        history.replaceState(null, "", focusPath(baseUrl, all[nextIndex].id));
       }
       setReady(true);
     }
@@ -93,17 +90,17 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
       setAutoInterval(getFocusAutoIntervalMinutes());
     }
     function onStorage(event: StorageEvent) {
-      if (event.key === 'wq-focus-auto-minutes') refreshInterval();
+      if (event.key === "wq-focus-auto-minutes") refreshInterval();
     }
     function onPrefsChange(event: Event) {
       const key = (event as CustomEvent<{ key: string }>).detail?.key;
-      if (key === 'wq-focus-auto-minutes') refreshInterval();
+      if (key === "wq-focus-auto-minutes") refreshInterval();
     }
-    window.addEventListener('storage', onStorage);
-    window.addEventListener('wq-prefs-change', onPrefsChange);
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("wq-prefs-change", onPrefsChange);
     return () => {
-      window.removeEventListener('storage', onStorage);
-      window.removeEventListener('wq-prefs-change', onPrefsChange);
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("wq-prefs-change", onPrefsChange);
     };
   }, []);
 
@@ -115,19 +112,19 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         event.preventDefault();
         window.location.assign(baseUrl);
-      } else if (event.key === 'ArrowLeft') {
+      } else if (event.key === "ArrowLeft") {
         event.preventDefault();
         goPrev();
-      } else if (event.key === 'ArrowRight') {
+      } else if (event.key === "ArrowRight") {
         event.preventDefault();
         goNext();
       }
     }
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [baseUrl, goPrev, goNext]);
 
   if (!ready) {
@@ -161,7 +158,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
           className="icon-btn focus-close"
           href={baseUrl}
           data-astro-reload
-          style={{ position: 'absolute', top: '1.25rem', right: '1.25rem' }}
+          style={{ position: "absolute", top: "1.25rem", right: "1.25rem" }}
         >
           ✕
         </a>
@@ -194,7 +191,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
           <blockquote className="focus-quote">{quote.text}</blockquote>
           <div className="focus-divider" />
           <p className="focus-author">
-            —{' '}
+            —{" "}
             <a
               className="focus-author-link"
               href={authorHref}
@@ -204,7 +201,7 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
             </a>
           </p>
           {quote.sourceUrl && (
-            <p className="focus-source" style={{ marginTop: '1.5rem' }}>
+            <p className="focus-source" style={{ marginTop: "1.5rem" }}>
               <a href={quote.sourceUrl} target="_blank" rel="noopener noreferrer">
                 {m.focus.viewSource}
               </a>

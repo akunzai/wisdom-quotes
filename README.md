@@ -26,22 +26,22 @@ Open [http://localhost:4321/wisdom-quotes/](http://localhost:4321/wisdom-quotes/
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `aubr dev` | Start the development server |
-| `aubr build` | Type-check and build to `dist/` |
-| `aubr preview` | Preview the production build |
-| `aubr typecheck` | Run Astro/TypeScript checks |
-| `aubr lint` | Lint the codebase |
-| `aubr format` | Format with Prettier |
+| Command          | Description                     |
+| ---------------- | ------------------------------- |
+| `aubr dev`       | Start the development server    |
+| `aubr build`     | Type-check and build to `dist/` |
+| `aubr preview`   | Preview the production build    |
+| `aubr typecheck` | Run Astro/TypeScript checks     |
+| `aubr lint`      | Lint the codebase               |
+| `aubr format`    | Format with Prettier            |
 
 ## Localization
 
-| File | Language |
-|------|----------|
-| [README.md](README.md) | English (default) |
+| File                                   | Language            |
+| -------------------------------------- | ------------------- |
+| [README.md](README.md)                 | English (default)   |
 | [README.zh-Hant.md](README.zh-Hant.md) | Traditional Chinese |
-| [README.ja.md](README.ja.md) | Japanese |
+| [README.ja.md](README.ja.md)           | Japanese            |
 
 ## Contributing
 

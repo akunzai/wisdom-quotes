@@ -26,22 +26,22 @@ aubr dev
 
 ## 指令
 
-| 指令 | 說明 |
-|------|------|
-| `aubr dev` | 啟動開發伺服器 |
-| `aubr build` | 型別檢查並建置至 `dist/` |
-| `aubr preview` | 預覽正式建置 |
+| 指令             | 說明                        |
+| ---------------- | --------------------------- |
+| `aubr dev`       | 啟動開發伺服器              |
+| `aubr build`     | 型別檢查並建置至 `dist/`    |
+| `aubr preview`   | 預覽正式建置                |
 | `aubr typecheck` | 執行 Astro／TypeScript 檢查 |
-| `aubr lint` | 程式碼檢查 |
-| `aubr format` | Prettier 格式化 |
+| `aubr lint`      | 程式碼檢查                  |
+| `aubr format`    | Prettier 格式化             |
 
 ## 多語言說明
 
-| 檔案 | 語言 |
-|------|------|
-| [README.md](README.md) | 英文（預設） |
-| [README.zh-Hant.md](README.zh-Hant.md) | 繁體中文 |
-| [README.ja.md](README.ja.md) | 日文 |
+| 檔案                                   | 語言         |
+| -------------------------------------- | ------------ |
+| [README.md](README.md)                 | 英文（預設） |
+| [README.zh-Hant.md](README.zh-Hant.md) | 繁體中文     |
+| [README.ja.md](README.ja.md)           | 日文         |
 
 ## 貢獻
 

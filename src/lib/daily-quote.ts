@@ -1,8 +1,8 @@
 /** Local calendar date key (YYYY-MM-DD) for stable daily selection. */
 export function localDateKey(date = new Date()): string {
   const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
   return `${y}-${m}-${d}`;
 }
 
@@ -16,7 +16,10 @@ export function hashString(input: string): number {
 }
 
 /** Pick one item per local calendar day; same date always returns the same entry. */
-export function pickDailyItem<T extends { id: string }>(items: T[], date = new Date()): T | undefined {
+export function pickDailyItem<T extends { id: string }>(
+  items: T[],
+  date = new Date(),
+): T | undefined {
   if (items.length === 0) return undefined;
   const sorted = [...items].sort((a, b) => a.id.localeCompare(b.id));
   const index = hashString(localDateKey(date)) % sorted.length;

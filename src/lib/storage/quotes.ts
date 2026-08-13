@@ -1,13 +1,13 @@
-import { db } from '@/lib/storage/db';
-import { isUnknownAuthor, UNKNOWN_AUTHOR } from '@/lib/unknown-author';
-import type { Quote, QuoteInput } from '@/types/quote';
+import { db } from "@/lib/storage/db";
+import { isUnknownAuthor, UNKNOWN_AUTHOR } from "@/lib/unknown-author";
+import type { Quote, QuoteInput } from "@/types/quote";
 
 function nowIso(): string {
   return new Date().toISOString();
 }
 
 export async function listQuotes(): Promise<Quote[]> {
-  return db.quotes.orderBy('updatedAt').reverse().toArray();
+  return db.quotes.orderBy("updatedAt").reverse().toArray();
 }
 
 export async function getQuote(id: string): Promise<Quote | undefined> {
@@ -24,7 +24,7 @@ export async function createQuote(input: QuoteInput): Promise<Quote> {
     tags: input.tags,
     createdAt: timestamp,
     updatedAt: timestamp,
-    visibility: input.visibility ?? 'private',
+    visibility: input.visibility ?? "private",
   };
   await db.quotes.add(quote);
   return quote;
@@ -40,14 +40,9 @@ export async function updateQuote(
   const updated: Quote = {
     ...existing,
     text: input.text !== undefined ? input.text.trim() : existing.text,
-    author:
-      input.author !== undefined
-        ? input.author.trim() || undefined
-        : existing.author,
+    author: input.author !== undefined ? input.author.trim() || undefined : existing.author,
     sourceUrl:
-      input.sourceUrl !== undefined
-        ? input.sourceUrl.trim() || undefined
-        : existing.sourceUrl,
+      input.sourceUrl !== undefined ? input.sourceUrl.trim() || undefined : existing.sourceUrl,
     tags: input.tags ?? existing.tags,
     visibility: input.visibility ?? existing.visibility,
     updatedAt: nowIso(),
@@ -74,8 +69,7 @@ export async function searchQuotes(query: string): Promise<Quote[]> {
   const all = await listQuotes();
   return all.filter(
     (quote) =>
-      quote.text.toLowerCase().includes(q) ||
-      (quote.author?.toLowerCase().includes(q) ?? false),
+      quote.text.toLowerCase().includes(q) || (quote.author?.toLowerCase().includes(q) ?? false),
   );
 }
 
@@ -88,19 +82,22 @@ export async function listQuotesByAuthor(author: string): Promise<Quote[]> {
 }
 
 export async function listAuthors(
-  locale = 'zh-Hant',
+  locale = "zh-Hant",
 ): Promise<{ name: string; count: number; preview: string }[]> {
   const map = new Map<string, { count: number; preview: string }>();
 
-  await db.quotes.orderBy('updatedAt').reverse().each((quote) => {
-    const name = quote.author || UNKNOWN_AUTHOR;
-    const existing = map.get(name);
-    if (!existing) {
-      map.set(name, { count: 1, preview: quote.text });
-      return;
-    }
-    existing.count += 1;
-  });
+  await db.quotes
+    .orderBy("updatedAt")
+    .reverse()
+    .each((quote) => {
+      const name = quote.author || UNKNOWN_AUTHOR;
+      const existing = map.get(name);
+      if (!existing) {
+        map.set(name, { count: 1, preview: quote.text });
+        return;
+      }
+      existing.count += 1;
+    });
 
   return [...map.entries()]
     .map(([name, info]) => ({
@@ -110,4 +107,3 @@ export async function listAuthors(
     }))
     .sort((a, b) => a.name.localeCompare(b.name, locale));
 }
-

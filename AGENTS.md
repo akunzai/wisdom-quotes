@@ -49,14 +49,14 @@ aubr format
 
 ```typescript
 interface Quote {
-  id: string;           // UUID
-  text: string;         // Quote text (required)
-  author?: string;      // Author (optional)
-  sourceUrl?: string;   // Source link (optional)
-  tags?: string[];      // Tags (optional, future)
-  createdAt: string;    // ISO 8601
+  id: string; // UUID
+  text: string; // Quote text (required)
+  author?: string; // Author (optional)
+  sourceUrl?: string; // Source link (optional)
+  tags?: string[]; // Tags (optional, future)
+  createdAt: string; // ISO 8601
   updatedAt: string;
-  visibility: 'private' | 'public';  // MVP defaults to private
+  visibility: "private" | "public"; // MVP defaults to private
 }
 
 interface QuoteCollection {
@@ -68,11 +68,11 @@ interface QuoteCollection {
 
 ### Deployment Topology
 
-| Phase | Frontend | Data | Backup |
-|-------|----------|------|--------|
-| MVP | GitHub Pages (static) | Browser IndexedDB | JSON import/export |
-| Phase 2 | GitHub Pages | IndexedDB + Google Drive sync | Auto Drive backup |
-| Phase 3 | GitHub Pages + CF Workers | D1 (public quotes, likes) | Personal data stays local/Drive |
+| Phase   | Frontend                  | Data                          | Backup                          |
+| ------- | ------------------------- | ----------------------------- | ------------------------------- |
+| MVP     | GitHub Pages (static)     | Browser IndexedDB             | JSON import/export              |
+| Phase 2 | GitHub Pages              | IndexedDB + Google Drive sync | Auto Drive backup               |
+| Phase 3 | GitHub Pages + CF Workers | D1 (public quotes, likes)     | Personal data stays local/Drive |
 
 ## Tech Stack
 

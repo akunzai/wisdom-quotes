@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useMemo, useSyncExternalStore } from "react";
 import {
   catalogs,
   DEFAULT_LOCALE,
@@ -7,8 +7,8 @@ import {
   resolvePageId,
   type Locale,
   type PageId,
-} from '@/i18n/index';
-import { getLocale, setLocale as persistLocale } from '@/lib/prefs';
+} from "@/i18n/index";
+import { getLocale, setLocale as persistLocale } from "@/lib/prefs";
 
 type Vars = Record<string, string | number>;
 
@@ -34,7 +34,7 @@ export function setLocale(locale: Locale): void {
   document.documentElement.lang = locale;
   document.title = formatPageTitle(resolvePageId(window.location.pathname), locale);
   notifyLocaleChange();
-  window.dispatchEvent(new CustomEvent('wq-locale-change', { detail: { locale } }));
+  window.dispatchEvent(new CustomEvent("wq-locale-change", { detail: { locale } }));
 }
 
 export function useI18n() {

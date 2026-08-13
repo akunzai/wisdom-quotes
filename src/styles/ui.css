@@ -187,7 +187,7 @@
   white-space: nowrap;
 }
 
-:root[data-theme='dark'] .btn-primary {
+:root[data-theme="dark"] .btn-primary {
   color: #0a0e14;
 }
 
@@ -222,11 +222,11 @@
   border-color: rgba(204, 68, 68, 0.35);
 }
 
-:root[data-theme='dark'] .btn-danger {
+:root[data-theme="dark"] .btn-danger {
   color: #f77;
 }
 
-:root[data-theme='dark'] .btn-danger:hover {
+:root[data-theme="dark"] .btn-danger:hover {
   background: rgba(255, 119, 119, 0.1);
 }
 
@@ -333,7 +333,7 @@
 }
 
 .quote-card::before {
-  content: '\201C';
+  content: "\201C";
   position: absolute;
   top: 0.5rem;
   left: 0.85rem;
@@ -544,7 +544,7 @@
 }
 
 .toggle::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0.2rem;
   left: 0.2rem;
@@ -555,7 +555,7 @@
   transition: transform 0.2s;
 }
 
-:root[data-theme='dark'] .toggle::after {
+:root[data-theme="dark"] .toggle::after {
   background: #0a0e14;
 }
 
@@ -788,7 +788,9 @@
   right: -0.35rem;
   font-size: 0.95rem;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .pet.reading .pet-book {

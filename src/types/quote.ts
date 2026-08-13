@@ -1,4 +1,4 @@
-export type QuoteVisibility = 'private' | 'public';
+export type QuoteVisibility = "private" | "public";
 
 export interface Quote {
   id: string;
