@@ -1,6 +1,16 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "react", "jsx-a11y", "unicorn", "oxc"],
+  "plugins": [
+    "typescript",
+    "react",
+    "jsx-a11y",
+    "import",
+    "promise",
+    "react-perf",
+    "node",
+    "unicorn",
+    "oxc"
+  ],
   "categories": {
     "correctness": "error"
   },
@@ -8,7 +18,9 @@
     "typescript/triple-slash-reference": "off",
     "eslint/no-unused-expressions": "off",
     "jsx-a11y/prefer-tag-over-role": "off",
-    "jsx-a11y/anchor-is-valid": "off"
+    "jsx-a11y/anchor-is-valid": "off",
+    "react/react-in-jsx-scope": "off",
+    "react-perf/jsx-no-new-function-as-prop": "off"
   },
   "env": {
     "builtin": true,
