@@ -1,12 +1,12 @@
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 
-const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const raw = JSON.parse(readFileSync(join(root, "public/demo-quotes.json"), "utf8"));
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const raw = JSON.parse(readFileSync(join(root, 'public/demo-quotes.json'), 'utf8'));
 
-if (!raw || typeof raw !== "object") {
-  console.error("demo-quotes.json: root must be an object");
+if (!raw || typeof raw !== 'object') {
+  console.error('demo-quotes.json: root must be an object');
   process.exit(1);
 }
 
