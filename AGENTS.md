@@ -1,132 +1,46 @@
 # Wisdom Quotes — Developer Guidelines
 
-## Project Overview
+**Wisdom Quotes** (智慧語錄) is a static-first personal quote management web app deployable to GitHub Pages with multi-locale UI (zh-Hant default, en, ja) and local IndexedDB storage.
 
-**Wisdom Quotes** is a personal quote management site, **static-first** and deployable to **GitHub Pages**. The UI supports **zh-Hant** (default), **en**, and **ja** via `src/i18n/` catalogs and a Settings locale switcher (`wq-locale` in localStorage). Light / Dark theme support. MVP focuses on personal collection and management; the architecture reserves room for future **public quotes** and **Like** features (Cloudflare D1).
+This project uses [aube](https://aube.jdx.dev/) (`aubr`).
 
-**Planning & requirements** are tracked in [GitHub Issues](https://github.com/akunzai/wisdom-quotes/issues). Start with the [roadmap epic (#1)](https://github.com/akunzai/wisdom-quotes/issues/1).
-
-## Quick Commands
+## Commands
 
 ```bash
-# Development
-aubr dev          # or: npm run dev
-
-# Build (outputs to dist/ for GitHub Pages)
-aubr build
-
-# Preview production build
-aubr preview
-
-# Type checking
-aubr typecheck
-
-# Lint / Format
-aubr lint
-aubr format
+aubr dev           # Start Astro dev server
+aubr build         # Build static site (astro check && astro build to dist/)
+aubr preview       # Preview production build
+aubr typecheck     # Type checking (astro check)
+aubr lint          # Linting (oxlint)
+aubr format        # Format code (oxfmt .)
+aubr format:check  # Check formatting (oxfmt --check .)
+aubr test:unit     # Run unit verification script
+aubr test:e2e      # Run E2E test suite
 ```
 
-## Architecture Overview
+## Conventions
 
-```
-/
-├── src/
-│   ├── components/     # UI components (quote cards, search, theme toggle)
-│   ├── pages/          # Routes (home, authors, focus mode, settings)
-│   ├── lib/
-│   │   ├── storage/    # IndexedDB / localStorage abstraction
-│   │   ├── import-export/  # JSON import/export
-│   │   ├── drive/      # Google Drive sync (Phase 2)
-│   │   └── api/        # Cloudflare Workers API client (Phase 3)
-│   ├── i18n/           # Locale catalogs (zh-Hant, en, ja) and useI18n hook
-│   ├── styles/         # Global styles, theme tokens, animations
-│   └── types/          # Quote, Author type definitions
-├── public/             # Static assets
-└── workers/            # Cloudflare Worker (Phase 3, optional)
-```
+- **UI Language**: Default `zh-Hant`, supports `en` and `ja` via `src/i18n/`. Code, identifiers, and docs in English.
+- **Theming**: Light / Dark theme via `data-theme="light" | "dark"` on `<html>`.
+- **Accessibility & Motion**: Respect `prefers-reduced-motion: reduce` on all animations.
+- **Planning**: Tracked in GitHub Issues. Start with the [roadmap epic (#1)](https://github.com/akunzai/wisdom-quotes/issues/1).
 
-### Data Model (MVP)
+## Pointers
 
-```typescript
-interface Quote {
-  id: string; // UUID
-  text: string; // Quote text (required)
-  author?: string; // Author (optional)
-  sourceUrl?: string; // Source link (optional)
-  tags?: string[]; // Tags (optional, future)
-  createdAt: string; // ISO 8601
-  updatedAt: string;
-  visibility: "private" | "public"; // MVP defaults to private
-}
-
-interface QuoteCollection {
-  version: string;
-  exportedAt: string;
-  quotes: Quote[];
-}
-```
-
-### Deployment Topology
-
-| Phase   | Frontend                  | Data                          | Backup                          |
-| ------- | ------------------------- | ----------------------------- | ------------------------------- |
-| MVP     | GitHub Pages (static)     | Browser IndexedDB             | JSON import/export              |
-| Phase 2 | GitHub Pages              | IndexedDB + Google Drive sync | Auto Drive backup               |
-| Phase 3 | GitHub Pages + CF Workers | D1 (public quotes, likes)     | Personal data stays local/Drive |
-
-## Tech Stack
-
-- **Framework**: Astro 5 + React islands (static output, SEO-friendly, React for interactive islands)
-- **Styling**: Tailwind CSS 4 + CSS variables (theme switching)
-- **Storage**: Dexie.js (IndexedDB wrapper)
-- **Companions**: optional page cat (SVG) that wanders, occasionally reads beside quote cards, and appears in focus mode; respects `prefers-reduced-motion`
-- **Fonts**: Noto Serif TC (quote body) + Noto Sans TC (UI chrome)
-- **Phase 3 API**: Cloudflare Workers + D1 + Hono
-
-## UI Language Convention
-
-- **Display name**: locale-specific via `app.name` — 智慧語錄 (zh-Hant), Wisdom Quotes (en), 名言コレクション (ja)
-- **User-facing copy**: zh-Hant (default), en, or ja — via `useI18n()` / `src/i18n/`; quote body text is not translated
-- **Code, identifiers, comments, and docs**: English
-- **README**: `README.md` (English); localized variants `README.zh-Hant.md`, `README.ja.md`
-
-## Code Style & Conventions
-
-- Language: TypeScript strict mode
-- Components: function components + hooks; separate logic (`lib/`) from UI (`components/`)
-- Immutable updates: quote CRUD goes through the storage abstraction, never direct IndexedDB access
-- Theming: `data-theme="light" | "dark"` on `<html>`, tokens defined as CSS variables
-- Accessibility: keyboard navigable, visible focus rings, animations can be disabled
-- Git branches: `feature/<desc>`, `fix/<desc>`
-- **Issues**: link PRs to issues (`Closes #N`); update roadmap checklist in #1 when closing MVP issues
-
-## Workflows
-
-- **Planning**: use GitHub Issues — do not add parallel planning docs in `docs/`
-- **Testing**: run `npm run typecheck` and `npm run test` before submitting
-- **Build verification**: `npm run build` must succeed and `dist/` must be deployable as-is
-- **UI changes**: verify both Light/Dark themes and mobile layouts
-- **Animation**: any new motion must degrade gracefully under `prefers-reduced-motion: reduce`
-
-## Security & Privacy
-
-- MVP data stays in the user's browser; nothing uploaded to a server
-- Google Drive sync only accesses user-authorized file scopes
-- Publishing a quote publicly requires explicit user confirmation
-- D1 API must validate origin, apply rate limiting; likes must prevent duplicates and abuse
+- Domain types & schema: @src/types/quote.ts
+- Storage layer: @src/lib/storage/quotes.ts
+- Import / export schema: @src/lib/import-export/schema.ts
+- i18n catalogs: @src/i18n/index.ts
+- Verification tests: @scripts/verify-demo-quotes.mjs
 
 ## Claude Code Compatibility
 
-`CLAUDE.md` is a symbolic link to `AGENTS.md`. Update guidelines directly in `AGENTS.md`.
+`CLAUDE.md` is a symbolic link pointing to `AGENTS.md`. Edit `AGENTS.md` directly.
 
 ## Self-Reflection
 
 When problem-solving reveals non-obvious knowledge (gotchas, hidden config, env var quirks):
 
 1. **Candidate**: Distill into a concise, non-derivable rule (≤ 2 bullets, context-tagged, no micromanagement).
-2. **Promote**: Present candidate to user for explicit confirmation before writing to a dedicated topic file (`docs/<topic>.md`) or fallback `docs/lessons-learned.md`. Add or update a single `@path` reference line under Rich References — never inline in `AGENTS.md`.
+2. **Promote**: Present candidate to user for explicit confirmation before writing to a dedicated topic file (`docs/<topic>.md`) or fallback `docs/lessons-learned.md`. Add or update a single `@path` reference line under Pointers — never inline in `AGENTS.md`.
 3. **Prune**: Periodically propose dropping stale entries (upgraded past tagged context, now enforced by linter/test, or duplicated).
-
-## Rich References
-
-- `@src/types/quote.ts` — Core quote and collection interfaces.
