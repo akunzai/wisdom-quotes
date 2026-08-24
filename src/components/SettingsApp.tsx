@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { ThemeSwitch } from "@/components/ThemeToggle";
 import { FOCUS_AUTO_INTERVAL_VALUES, focusIntervalLabel } from "@/i18n/index";
@@ -11,21 +11,20 @@ import {
 } from "@/lib/prefs";
 import { getStoredTheme } from "@/lib/theme";
 
+const emptySubscribe = () => () => {};
+
 export function SettingsApp() {
   const { locale, messages: m, t } = useI18n();
-  const [dark, setDark] = useState(false);
-  const [pets, setPets] = useState(true);
-  const [focusAutoMinutes, setFocusAutoMinutes] = useState(5);
+  const [dark, setDark] = useState(() => getStoredTheme() === "dark");
+  const [pets, setPets] = useState(getPetsEnabled);
+  const [focusAutoMinutes, setFocusAutoMinutes] = useState(getFocusAutoIntervalMinutes);
   const [message, setMessage] = useState("");
-  const [ready, setReady] = useState(false);
   const [importingDemo, setImportingDemo] = useState(false);
-
-  useEffect(() => {
-    setDark(getStoredTheme() === "dark");
-    setPets(getPetsEnabled());
-    setFocusAutoMinutes(getFocusAutoIntervalMinutes());
-    setReady(true);
-  }, []);
+  const ready = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
 
   async function handleExport() {
     const { exportQuotes, downloadJson } = await import("@/lib/import-export");

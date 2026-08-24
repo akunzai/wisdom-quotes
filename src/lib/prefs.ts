@@ -24,6 +24,7 @@ export function getPetsEnabled(): boolean {
 
 export function setPetsEnabled(enabled: boolean): void {
   localStorage.setItem(PETS_KEY, enabled ? "on" : "off");
+  window.dispatchEvent(new CustomEvent("wq-prefs-change", { detail: { key: PETS_KEY } }));
 }
 
 /** Minutes between auto-advancing quotes in focus mode; 0 disables auto-advance. */

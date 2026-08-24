@@ -1,6 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { useI18n } from "@/i18n/useI18n";
 import { getPetsEnabled } from "@/lib/prefs";
+
+function subscribePets(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener("wq-prefs-change", callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener("wq-prefs-change", callback);
+  };
+}
 
 function pickLine(lines: string[]) {
   return lines[Math.floor(Math.random() * lines.length)];
@@ -53,17 +62,10 @@ function rectsIntersect(a: DOMRect, b: DOMRect): boolean {
 
 export function PageCat({ focusMode = false }: { focusMode?: boolean }) {
   const { messages: m } = useI18n();
-  const [enabled, setEnabled] = useState(false);
+  const enabled = useSyncExternalStore(subscribePets, getPetsEnabled, () => false);
   const petRef = useRef<HTMLDivElement>(null);
   const bubbleRef = useRef<HTMLDivElement>(null);
   const stateRef = useRef(initialPetState());
-
-  useEffect(() => {
-    setEnabled(getPetsEnabled());
-    const onStorage = () => setEnabled(getPetsEnabled());
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
 
   useEffect(() => {
     if (!enabled || !focusMode || !petRef.current) return;
