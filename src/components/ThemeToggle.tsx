@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useI18n } from "@/i18n/useI18n";
 import { applyTheme, getStoredTheme, toggleTheme, type Theme } from "@/lib/theme";
 
 export function ThemeToggle() {
   const { messages: m } = useI18n();
-  const [theme, setTheme] = useState<Theme>("light");
-
-  useEffect(() => {
-    setTheme(getStoredTheme());
-  }, []);
+  const [theme, setTheme] = useState<Theme>(getStoredTheme);
 
   return (
     <button

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type SubmitEvent } from "react";
+import { useMemo, useState, type SubmitEvent } from "react";
 import { useI18n } from "@/i18n/useI18n";
 import type { Quote, QuoteInput } from "@/types/quote";
 
@@ -21,18 +21,32 @@ export function QuoteForm({
   onSave,
   onDelete,
 }: QuoteFormProps) {
-  const { messages: m } = useI18n();
-  const [text, setText] = useState("");
-  const [author, setAuthor] = useState("");
-  const [sourceUrl, setSourceUrl] = useState("");
-  const [saving, setSaving] = useState(false);
+  if (!open) return null;
 
-  useEffect(() => {
-    if (!open) return;
-    setText(initial?.text ?? "");
-    setAuthor(initial?.author ?? "");
-    setSourceUrl(initial?.sourceUrl ?? "");
-  }, [open, initial]);
+  return (
+    <QuoteFormModal
+      key={initial?.id ?? "new"}
+      initial={initial}
+      authorOptions={authorOptions}
+      onClose={onClose}
+      onSave={onSave}
+      onDelete={onDelete}
+    />
+  );
+}
+
+function QuoteFormModal({
+  initial,
+  authorOptions = [],
+  onClose,
+  onSave,
+  onDelete,
+}: Omit<QuoteFormProps, "open">) {
+  const { messages: m } = useI18n();
+  const [text, setText] = useState(initial?.text ?? "");
+  const [author, setAuthor] = useState(initial?.author ?? "");
+  const [sourceUrl, setSourceUrl] = useState(initial?.sourceUrl ?? "");
+  const [saving, setSaving] = useState(false);
 
   const authorMatches = useMemo(() => {
     const query = author.trim().toLowerCase();
@@ -41,8 +55,6 @@ export function QuoteForm({
       : authorOptions;
     return filtered.filter((name) => name !== author.trim()).slice(0, 10);
   }, [author, authorOptions]);
-
-  if (!open) return null;
 
   async function handleDelete() {
     if (!initial || !onDelete) return;

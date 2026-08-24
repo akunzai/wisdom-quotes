@@ -1,5 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { QuoteCard } from "@/components/QuoteCard";
 import { QuoteForm } from "@/components/QuoteForm";
 import { useI18n } from "@/i18n/useI18n";
@@ -17,15 +17,14 @@ interface QuotesAppProps {
 export function QuotesApp({ baseUrl, authorFilter }: QuotesAppProps) {
   const { locale, messages: m, t } = useI18n();
   const [query, setQuery] = useState("");
-  const [sidebarAuthor, setSidebarAuthor] = useState<string>("all");
-  const [formOpen, setFormOpen] = useState(false);
-  const [editing, setEditing] = useState<Quote | undefined>();
-
-  useEffect(() => {
+  const [sidebarAuthor, setSidebarAuthor] = useState<string>(() => {
+    if (typeof window === "undefined") return "all";
     const params = new URLSearchParams(window.location.search);
     const author = params.get("author");
-    if (author) setSidebarAuthor(decodeURIComponent(author));
-  }, []);
+    return author ? decodeURIComponent(author) : "all";
+  });
+  const [formOpen, setFormOpen] = useState(false);
+  const [editing, setEditing] = useState<Quote | undefined>();
 
   const quotes = useLiveQuery(() => db.quotes.orderBy("updatedAt").reverse().toArray(), []);
 

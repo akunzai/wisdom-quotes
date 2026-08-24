@@ -22,7 +22,9 @@ export function FocusApp({ baseUrl }: FocusAppProps) {
   const [autoInterval, setAutoInterval] = useState(getFocusAutoIntervalMinutes);
 
   const quotesRef = useRef(quotes);
-  quotesRef.current = quotes;
+  useEffect(() => {
+    quotesRef.current = quotes;
+  }, [quotes]);
 
   const quote = quotes[index];
   const canNavigate = quotes.length > 1;
