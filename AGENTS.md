@@ -6,17 +6,9 @@ This project uses [aube](https://aube.jdx.dev/) (`aubr`).
 
 ## Commands
 
-```bash
-aubr dev           # Start Astro dev server
-aubr build         # Build static site (astro check && astro build to dist/)
-aubr preview       # Preview production build
-aubr typecheck     # Type checking (astro check)
-aubr lint          # Linting (oxlint)
-aubr format        # Format code (oxfmt .)
-aubr format:check  # Check formatting (oxfmt --check .)
-aubr test:unit     # Run unit verification script
-aubr test:e2e      # Run E2E test suite
-```
+- Run unit verification: `aubr test:unit`
+- Run E2E test suite: `aubr test:e2e`
+- Build static site: `aubr build`
 
 ## Conventions
 
@@ -39,8 +31,6 @@ aubr test:e2e      # Run E2E test suite
 
 ## Self-Reflection
 
-When problem-solving reveals non-obvious knowledge (gotchas, hidden config, env var quirks):
-
-1. **Candidate**: Distill into a concise, non-derivable rule (≤ 2 bullets, context-tagged, no micromanagement).
-2. **Promote**: Present candidate to user for explicit confirmation before writing to a dedicated topic file (`docs/<topic>.md`) or fallback `docs/lessons-learned.md`. Add or update a single `@path` reference line under Pointers — never inline in `AGENTS.md`.
-3. **Prune**: Periodically propose dropping stale entries (upgraded past tagged context, now enforced by linter/test, or duplicated).
+- **Candidate**: Distill a non-obvious gotcha into ≤ 2 context-tagged bullets. Propose it before writing.
+- **Promote**: On confirmation, put it where whoever would break it must already pass — enforce it (assert/type/test) when the fix is in hand, else a comment at that site, else an agent-facing doc (`docs/agents/<topic>.md`, else `docs/agents/lessons-learned.md`) with one `@path` line under Pointers. Never both.
+- **Prune**: Drop entries once stale (obsolete version, now enforced, duplicated, or a transcript) — not by a fixed count.
