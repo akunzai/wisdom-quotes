@@ -10,13 +10,6 @@ This project uses [aube](https://aube.jdx.dev/) (`aubr`).
 - Run E2E test suite: `aubr test:e2e`
 - Build static site: `aubr build`
 
-## Conventions
-
-- **UI Language**: Default `zh-Hant`, supports `en` and `ja` via `src/i18n/`. Code, identifiers, and docs in English.
-- **Theming**: Light / Dark theme via `data-theme="light" | "dark"` on `<html>`.
-- **Accessibility & Motion**: Respect `prefers-reduced-motion: reduce` on all animations.
-- **Planning**: Tracked in GitHub Issues. Start with the [roadmap epic (#1)](https://github.com/akunzai/wisdom-quotes/issues/1).
-
 ## Pointers
 
 - Domain types & schema: @src/types/quote.ts
@@ -24,6 +17,11 @@ This project uses [aube](https://aube.jdx.dev/) (`aubr`).
 - Import / export schema: @src/lib/import-export/schema.ts
 - i18n catalogs: @src/i18n/index.ts
 - Verification tests: @scripts/verify-demo-quotes.mjs
+- Issue tracker: @docs/agents/issue-tracker.md
+- Pull requests: @docs/agents/pull-request.md
+- Verification: @docs/agents/verification.md
+- Triage labels: @docs/agents/triage-labels.md
+- Domain docs: @docs/agents/domain.md
 
 ## Claude Code Compatibility
 
