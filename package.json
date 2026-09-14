@@ -20,21 +20,21 @@
     "@astrojs/check": "^0.9.10",
     "@astrojs/react": "^6.0.5",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.1",
-    "dexie": "^4.4.5",
+    "astro": "^7.3.2",
+    "dexie": "^4.4.6",
     "dexie-react-hooks": "^4.4.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
-    "zod": "^4.5.4"
+    "zod": "^4.6.2"
   },
   "devDependencies": {
-    "@types/node": "^26.4.1",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
-    "oxfmt": "^0.66.0",
-    "oxlint": "^1.81.0"
+    "@types/node": "^26.5.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "oxfmt": "^0.67.0",
+    "oxlint": "^1.82.0"
   },
   "engines": {
     "node": ">=24.0.0"
