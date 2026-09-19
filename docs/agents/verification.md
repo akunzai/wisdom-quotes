@@ -57,6 +57,13 @@ Credentials come from GitHub Actions environment secrets.
 
 - Recording: `to-walkthrough-video` or `tcut` — fallback to terminal-browser or manual capture
 - Screenshots: `playwright-cli screenshot` or browser capture
+- UI locale: **`zh-Hant`**. Catalogs are `zh-Hant` (default), `en`, and
+  `ja` in `src/i18n/`. The app reads `localStorage` key `wq-locale`
+  first, then falls back to `zh-Hant` — it does not follow the browser.
+  Browser automation defaults to `en-US`, so set `"locale": "zh-TW"` and
+  set `wq-locale` to `zh-Hant`. A leftover `en` or `ja` value outranks
+  the capture locale. Captions follow Traditional Chinese
+  (`"captionLocale"`).
 
 **This document is where the capture rules live**, and the request
 document points here rather than restating them. A capture taken on the
