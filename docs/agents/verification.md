@@ -55,7 +55,7 @@ Credentials come from GitHub Actions environment secrets.
 
 ## Capturing evidence
 
-- Recording: `to-walkthrough-video` or `tcut` — fallback to terminal-browser or manual capture
+- Recording: `record-walkthrough` or `tcut` — fallback to terminal-browser or manual capture
 - Screenshots: `playwright-cli screenshot` or browser capture
 - UI locale: **`zh-Hant`**. Catalogs are `zh-Hant` (default), `en`, and
   `ja` in `src/i18n/`. The app reads `localStorage` key `wq-locale`
