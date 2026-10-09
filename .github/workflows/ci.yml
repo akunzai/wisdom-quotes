@@ -50,3 +50,15 @@ jobs:
           exit 1
       - name: Run browser tests (smoke + E2E)
         run: SMOKE_BASE_URL=http://127.0.0.1:4322/wisdom-quotes/ ./scripts/browser-tests.sh
+      - name: Start configured backup test server
+        run: |
+          PUBLIC_GOOGLE_DRIVE_CLIENT_ID=test-client-id aubr dev --host 127.0.0.1 --port 4323 &
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:4323/wisdom-quotes/ >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          exit 1
+      - name: Verify backup transactions and settings flow
+        run: aubr test:backup

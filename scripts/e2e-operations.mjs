@@ -227,7 +227,7 @@ async (page) => {
   pass('匯入按鈕', (await page.locator('label').filter({ hasText: '匯入' }).count()) > 0);
   pass('清空按鈕', await page.getByRole('button', { name: '清空' }).isVisible());
   const hasDrive = await page.evaluate(() => document.body.textContent.includes('Google Drive'));
-  pass('隱藏 Google Drive', !hasDrive);
+  pass('Google Drive 備份區塊', hasDrive);
 
   // Focus auto interval
   const focusIntervalSelect = page.getByLabel('自動切換名言間隔');

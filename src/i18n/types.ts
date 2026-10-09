@@ -113,6 +113,34 @@ export interface Messages {
     off: string;
     minutes: string;
   };
+  drive: {
+    title: string;
+    description: string;
+    notConfigured: string;
+    loading: string;
+    working: string;
+    retry: string;
+    backup: string;
+    list: string;
+    select: string;
+    preview: string;
+    noBackups: string;
+    backupTime: string;
+    counts: string;
+    replaceWarning: string;
+    emptyWarning: string;
+    exportFirst: string;
+    saved: string;
+    restore: string;
+    backedUp: string;
+    restored: string;
+    authorization: string;
+    unavailable: string;
+    network: string;
+    invalid: string;
+    changed: string;
+    restoreFailed: string;
+  };
   locale: {
     zhHant: string;
     en: string;
