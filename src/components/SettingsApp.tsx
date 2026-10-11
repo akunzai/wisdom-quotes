@@ -10,6 +10,7 @@ import {
   setPetsEnabled,
 } from "@/lib/prefs";
 import { getStoredTheme } from "@/lib/theme";
+import { GoogleDriveBackup } from "@/components/GoogleDriveBackup";
 
 const emptySubscribe = () => () => {};
 
@@ -79,6 +80,8 @@ export function SettingsApp() {
           {message}
         </p>
       )}
+
+      <GoogleDriveBackup clientId={import.meta.env.PUBLIC_GOOGLE_DRIVE_CLIENT_ID ?? ""} />
 
       <div className="settings-group">
         <p className="settings-group-title">{m.settings.appearance}</p>

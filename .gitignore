@@ -12,6 +12,7 @@ dark-disk/
 *.log
 .env
 .env.*
+!.env.example
 
 # editor
 .vscode/*
