@@ -112,6 +112,43 @@ export const en: Messages = {
     cleared: "Cleared {count} quotes",
     nothingToClear: "No quotes to clear",
   },
+  drive: {
+    title: "Google Drive backup",
+    description:
+      "Manually save all quotes as independent versions. Backups are hidden from the normal Drive file list, exclude device preferences, and are not automatically synced or cleaned up.",
+    notConfigured:
+      "Google Drive backup is not enabled on this site. JSON export and import remain available below.",
+    loading: "Preparing Google authorization…",
+    working: "Working, please wait…",
+    retry: "Prepare again",
+    backup: "Create backup",
+    list: "List backups",
+    select: "Choose backup version",
+    preview: "Preview restore",
+    noBackups: "This Google account has no backups yet.",
+    backupTime: "Backup time: {time}",
+    counts: "Backup: {backup} quotes. Current local collection: {local} quotes.",
+    replaceWarning:
+      "Restore replaces the entire local collection without merging. Export your current data and confirm you have saved it first.",
+    emptyWarning: "This backup has no quotes. Restoring it clears all local quotes.",
+    exportFirst: "Export current data first",
+    saved: "I have saved the JSON file containing my current data",
+    restore: "Replace local quotes",
+    backedUp: "Backup created. Earlier versions are preserved.",
+    restored: "Restore complete. Local quotes have been replaced.",
+    authorization:
+      "Google authorization was cancelled or expired. Click Create backup or List backups again to authorize and retry.",
+    unavailable:
+      "Google authorization could not be prepared. Check your connection, allow the Google authorization service to load, and prepare again.",
+    network:
+      "Drive operation failed. Check your connection and available Drive storage, then retry. If an upload outcome is uncertain, list backups first.",
+    invalid:
+      "The backup or Drive response is invalid. Choose another backup or list backups again.",
+    changed:
+      "Local data changed after export. Export and confirm saving the current data again before restoring.",
+    restoreFailed:
+      "Local data operation failed. Existing quotes are preserved. Check available browser storage and retry.",
+  },
   focusInterval: {
     off: "Off",
     minutes: "{n} min",

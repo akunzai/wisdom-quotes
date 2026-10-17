@@ -54,6 +54,38 @@ export async function importQuotesFromJson(
   return { imported, updated };
 }
 
+export class BackupError extends Error {
+  code: "invalid" | "changed";
+
+  constructor(code: "invalid" | "changed") {
+    super(code);
+    this.code = code;
+  }
+}
+
+export function parseQuoteBackup(raw: unknown): QuoteCollection {
+  const parsed = quoteCollectionSchema.safeParse(raw);
+  if (!parsed.success || parsed.data.version !== "1.0") throw new BackupError("invalid");
+  const ids = new Set(parsed.data.quotes.map((quote) => quote.id));
+  if (ids.size !== parsed.data.quotes.length) throw new BackupError("invalid");
+  return parsed.data;
+}
+
+function collectionContent(collection: QuoteCollection): string {
+  return JSON.stringify([...collection.quotes].sort((a, b) => a.id.localeCompare(b.id)));
+}
+
+export async function restoreQuoteBackup(raw: unknown, current: QuoteCollection): Promise<void> {
+  const parsed = parseQuoteBackup(raw);
+  const expected = collectionContent(parseQuoteBackup(current));
+  await db.transaction("rw", db.quotes, async () => {
+    const latest = await exportQuotes();
+    if (collectionContent(parseQuoteBackup(latest)) !== expected) throw new BackupError("changed");
+    await db.quotes.clear();
+    await db.quotes.bulkAdd(parsed.quotes);
+  });
+}
+
 export async function importDemoQuotes(): Promise<{ imported: number; updated: number }> {
   const response = await fetch(withBase("demo-quotes.json"));
   if (!response.ok) {

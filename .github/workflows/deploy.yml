@@ -17,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_GOOGLE_DRIVE_CLIENT_ID: ${{ vars.PUBLIC_GOOGLE_DRIVE_CLIENT_ID }}
     steps:
       - uses: actions/checkout@v7
       - uses: jdx/mise-action@v4
