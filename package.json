@@ -17,11 +17,11 @@
     "fmt:check": "bun fmt --no-script --check"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.10",
+    "@astrojs/check": "^0.9.11",
     "@astrojs/react": "^7.1.0",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.4.0",
-    "dexie": "^4.4.6",
+    "astro": "^7.4.1",
+    "dexie": "^4.4.7",
     "dexie-react-hooks": "^4.4.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -32,7 +32,7 @@
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "oxlint": "^1.88.0"
+    "oxlint": "^1.89.0"
   },
   "overrides": {
     "fast-uri": ">=3.1.6 <4",
