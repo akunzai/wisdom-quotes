@@ -11,29 +11,29 @@
 
 ## 環境需求
 
-- [mise](https://mise.jdx.dev/) — 依 `mise.toml` 安裝 Node LTS 與 [aube](https://aube.jdx.dev/)
+- [mise](https://mise.jdx.dev/) — 依 `mise.toml` 安裝 Node LTS 與 Bun
 
 ## 開始使用
 
 ```bash
 git clone https://github.com/akunzai/wisdom-quotes.git
 cd wisdom-quotes
-aube install
-aubr dev
+bun install
+bun run dev
 ```
 
 開啟 [http://localhost:4321/wisdom-quotes/](http://localhost:4321/wisdom-quotes/)。
 
 ## 指令
 
-| 指令             | 說明                        |
-| ---------------- | --------------------------- |
-| `aubr dev`       | 啟動開發伺服器              |
-| `aubr build`     | 型別檢查並建置至 `dist/`    |
-| `aubr preview`   | 預覽正式建置                |
-| `aubr typecheck` | 執行 Astro／TypeScript 檢查 |
-| `aubr lint`      | 程式碼檢查                  |
-| `aubr format`    | Prettier 格式化             |
+| 指令              | 說明                        |
+| ----------------- | --------------------------- |
+| `bun run dev`     | 啟動開發伺服器              |
+| `bun run build`   | 型別檢查並建置至 `dist/`    |
+| `bun run preview` | 預覽正式建置                |
+| `bun run check`   | 執行 Astro／TypeScript 檢查 |
+| `bun run lint`    | 程式碼檢查                  |
+| `bun run fmt`     | Bun 格式化                  |
 
 ## 多語言說明
 

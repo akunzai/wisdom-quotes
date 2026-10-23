@@ -11,29 +11,29 @@ A personal quote collection app with multilingual UI (Traditional Chinese, Engli
 
 ## Prerequisites
 
-- [mise](https://mise.jdx.dev/) — installs Node LTS and [aube](https://aube.jdx.dev/) per `mise.toml`
+- [mise](https://mise.jdx.dev/) — installs Node LTS and Bun per `mise.toml`
 
 ## Getting Started
 
 ```bash
 git clone https://github.com/akunzai/wisdom-quotes.git
 cd wisdom-quotes
-aube install
-aubr dev
+bun install
+bun run dev
 ```
 
 Open [http://localhost:4321/wisdom-quotes/](http://localhost:4321/wisdom-quotes/).
 
 ## Scripts
 
-| Command          | Description                     |
-| ---------------- | ------------------------------- |
-| `aubr dev`       | Start the development server    |
-| `aubr build`     | Type-check and build to `dist/` |
-| `aubr preview`   | Preview the production build    |
-| `aubr typecheck` | Run Astro/TypeScript checks     |
-| `aubr lint`      | Lint the codebase               |
-| `aubr format`    | Format with Prettier            |
+| Command           | Description                     |
+| ----------------- | ------------------------------- |
+| `bun run dev`     | Start the development server    |
+| `bun run build`   | Type-check and build to `dist/` |
+| `bun run preview` | Preview the production build    |
+| `bun run check`   | Run Astro/TypeScript checks     |
+| `bun run lint`    | Lint the codebase               |
+| `bun run fmt`     | Format with Bun                 |
 
 ## Localization
 

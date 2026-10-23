@@ -7,11 +7,11 @@ holds only what an agent needs.
 ## Starting the environment
 
 ```sh
-aubr lint && aubr format:check && aubr test:unit && aubr build
+bun run lint && bun run fmt:check && bun run test:unit && bun run build
 ```
 
 <!-- drift:forge github -->
-<!-- drift:entrypoint-cmd aubr lint && aubr format:check && aubr test:unit && aubr build -->
+<!-- drift:entrypoint-cmd bun run lint && bun run fmt:check && bun run test:unit && bun run build -->
 
 It never prompts. A step needing a human aborts non-zero naming the
 prerequisite — see Human prerequisites below.
@@ -20,37 +20,47 @@ prerequisite — see Human prerequisites below.
 
 ## Checks
 
-Run via `aubr` (aube package manager):
+Run via `bun run`:
 
-| What                | Command                                                                         |
-| ------------------- | ------------------------------------------------------------------------------- |
-| Full gate           | `aubr lint && aubr format:check && aubr test:unit && aubr build`                |
-| Linter              | `aubr lint`                                                                     |
-| Formatter check     | `aubr format:check`                                                             |
-| Unit verification   | `aubr test:unit`                                                                |
-| Type check & build  | `aubr build`                                                                    |
-| Browser & E2E tests | `aubr preview --port 4322 --host 127.0.0.1 &` then `./scripts/browser-tests.sh` |
+| What                | Command                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------- |
+| Full gate           | `bun run lint && bun run fmt:check && bun run test:unit && bun run build`          |
+| Linter              | `bun run lint`                                                                     |
+| Formatter check     | `bun run fmt:check`                                                                |
+| Unit verification   | `bun run test:unit`                                                                |
+| Type check & build  | `bun run build`                                                                    |
+| Browser & E2E tests | `bun run preview --port 4322 --host 127.0.0.1 &` then `./scripts/browser-tests.sh` |
 
 ## Human prerequisites
 
-None. `node` and `aube` are managed via `mise`.
+None. `node` and `bun` are managed via `mise`.
 
 ## Ports
 
 Not applicable. wisdom-quotes has no permanent listening service for its gate, so several agents can run the gate in the same clone at once. (The local preview server optionally listens on port 4322 during browser tests).
 
-## Changes that need a deployed environment
+## Deployment verification
 
-These cannot be verified locally. Open the request as a draft, let the
-pipeline deploy, then verify against `https://akunzai.github.io/wisdom-quotes/`:
+For toolchain, deployment-workflow, and base URL changes, run the local
+gate and browser tests against the production build, and confirm the PR's
+CI jobs pass. This is sufficient for review readiness when production
+only deploys after merging to `main`.
 
-- GitHub Pages production deployment: changes to deployment workflows or base URL routing that only trigger on push to `main`.
+After merging, confirm the Pages deployment succeeds for the merged commit,
+then smoke-test `https://akunzai.github.io/wisdom-quotes/`, including affected
+routes and assets. Record the workflow run or deployment id and commit SHA.
+Until then, report production deployment as pending post-merge verification;
+it does not require keeping an otherwise verified PR in draft.
 
-Evidence from that environment cites the pipeline or deployment id and
-the commit SHA, and is treated as containing real data: mask, crop, or
-use a dedicated test account.
+If a change requires deployed behavior that local tests and CI cannot
+exercise, use a preview or staging environment before marking it ready when
+one is available. If production is the only such environment, document the
+remaining risk, post-merge check, and rollback plan in the PR for review.
 
-Agent may deploy to it: **no**.
+Treat deployed evidence as containing real data: mask, crop, or use a
+dedicated test account.
+
+Agent may deploy to production: **no**.
 Credentials come from GitHub Actions environment secrets.
 
 ## Capturing evidence
