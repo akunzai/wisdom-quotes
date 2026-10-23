@@ -20,11 +20,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: jdx/mise-action@v4
-      - run: aube ci
-      - run: aubr lint
-      - run: aubr format:check
-      - run: aubr build
-      - run: npm run test:unit
+      - run: bun install --frozen-lockfile
+      - run: bun run lint
+      - run: bun run fmt:check
+      - run: bun run build
+      - run: bun run test:unit
 
   smoke:
     runs-on: ubuntu-latest
@@ -33,12 +33,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: jdx/mise-action@v4
-      - run: aube ci
-      - run: aubr build
+      - run: bun install --frozen-lockfile
+      - run: bun run build
       - run: npm install -g @playwright/cli@latest
       - name: Start preview server
         run: |
-          aubr preview --port 4322 --host 127.0.0.1 &
+          bun run preview --port 4322 --host 127.0.0.1 &
           for i in $(seq 1 30); do
             if curl -sf http://127.0.0.1:4322/wisdom-quotes/ >/dev/null; then
               echo "Preview ready"

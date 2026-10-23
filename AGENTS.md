@@ -2,13 +2,13 @@
 
 **Wisdom Quotes** (智慧語錄) is a static-first personal quote management web app deployable to GitHub Pages with multi-locale UI (zh-Hant default, en, ja) and local IndexedDB storage.
 
-This project uses [aube](https://aube.jdx.dev/) (`aubr`).
+This project uses Bun (`bun run`).
 
 ## Commands
 
-- Run unit verification: `aubr test:unit`
-- Run E2E test suite: `aubr test:e2e`
-- Build static site: `aubr build`
+- Run unit verification: `bun run test:unit`
+- Run E2E test suite: `bun run test:e2e`
+- Build static site: `bun run build`
 
 ## Pointers
 

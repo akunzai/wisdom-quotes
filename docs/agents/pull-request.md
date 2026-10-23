@@ -79,15 +79,10 @@ actually exercised.
 
 ## Review readiness
 
-Nothing unverified enters review. Two orders satisfy that:
-
-- **Default**: verify locally per `verification.md`, then open the
-  request with the evidence.
-- **When only a deployed environment can verify** — see the list in
-  `verification.md` — open the request as a draft
-  (`gh pr create --draft`), let the pipeline
-  deploy, verify against it, attach evidence citing the pipeline or
-  deployment id and the commit SHA, then mark it ready.
+Verify locally per `verification.md`, then open the request with the
+evidence. For changes that need a deployed environment, follow that file's
+Deployment verification section to determine which checks gate review and
+which happen after merging.
 
 State in the description which paths were verified and which were not,
 with the reason.

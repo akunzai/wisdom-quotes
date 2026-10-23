@@ -1,0 +1,4 @@
+[install]
+# Preserve the previous package manager's 24-hour release cooldown.
+# https://bun.sh/docs/pm/cli/install#minimum-release-age
+minimumReleaseAge = 86400

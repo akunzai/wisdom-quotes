@@ -11,29 +11,29 @@
 
 ## 必要条件
 
-- [mise](https://mise.jdx.dev/) — `mise.toml` に従い Node LTS と [aube](https://aube.jdx.dev/) をインストール
+- [mise](https://mise.jdx.dev/) — `mise.toml` に従い Node LTS と Bun をインストール
 
 ## はじめに
 
 ```bash
 git clone https://github.com/akunzai/wisdom-quotes.git
 cd wisdom-quotes
-aube install
-aubr dev
+bun install
+bun run dev
 ```
 
 [http://localhost:4321/wisdom-quotes/](http://localhost:4321/wisdom-quotes/) を開きます。
 
 ## スクリプト
 
-| コマンド         | 説明                            |
-| ---------------- | ------------------------------- |
-| `aubr dev`       | 開発サーバーを起動              |
-| `aubr build`     | 型チェックして `dist/` にビルド |
-| `aubr preview`   | 本番ビルドをプレビュー          |
-| `aubr typecheck` | Astro／TypeScript チェック      |
-| `aubr lint`      | コードのリント                  |
-| `aubr format`    | Prettier でフォーマット         |
+| コマンド          | 説明                            |
+| ----------------- | ------------------------------- |
+| `bun run dev`     | 開発サーバーを起動              |
+| `bun run build`   | 型チェックして `dist/` にビルド |
+| `bun run preview` | 本番ビルドをプレビュー          |
+| `bun run check`   | Astro／TypeScript チェック      |
+| `bun run lint`    | コードのリント                  |
+| `bun run fmt`     | Bun でフォーマット              |
 
 ## ローカライゼーション
 
