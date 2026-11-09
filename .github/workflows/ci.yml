@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
-      - uses: jdx/mise-action@v4
+      - uses: jdx/mise-action@v5
       - run: bun install --frozen-lockfile
       - run: bun run lint
       - run: bun run fmt:check
@@ -32,7 +32,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v7
-      - uses: jdx/mise-action@v4
+      - uses: jdx/mise-action@v5
       - run: bun install --frozen-lockfile
       - run: bun run build
       - run: npm install -g @playwright/cli@latest
